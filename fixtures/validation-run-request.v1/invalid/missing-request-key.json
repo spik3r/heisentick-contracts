@@ -1,0 +1,17 @@
+{
+  "schema": "heisentick/validation-run-request",
+  "version": 1,
+  "kind": "validate",
+  "strategyId": "ict2tfFvgXauusd1h5m",
+  "route": {
+    "symbol": "XAUUSD",
+    "timeframe": "5m",
+    "rangeMethod": "zone"
+  },
+  "costMode": "realistic",
+  "window": {
+    "from": "2020-01-01",
+    "to": "2026-09-01"
+  },
+  "monteCarloIterations": 5000
+}

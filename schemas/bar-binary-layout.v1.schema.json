@@ -1,0 +1,29 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "bar-binary-layout.v1.schema.json",
+  "title": "Bar binary layout descriptor",
+  "description": "Describes a `<tf>.bin` candle artifact. The layout itself is fixed by this schema's constants; a descriptor instance carries the per-file values a reader needs to validate a file before mapping it. Layout: little-endian; 16-byte header = magic u32 (0x31425442, ASCII 'BTB1'), version u32 (1), count u32, colCount u32; then colCount contiguous Float64 columns in the order t,o,h,l,c,v; column i starts at byte 16 + i*count*8; no padding; total size 16 + colCount*count*8. t is epoch milliseconds stored as a Float64 (exact below 2^53). Missing volume is 0. The file sha256 lives in the snapshot manifest, not in the file.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema", "version", "magic", "layoutVersion", "count", "colCount", "columns", "byteLength", "endianness", "headerBytes", "valueBytes"],
+  "properties": {
+    "schema": { "const": "heisentick/bar-binary-layout" },
+    "version": { "const": 1 },
+    "magic": { "const": 826430530, "description": "0x31425442 as an integer." },
+    "layoutVersion": { "const": 1, "description": "The version field inside the file header." },
+    "count": { "type": "integer", "minimum": 0, "maximum": 4294967295 },
+    "colCount": { "type": "integer", "minimum": 5, "maximum": 6, "description": "5 when the writer had no volume column; readers then treat v as 0." },
+    "columns": {
+      "type": "array",
+      "items": { "type": "string", "enum": ["t", "o", "h", "l", "c", "v"] },
+      "minItems": 6,
+      "maxItems": 6,
+      "const": ["t", "o", "h", "l", "c", "v"],
+      "description": "Column order; fixed."
+    },
+    "byteLength": { "type": "integer", "minimum": 16, "description": "Must equal headerBytes + colCount*count*valueBytes." },
+    "endianness": { "const": "little" },
+    "headerBytes": { "const": 16 },
+    "valueBytes": { "const": 8 }
+  }
+}

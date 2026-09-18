@@ -1,0 +1,121 @@
+{
+  "schema": "heisentick/validation-run-manifest",
+  "version": 1,
+  "runId": "0f3c1d2e-4a5b-4c6d-8e9f-0a1b2c3d4e5f",
+  "requestKey": "1a2b3c4d-5e6f-4a7b-8c9d-0e1f2a3b4c5d",
+  "inputFingerprint": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+  "kind": "validate",
+  "strategy": {
+    "id": "ict2tfFvgXauusd1h5m",
+    "sourceSha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+    "params": {
+      "fib": 0.618,
+      "sweepFirst": true
+    }
+  },
+  "engine": {
+    "stratRelease": "v0.2.0",
+    "stratBuildDigest": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+    "goVersion": "go1.27.0",
+    "validationRelease": "v0.1.0",
+    "reportSchemaVersion": 1,
+    "resultSchemaVersion": 1
+  },
+  "route": {
+    "symbol": "XAUUSD",
+    "timeframe": "5m",
+    "sourceTimeframe": "1h",
+    "higherTimeframe": "4h",
+    "rangeMethod": "zone",
+    "instrument": {
+      "tickSize": 0.01,
+      "pointValue": 1,
+      "quoteCurrency": "USD"
+    }
+  },
+  "data": {
+    "provider": "dukascopy",
+    "series": [
+      {
+        "role": "entry",
+        "symbol": "XAUUSD",
+        "timeframe": "5m",
+        "object": "candles/XAUUSD/5m/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa.bin",
+        "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "count": 405000,
+        "windowFromT": 1599913600000,
+        "windowToT": 1600086400000
+      },
+      {
+        "role": "source",
+        "symbol": "XAUUSD",
+        "timeframe": "1h",
+        "object": "candles/XAUUSD/1h/bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb.bin",
+        "sha256": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+        "count": 33000,
+        "windowFromT": 1599913600000,
+        "windowToT": 1600086400000
+      }
+    ]
+  },
+  "execution": {
+    "fromT": 1600000000000,
+    "toT": 1600086400000,
+    "warmupBars": 288,
+    "fillOn": "close",
+    "initialState": "flat",
+    "endOfTest": "liquidate-last-close",
+    "holdoutFromT": null
+  },
+  "costs": {
+    "modelVersion": 1,
+    "mode": "realistic",
+    "slippage": 0.06,
+    "slippageBps": 0,
+    "spread": 0,
+    "commissionPerUnit": 0,
+    "financingPerDayBps": 0,
+    "startEquity": 10000
+  },
+  "validation": {
+    "grid": {
+      "cells": [
+        {
+          "cellIndex": 0,
+          "params": {
+            "fib": 0.5
+          },
+          "costMode": "realistic"
+        },
+        {
+          "cellIndex": 1,
+          "params": {
+            "fib": 0.618
+          },
+          "costMode": "harsh"
+        }
+      ]
+    },
+    "monteCarlo": {
+      "methods": [
+        "permutation",
+        "bootstrap"
+      ],
+      "iterations": 5000,
+      "seed": 12345
+    },
+    "diagnostics": {
+      "recentMonths": 30,
+      "harshCostMode": "harsh"
+    }
+  },
+  "policy": {
+    "promotionPolicyVersion": 1,
+    "profile": "ict2tfFvgXauusd1h5m|XAUUSD 5m|validate|realistic|full|p1"
+  },
+  "requestedBy": {
+    "subject": "",
+    "via": "lab-ui"
+  },
+  "submittedAt": 1600003600000
+}

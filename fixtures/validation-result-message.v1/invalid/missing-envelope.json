@@ -1,0 +1,10 @@
+{
+  "schema": "heisentick/validation-result-message",
+  "version": 1,
+  "runId": "0f3c1d2e-4a5b-4c6d-8e9f-0a1b2c3d4e5f",
+  "attempt": 1,
+  "status": "succeeded",
+  "envelopeSha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+  "executionArn": "arn:aws:states:ap-southeast-2:123456789012:execution:StrategyValidation:0f3c1d2e-4a5b-4c6d-8e9f-0a1b2c3d4e5f-1",
+  "finishedAt": 1600090000000
+}

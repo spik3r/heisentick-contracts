@@ -1,0 +1,104 @@
+{
+  "schema": "heisentick/validation-run-result",
+  "version": 1,
+  "runId": "0f3c1d2e-4a5b-4c6d-8e9f-0a1b2c3d4e5f",
+  "attempt": 0,
+  "inputFingerprint": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+  "manifestKey": "runs/0f3c1d2e-4a5b-4c6d-8e9f-0a1b2c3d4e5f/manifest.json",
+  "execution": {
+    "status": "succeeded",
+    "stages": [
+      {
+        "stage": "report",
+        "status": "succeeded",
+        "durationMs": 229000,
+        "billedMs": 229000,
+        "maxMemoryMb": 2200
+      },
+      {
+        "stage": "grid",
+        "status": "succeeded",
+        "durationMs": 60000,
+        "cells": 2
+      },
+      {
+        "stage": "montecarlo",
+        "status": "succeeded",
+        "durationMs": 4000
+      },
+      {
+        "stage": "diagnostics",
+        "status": "succeeded",
+        "durationMs": 90000
+      },
+      {
+        "stage": "assemble",
+        "status": "succeeded",
+        "durationMs": 500
+      }
+    ]
+  },
+  "assessment": {
+    "status": "assessed",
+    "minimumTrades": 100
+  },
+  "promotion": {
+    "status": "not-eligible",
+    "policyVersion": 1,
+    "checks": [
+      {
+        "name": "profitFactor",
+        "passed": false,
+        "value": 1.04,
+        "threshold": 1.2,
+        "comparator": "at-least"
+      },
+      {
+        "name": "trades",
+        "passed": true,
+        "value": 553,
+        "threshold": 100,
+        "comparator": "at-least"
+      }
+    ]
+  },
+  "headline": {
+    "trades": 553,
+    "winRate": 0.41,
+    "profitFactor": 1.04,
+    "net": 812.5,
+    "expectancy": 1.47,
+    "maxDrawdown": 1450.25,
+    "firstTradeT": 1600007200000,
+    "lastTradeT": 1600080000000,
+    "monteCarlo": {
+      "method": "permutation",
+      "iterations": 5000,
+      "drawdownP5": 900,
+      "drawdownP50": 1500,
+      "drawdownP95": 2600
+    }
+  },
+  "artifacts": {
+    "report": {
+      "object": "runs/0f3c1d2e-4a5b-4c6d-8e9f-0a1b2c3d4e5f/1/report.json",
+      "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "byteLength": 120000,
+      "schema": "heisentick/go-report",
+      "version": 1
+    },
+    "trades": {
+      "object": "runs/0f3c1d2e-4a5b-4c6d-8e9f-0a1b2c3d4e5f/1/trades.json",
+      "sha256": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+      "byteLength": 400000,
+      "schema": "heisentick/trade-list",
+      "version": 1
+    }
+  },
+  "engine": {
+    "stratRelease": "v0.2.0",
+    "stratBuildDigest": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+    "validationRelease": "v0.1.0"
+  },
+  "finishedAt": 1600090000000
+}

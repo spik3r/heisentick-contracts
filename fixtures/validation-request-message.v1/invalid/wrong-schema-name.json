@@ -1,0 +1,10 @@
+{
+  "schema": "heisentick/validation-result-message",
+  "version": 1,
+  "runId": "0f3c1d2e-4a5b-4c6d-8e9f-0a1b2c3d4e5f",
+  "attempt": 1,
+  "manifestKey": "runs/0f3c1d2e-4a5b-4c6d-8e9f-0a1b2c3d4e5f/manifest.json",
+  "manifestSha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+  "inputFingerprint": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+  "submittedAt": 1600000000000
+}

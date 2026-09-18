@@ -1,0 +1,39 @@
+name: ci
+
+# Checks every pull request and main push: generated outputs are current,
+# TypeScript compiles, both test suites pass on the shared fixtures. Releases
+# are tags pushed by hand (v0.1.0 …); consumers pin them. No deploy.
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+    tags: ['v*']
+
+permissions:
+  contents: read
+
+jobs:
+  check:
+    runs-on: ${{ fromJSON(vars.CI_RUNNER_MODE == 'self-hosted' && '["self-hosted","linux"]' || '["ubuntu-24.04"]') }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 11.5.1
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+      - uses: actions/setup-go@v5
+        with:
+          go-version-file: go.mod
+          cache: true
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm run check
+      - name: Fixtures are sealed
+        run: |
+          set -euo pipefail
+          node scripts/write-fixtures.mjs
+          node scripts/seal-fixtures.mjs
+          git diff --exit-code -- fixtures

@@ -1,0 +1,44 @@
+{
+  "name": "@heisentick/contracts",
+  "version": "0.1.0",
+  "private": false,
+  "type": "module",
+  "description": "Versioned JSON Schema contracts for heisentick repository boundaries, with generated zod/TypeScript and Go types",
+  "license": "UNLICENSED",
+  "engines": {
+    "node": ">=22"
+  },
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    },
+    "./schemas/*": "./schemas/*"
+  },
+  "files": [
+    "dist",
+    "schemas"
+  ],
+  "scripts": {
+    "generate": "node scripts/generate.mjs",
+    "generate:check": "node scripts/generate.mjs --check",
+    "build": "tsc -p tsconfig.json",
+    "typecheck": "tsc -p tsconfig.test.json",
+    "test": "node --import tsx --test test/*.test.ts",
+    "test:go": "go test ./...",
+    "check": "pnpm run generate:check && pnpm run typecheck && pnpm test && pnpm run build && pnpm run test:go",
+    "write-fixtures": "node scripts/write-fixtures.mjs",
+    "seal-fixtures": "node scripts/seal-fixtures.mjs"
+  },
+  "dependencies": {
+    "zod": "^4.1.0"
+  },
+  "devDependencies": {
+    "@apidevtools/json-schema-ref-parser": "^15.1.0",
+    "@types/node": "^22.20.2",
+    "ajv": "^8.17.1",
+    "json-schema-to-zod": "^2.6.1",
+    "tsx": "^4.23.13",
+    "typescript": "^5.9.3"
+  }
+}

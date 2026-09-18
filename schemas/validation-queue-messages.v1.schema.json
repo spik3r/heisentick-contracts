@@ -1,0 +1,43 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "validation-queue-messages.v1.schema.json",
+  "title": "Validation queue messages",
+  "description": "Bodies of the two SQS FIFO queues between the API and the pipeline. Both are small references: the request points at a stored manifest, the result points at a stored envelope. MessageGroupId is the runId; MessageDeduplicationId is runId-attempt. FIFO gives ordering, not exactly-once: the consumer is idempotent on (runId, attempt).",
+  "$defs": {
+    "validationRequestMessage": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["schema", "version", "runId", "attempt", "manifestKey", "inputFingerprint", "submittedAt"],
+      "properties": {
+        "schema": { "const": "heisentick/validation-request-message" },
+        "version": { "const": 1 },
+        "runId": { "$ref": "common.v1.schema.json#/$defs/uuid" },
+        "attempt": { "type": "integer", "minimum": 1 },
+        "manifestKey": { "$ref": "common.v1.schema.json#/$defs/s3Key" },
+        "manifestSha256": { "$ref": "common.v1.schema.json#/$defs/sha256Hex" },
+        "inputFingerprint": { "$ref": "common.v1.schema.json#/$defs/sha256Hex" },
+        "submittedAt": { "$ref": "common.v1.schema.json#/$defs/epochMs" }
+      }
+    },
+    "validationResultMessage": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["schema", "version", "runId", "attempt", "status", "envelopeKey", "finishedAt"],
+      "properties": {
+        "schema": { "const": "heisentick/validation-result-message" },
+        "version": { "const": 1 },
+        "runId": { "$ref": "common.v1.schema.json#/$defs/uuid" },
+        "attempt": { "type": "integer", "minimum": 1 },
+        "status": { "type": "string", "enum": ["succeeded", "failed", "cancelled", "timeout"] },
+        "envelopeKey": { "$ref": "common.v1.schema.json#/$defs/s3Key" },
+        "envelopeSha256": { "$ref": "common.v1.schema.json#/$defs/sha256Hex" },
+        "executionArn": { "type": "string", "maxLength": 512, "description": "Step Functions execution, for reconciliation." },
+        "finishedAt": { "$ref": "common.v1.schema.json#/$defs/epochMs" }
+      }
+    }
+  },
+  "anyOf": [
+    { "$ref": "#/$defs/validationRequestMessage" },
+    { "$ref": "#/$defs/validationResultMessage" }
+  ]
+}

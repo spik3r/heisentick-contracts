@@ -1,0 +1,210 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "validation-run-manifest.v1.schema.json",
+  "title": "Validation run manifest",
+  "description": "Every input of one recorded run, resolved by the API at submission and stored at runs/<runId>/manifest.json. Workers read this and nothing else; they never resolve 'latest'. inputFingerprint is sha256 of the canonical JSON of this document with the fields runId, requestKey, requestedBy, submittedAt and inputFingerprint removed (see docs/canonical-json.md).",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema", "version", "runId", "requestKey", "inputFingerprint", "kind", "strategy", "engine", "route", "data", "execution", "costs", "validation", "policy", "requestedBy", "submittedAt"],
+  "properties": {
+    "schema": { "const": "heisentick/validation-run-manifest" },
+    "version": { "const": 1 },
+    "runId": { "$ref": "common.v1.schema.json#/$defs/uuid" },
+    "requestKey": { "$ref": "common.v1.schema.json#/$defs/uuid", "description": "Client idempotency key. A repeated submission with the same key returns the same runId." },
+    "inputFingerprint": { "$ref": "common.v1.schema.json#/$defs/sha256Hex" },
+    "kind": { "type": "string", "enum": ["report", "validate", "basket"] },
+    "strategy": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "sourceSha256", "params"],
+      "properties": {
+        "id": { "type": "string", "pattern": "^[A-Za-z][A-Za-z0-9]{0,79}$" },
+        "sourceSha256": { "$ref": "common.v1.schema.json#/$defs/sha256Hex", "description": "sha256 of the .strat text exactly as submitted." },
+        "sourceObject": { "$ref": "common.v1.schema.json#/$defs/s3Key", "description": "Where the frozen source text is stored, when not embedded in the registry release." },
+        "params": {
+          "type": "object",
+          "description": "Resolved parameter values after defaults. Keys are parameter names; values are the resolved scalars.",
+          "additionalProperties": { "type": ["number", "string", "boolean"] }
+        }
+      }
+    },
+    "engine": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["stratRelease", "stratBuildDigest", "goVersion", "validationRelease", "reportSchemaVersion", "resultSchemaVersion"],
+      "properties": {
+        "stratRelease": { "$ref": "common.v1.schema.json#/$defs/semverTag" },
+        "stratBuildDigest": { "$ref": "common.v1.schema.json#/$defs/sha256Hex", "description": "sha256 of the engine binary the workers will run." },
+        "goVersion": { "type": "string", "pattern": "^go\\d+\\.\\d+(\\.\\d+)?$" },
+        "validationRelease": { "$ref": "common.v1.schema.json#/$defs/semverTag", "description": "heisentick-strategy-validation release whose Lambdas execute this run." },
+        "reportSchemaVersion": { "type": "integer", "minimum": 1 },
+        "resultSchemaVersion": { "type": "integer", "minimum": 1 }
+      }
+    },
+    "route": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["symbol", "timeframe", "sourceTimeframe", "higherTimeframe", "rangeMethod"],
+      "properties": {
+        "symbol": { "$ref": "common.v1.schema.json#/$defs/symbol" },
+        "timeframe": { "$ref": "common.v1.schema.json#/$defs/timeframe", "description": "Entry (chart) timeframe." },
+        "sourceTimeframe": { "anyOf": [{ "$ref": "common.v1.schema.json#/$defs/timeframe" }, { "type": "null" }], "description": "Source timeframe for a two-timeframe strategy; null for single-timeframe." },
+        "higherTimeframe": { "anyOf": [{ "$ref": "common.v1.schema.json#/$defs/timeframe" }, { "type": "null" }] },
+        "rangeMethod": { "type": "string", "enum": ["zone", "pivot"] },
+        "instrument": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["tickSize", "pointValue", "quoteCurrency"],
+          "properties": {
+            "tickSize": { "type": "number", "exclusiveMinimum": 0 },
+            "pointValue": { "type": "number", "exclusiveMinimum": 0 },
+            "quoteCurrency": { "type": "string", "pattern": "^[A-Z]{3}$" }
+          }
+        }
+      }
+    },
+    "data": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["provider", "series"],
+      "properties": {
+        "provider": { "type": "string", "enum": ["dukascopy", "binance", "synthetic"] },
+        "series": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["role", "symbol", "timeframe", "object", "sha256", "count", "windowFromT", "windowToT"],
+            "properties": {
+              "role": { "type": "string", "enum": ["entry", "source", "higher", "context"] },
+              "symbol": { "$ref": "common.v1.schema.json#/$defs/symbol" },
+              "timeframe": { "$ref": "common.v1.schema.json#/$defs/timeframe" },
+              "object": { "$ref": "common.v1.schema.json#/$defs/s3Key" },
+              "sha256": { "$ref": "common.v1.schema.json#/$defs/sha256Hex" },
+              "count": { "type": "integer", "minimum": 0 },
+              "windowFromT": { "$ref": "common.v1.schema.json#/$defs/epochMs", "description": "First bar the run may read, warm-up included." },
+              "windowToT": { "$ref": "common.v1.schema.json#/$defs/epochMs", "description": "Exclusive upper bound." }
+            }
+          }
+        }
+      }
+    },
+    "execution": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["fromT", "toT", "warmupBars", "fillOn", "initialState", "endOfTest"],
+      "properties": {
+        "fromT": { "$ref": "common.v1.schema.json#/$defs/epochMs", "description": "First bar on which a trade may be opened." },
+        "toT": { "$ref": "common.v1.schema.json#/$defs/epochMs", "description": "Exclusive." },
+        "warmupBars": { "type": "integer", "minimum": 0 },
+        "fillOn": { "type": "string", "enum": ["close", "next-open"] },
+        "initialState": { "type": "string", "enum": ["flat"] },
+        "endOfTest": { "type": "string", "enum": ["liquidate-last-close", "leave-open"], "description": "What happens to a position still open at toT; liquidation is reported as its own exit reason." },
+        "holdoutFromT": { "anyOf": [{ "$ref": "common.v1.schema.json#/$defs/epochMs" }, { "type": "null" }], "description": "A boundary chosen before the search. Absent or null means the run is entirely in-sample." }
+      }
+    },
+    "costs": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["modelVersion", "mode", "slippage", "slippageBps", "spread", "commissionPerUnit", "financingPerDayBps", "startEquity"],
+      "properties": {
+        "modelVersion": { "type": "integer", "minimum": 1 },
+        "mode": { "$ref": "common.v1.schema.json#/$defs/costMode" },
+        "slippage": { "type": "number", "minimum": 0, "description": "Price points per side." },
+        "slippageBps": { "type": "number", "minimum": 0 },
+        "spread": { "type": "number", "minimum": 0 },
+        "commissionPerUnit": { "type": "number", "minimum": 0 },
+        "financingPerDayBps": { "type": "number" },
+        "startEquity": { "type": "number", "exclusiveMinimum": 0 }
+      }
+    },
+    "validation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["grid", "monteCarlo", "diagnostics"],
+      "properties": {
+        "grid": {
+          "anyOf": [
+            { "type": "null" },
+            {
+              "type": "object",
+              "additionalProperties": false,
+              "required": ["cells"],
+              "properties": {
+                "cells": {
+                  "type": "array",
+                  "minItems": 1,
+                  "maxItems": 64,
+                  "items": {
+                    "type": "object",
+                    "additionalProperties": false,
+                    "required": ["cellIndex", "params", "costMode"],
+                    "properties": {
+                      "cellIndex": { "type": "integer", "minimum": 0 },
+                      "params": { "type": "object", "additionalProperties": { "type": ["number", "string", "boolean"] } },
+                      "costMode": { "$ref": "common.v1.schema.json#/$defs/costMode" }
+                    }
+                  }
+                }
+              }
+            }
+          ]
+        },
+        "monteCarlo": {
+          "anyOf": [
+            { "type": "null" },
+            {
+              "type": "object",
+              "additionalProperties": false,
+              "required": ["methods", "iterations", "seed"],
+              "properties": {
+                "methods": { "type": "array", "minItems": 1, "uniqueItems": true, "items": { "type": "string", "enum": ["permutation", "bootstrap"] } },
+                "iterations": { "type": "integer", "minimum": 100, "maximum": 20000 },
+                "seed": { "type": "integer", "minimum": 0, "maximum": 4294967295, "description": "Per-cell sub-seeds are derived as sha256(seed || cellIndex), never from scheduling." }
+              }
+            }
+          ]
+        },
+        "diagnostics": {
+          "anyOf": [
+            { "type": "null" },
+            {
+              "type": "object",
+              "additionalProperties": false,
+              "required": ["recentMonths", "harshCostMode"],
+              "properties": {
+                "recentMonths": { "type": "integer", "minimum": 1, "maximum": 120 },
+                "harshCostMode": { "$ref": "common.v1.schema.json#/$defs/costMode" }
+              }
+            }
+          ]
+        }
+      }
+    },
+    "policy": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["promotionPolicyVersion", "profile"],
+      "properties": {
+        "promotionPolicyVersion": { "type": "integer", "minimum": 1 },
+        "profile": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 120,
+          "description": "The validation profile this run belongs to (decision D-5): strategy × route × kind × cost mode × history policy × policy version, rendered by the API. /latest is per profile."
+        }
+      }
+    },
+    "requestedBy": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["subject", "via"],
+      "properties": {
+        "subject": { "type": "string", "minLength": 1, "maxLength": 200, "description": "Opaque principal id; never an email address." },
+        "via": { "type": "string", "enum": ["lab-ui", "operator-token", "local"] }
+      }
+    },
+    "submittedAt": { "$ref": "common.v1.schema.json#/$defs/epochMs" }
+  }
+}

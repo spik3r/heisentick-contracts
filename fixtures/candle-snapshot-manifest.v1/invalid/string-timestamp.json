@@ -1,0 +1,23 @@
+{
+  "schema": "heisentick/candle-snapshot-manifest",
+  "version": 1,
+  "symbol": "XAUUSD",
+  "timeframe": "1m",
+  "object": "candles/XAUUSD/1m/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa.bin",
+  "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+  "byteLength": 112,
+  "count": 2,
+  "firstT": "2020-09-13T12:26:40Z",
+  "lastT": 1600000060000,
+  "layout": {
+    "schema": "heisentick/bar-binary-layout",
+    "version": 1,
+    "colCount": 6
+  },
+  "publishedAt": 1600000120000,
+  "producer": {
+    "service": "heisentick-api",
+    "release": "v1.0.15"
+  },
+  "supersedes": null
+}

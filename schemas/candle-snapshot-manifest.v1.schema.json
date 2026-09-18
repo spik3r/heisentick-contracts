@@ -1,0 +1,49 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "candle-snapshot-manifest.v1.schema.json",
+  "title": "Candle snapshot manifest",
+  "description": "Published by the API at candles/<symbol>/<tf>/manifest.json after the content-addressed object it names has been uploaded and verified. Objects are immutable; a manifest is replaced, never edited. Workers never read a manifest to find data: they read the object key pinned in a run manifest.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema", "version", "symbol", "timeframe", "object", "sha256", "byteLength", "count", "firstT", "lastT", "layout", "publishedAt", "producer"],
+  "properties": {
+    "schema": { "const": "heisentick/candle-snapshot-manifest" },
+    "version": { "const": 1 },
+    "symbol": { "$ref": "common.v1.schema.json#/$defs/symbol" },
+    "timeframe": { "$ref": "common.v1.schema.json#/$defs/timeframe" },
+    "object": {
+      "$ref": "common.v1.schema.json#/$defs/s3Key",
+      "description": "candles/<symbol>/<tf>/<sha256>.bin — the key embeds the content hash."
+    },
+    "sha256": { "$ref": "common.v1.schema.json#/$defs/sha256Hex" },
+    "byteLength": { "type": "integer", "minimum": 16 },
+    "count": { "type": "integer", "minimum": 0 },
+    "firstT": { "anyOf": [{ "$ref": "common.v1.schema.json#/$defs/epochMs" }, { "type": "null" }], "description": "null only when count is 0." },
+    "lastT": { "anyOf": [{ "$ref": "common.v1.schema.json#/$defs/epochMs" }, { "type": "null" }] },
+    "layout": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["schema", "version", "colCount"],
+      "properties": {
+        "schema": { "const": "heisentick/bar-binary-layout" },
+        "version": { "const": 1 },
+        "colCount": { "type": "integer", "minimum": 5, "maximum": 6 }
+      }
+    },
+    "publishedAt": { "$ref": "common.v1.schema.json#/$defs/epochMs" },
+    "producer": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["service", "release"],
+      "properties": {
+        "service": { "const": "heisentick-api" },
+        "release": { "$ref": "common.v1.schema.json#/$defs/semverTag" },
+        "commitId": { "type": "string", "maxLength": 64, "description": "The API's local commit/job id for the write that produced this snapshot, for tracing only." }
+      }
+    },
+    "supersedes": {
+      "anyOf": [{ "$ref": "common.v1.schema.json#/$defs/sha256Hex" }, { "type": "null" }],
+      "description": "sha256 of the previous object for this pair, when known."
+    }
+  }
+}

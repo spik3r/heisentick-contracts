@@ -1,0 +1,20 @@
+{
+  "schema": "heisentick/bar-binary-layout",
+  "version": 1,
+  "magic": 826430530,
+  "layoutVersion": 1,
+  "count": 3,
+  "colCount": 6,
+  "columns": [
+    "t",
+    "o",
+    "h",
+    "l",
+    "c",
+    "v"
+  ],
+  "byteLength": 160,
+  "endianness": "little",
+  "headerBytes": 16,
+  "valueBytes": 8
+}

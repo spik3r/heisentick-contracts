@@ -1,0 +1,432 @@
+{
+  "schema": "heisentick/validation-run-manifest",
+  "version": 1,
+  "runId": "0f3c1d2e-4a5b-4c6d-8e9f-0a1b2c3d4e5f",
+  "requestKey": "1a2b3c4d-5e6f-4a7b-8c9d-0e1f2a3b4c5d",
+  "inputFingerprint": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+  "kind": "validate",
+  "strategy": {
+    "id": "ict2tfFvgXauusd1h5m",
+    "sourceSha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+    "params": {
+      "fib": 0.618,
+      "sweepFirst": true
+    }
+  },
+  "engine": {
+    "stratRelease": "v0.2.0",
+    "stratBuildDigest": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+    "goVersion": "go1.27.0",
+    "validationRelease": "v0.1.0",
+    "reportSchemaVersion": 1,
+    "resultSchemaVersion": 1
+  },
+  "route": {
+    "symbol": "XAUUSD",
+    "timeframe": "5m",
+    "sourceTimeframe": "1h",
+    "higherTimeframe": "4h",
+    "rangeMethod": "zone",
+    "instrument": {
+      "tickSize": 0.01,
+      "pointValue": 1,
+      "quoteCurrency": "USD"
+    }
+  },
+  "data": {
+    "provider": "dukascopy",
+    "series": [
+      {
+        "role": "entry",
+        "symbol": "XAUUSD",
+        "timeframe": "5m",
+        "object": "candles/XAUUSD/5m/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa.bin",
+        "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "count": 405000,
+        "windowFromT": 1599913600000,
+        "windowToT": 1600086400000
+      },
+      {
+        "role": "source",
+        "symbol": "XAUUSD",
+        "timeframe": "1h",
+        "object": "candles/XAUUSD/1h/bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb.bin",
+        "sha256": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+        "count": 33000,
+        "windowFromT": 1599913600000,
+        "windowToT": 1600086400000
+      }
+    ]
+  },
+  "execution": {
+    "fromT": 1600000000000,
+    "toT": 1600086400000,
+    "warmupBars": 288,
+    "fillOn": "close",
+    "initialState": "flat",
+    "endOfTest": "liquidate-last-close",
+    "holdoutFromT": null
+  },
+  "costs": {
+    "modelVersion": 1,
+    "mode": "realistic",
+    "slippage": 0.06,
+    "slippageBps": 0,
+    "spread": 0,
+    "commissionPerUnit": 0,
+    "financingPerDayBps": 0,
+    "startEquity": 10000
+  },
+  "validation": {
+    "grid": {
+      "cells": [
+        {
+          "cellIndex": 0,
+          "params": {},
+          "costMode": "raw"
+        },
+        {
+          "cellIndex": 1,
+          "params": {},
+          "costMode": "raw"
+        },
+        {
+          "cellIndex": 2,
+          "params": {},
+          "costMode": "raw"
+        },
+        {
+          "cellIndex": 3,
+          "params": {},
+          "costMode": "raw"
+        },
+        {
+          "cellIndex": 4,
+          "params": {},
+          "costMode": "raw"
+        },
+        {
+          "cellIndex": 5,
+          "params": {},
+          "costMode": "raw"
+        },
+        {
+          "cellIndex": 6,
+          "params": {},
+          "costMode": "raw"
+        },
+        {
+          "cellIndex": 7,
+          "params": {},
+          "costMode": "raw"
+        },
+        {
+          "cellIndex": 8,
+          "params": {},
+          "costMode": "raw"
+        },
+        {
+          "cellIndex": 9,
+          "params": {},
+          "costMode": "raw"
+        },
+        {
+          "cellIndex": 10,
+          "params": {},
+          "costMode": "raw"
+        },
+        {
+          "cellIndex": 11,
+          "params": {},
+          "costMode": "raw"
+        },
+        {
+          "cellIndex": 12,
+          "params": {},
+          "costMode": "raw"
+        },
+        {
+          "cellIndex": 13,
+          "params": {},
+          "costMode": "raw"
+        },
+        {
+          "cellIndex": 14,
+          "params": {},
+          "costMode": "raw"
+        },
+        {
+          "cellIndex": 15,
+          "params": {},
+          "costMode": "raw"
+        },
+        {
+          "cellIndex": 16,
+          "params": {},
+          "costMode": "raw"
+        },
+        {
+          "cellIndex": 17,
+          "params": {},
+          "costMode": "raw"
+        },
+        {
+          "cellIndex": 18,
+          "params": {},
+          "costMode": "raw"
+        },
+        {
+          "cellIndex": 19,
+          "params": {},
+          "costMode": "raw"
+        },
+        {
+          "cellIndex": 20,
+          "params": {},
+          "costMode": "raw"
+        },
+        {
+          "cellIndex": 21,
+          "params": {},
+          "costMode": "raw"
+        },
+        {
+          "cellIndex": 22,
+          "params": {},
+          "costMode": "raw"
+        },
+        {
+          "cellIndex": 23,
+          "params": {},
+          "costMode": "raw"
+        },
+        {
+          "cellIndex": 24,
+          "params": {},
+          "costMode": "raw"
+        },
+        {
+          "cellIndex": 25,
+          "params": {},
+          "costMode": "raw"
+        },
+        {
+          "cellIndex": 26,
+          "params": {},
+          "costMode": "raw"
+        },
+        {
+          "cellIndex": 27,
+          "params": {},
+          "costMode": "raw"
+        },
+        {
+          "cellIndex": 28,
+          "params": {},
+          "costMode": "raw"
+        },
+        {
+          "cellIndex": 29,
+          "params": {},
+          "costMode": "raw"
+        },
+        {
+          "cellIndex": 30,
+          "params": {},
+          "costMode": "raw"
+        },
+        {
+          "cellIndex": 31,
+          "params": {},
+          "costMode": "raw"
+        },
+        {
+          "cellIndex": 32,
+          "params": {},
+          "costMode": "raw"
+        },
+        {
+          "cellIndex": 33,
+          "params": {},
+          "costMode": "raw"
+        },
+        {
+          "cellIndex": 34,
+          "params": {},
+          "costMode": "raw"
+        },
+        {
+          "cellIndex": 35,
+          "params": {},
+          "costMode": "raw"
+        },
+        {
+          "cellIndex": 36,
+          "params": {},
+          "costMode": "raw"
+        },
+        {
+          "cellIndex": 37,
+          "params": {},
+          "costMode": "raw"
+        },
+        {
+          "cellIndex": 38,
+          "params": {},
+          "costMode": "raw"
+        },
+        {
+          "cellIndex": 39,
+          "params": {},
+          "costMode": "raw"
+        },
+        {
+          "cellIndex": 40,
+          "params": {},
+          "costMode": "raw"
+        },
+        {
+          "cellIndex": 41,
+          "params": {},
+          "costMode": "raw"
+        },
+        {
+          "cellIndex": 42,
+          "params": {},
+          "costMode": "raw"
+        },
+        {
+          "cellIndex": 43,
+          "params": {},
+          "costMode": "raw"
+        },
+        {
+          "cellIndex": 44,
+          "params": {},
+          "costMode": "raw"
+        },
+        {
+          "cellIndex": 45,
+          "params": {},
+          "costMode": "raw"
+        },
+        {
+          "cellIndex": 46,
+          "params": {},
+          "costMode": "raw"
+        },
+        {
+          "cellIndex": 47,
+          "params": {},
+          "costMode": "raw"
+        },
+        {
+          "cellIndex": 48,
+          "params": {},
+          "costMode": "raw"
+        },
+        {
+          "cellIndex": 49,
+          "params": {},
+          "costMode": "raw"
+        },
+        {
+          "cellIndex": 50,
+          "params": {},
+          "costMode": "raw"
+        },
+        {
+          "cellIndex": 51,
+          "params": {},
+          "costMode": "raw"
+        },
+        {
+          "cellIndex": 52,
+          "params": {},
+          "costMode": "raw"
+        },
+        {
+          "cellIndex": 53,
+          "params": {},
+          "costMode": "raw"
+        },
+        {
+          "cellIndex": 54,
+          "params": {},
+          "costMode": "raw"
+        },
+        {
+          "cellIndex": 55,
+          "params": {},
+          "costMode": "raw"
+        },
+        {
+          "cellIndex": 56,
+          "params": {},
+          "costMode": "raw"
+        },
+        {
+          "cellIndex": 57,
+          "params": {},
+          "costMode": "raw"
+        },
+        {
+          "cellIndex": 58,
+          "params": {},
+          "costMode": "raw"
+        },
+        {
+          "cellIndex": 59,
+          "params": {},
+          "costMode": "raw"
+        },
+        {
+          "cellIndex": 60,
+          "params": {},
+          "costMode": "raw"
+        },
+        {
+          "cellIndex": 61,
+          "params": {},
+          "costMode": "raw"
+        },
+        {
+          "cellIndex": 62,
+          "params": {},
+          "costMode": "raw"
+        },
+        {
+          "cellIndex": 63,
+          "params": {},
+          "costMode": "raw"
+        },
+        {
+          "cellIndex": 64,
+          "params": {},
+          "costMode": "raw"
+        }
+      ]
+    },
+    "monteCarlo": {
+      "methods": [
+        "permutation",
+        "bootstrap"
+      ],
+      "iterations": 5000,
+      "seed": 12345
+    },
+    "diagnostics": {
+      "recentMonths": 30,
+      "harshCostMode": "harsh"
+    }
+  },
+  "policy": {
+    "promotionPolicyVersion": 1,
+    "profile": "ict2tfFvgXauusd1h5m|XAUUSD 5m|validate|realistic|full|p1"
+  },
+  "requestedBy": {
+    "subject": "kp_0123456789abcdef",
+    "via": "lab-ui"
+  },
+  "submittedAt": 1600003600000
+}
