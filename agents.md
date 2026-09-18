@@ -50,6 +50,11 @@ Consumers pin a release tag. Plan:
   new case in `fixtures/canonical/cases.json` and both implementations
   updated in the same PR.
 
+`dist/` is committed. Consumers install the TypeScript package straight
+from a tag (`github:spik3r/heisentick-contracts#vX.Y.Z`), which runs no
+build, so `pnpm run build` output ships in the tag. CI fails when `dist/`
+is stale.
+
 ## Validate before finishing
 
 ```sh

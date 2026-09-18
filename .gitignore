@@ -80,7 +80,7 @@ out
 
 # Nuxt.js build / generate output
 .nuxt
-dist
+# dist/ is committed: consumers install this package from a tag and must not need a build step
 .output
 
 # Gatsby files
