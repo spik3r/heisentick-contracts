@@ -701,7 +701,11 @@ type ValidationRunRequestV1Window struct {
 // judged), promotion (does it clear the policy). Insufficient data is never a
 // failure.
 type ValidationRunResultV1 struct {
-	// Artifacts corresponds to the JSON schema field "artifacts".
+	// Object references. A succeeded run carries report (and a non-null headline); a
+	// run that failed before or during Report has none. The schema states the shapes;
+	// the rule 'succeeded implies report and headline' is enforced by both packages
+	// in code because a root-level conditional would defeat the generated zod
+	// object's rejection of unknown fields.
 	Artifacts ValidationRunResultV1Artifacts `json:"artifacts" yaml:"artifacts" mapstructure:"artifacts"`
 
 	// Assessment corresponds to the JSON schema field "assessment".
@@ -742,6 +746,11 @@ type ValidationRunResultV1 struct {
 	Version interface{} `json:"version" yaml:"version" mapstructure:"version"`
 }
 
+// Object references. A succeeded run carries report (and a non-null headline); a
+// run that failed before or during Report has none. The schema states the shapes;
+// the rule 'succeeded implies report and headline' is enforced by both packages in
+// code because a root-level conditional would defeat the generated zod object's
+// rejection of unknown fields.
 type ValidationRunResultV1Artifacts struct {
 	// Diagnostics corresponds to the JSON schema field "diagnostics".
 	Diagnostics *ValidationRunResultV1ArtifactsDiagnostics `json:"diagnostics,omitempty" yaml:"diagnostics,omitempty" mapstructure:"diagnostics,omitempty"`
@@ -753,7 +762,7 @@ type ValidationRunResultV1Artifacts struct {
 	MonteCarlo *ValidationRunResultV1ArtifactsMonteCarlo `json:"monteCarlo,omitempty" yaml:"monteCarlo,omitempty" mapstructure:"monteCarlo,omitempty"`
 
 	// Report corresponds to the JSON schema field "report".
-	Report ValidationRunResultV1ArtifactsReport `json:"report" yaml:"report" mapstructure:"report"`
+	Report *ValidationRunResultV1ArtifactsReport `json:"report,omitempty" yaml:"report,omitempty" mapstructure:"report,omitempty"`
 
 	// Trades corresponds to the JSON schema field "trades".
 	Trades *ValidationRunResultV1ArtifactsTrades `json:"trades,omitempty" yaml:"trades,omitempty" mapstructure:"trades,omitempty"`
@@ -1048,7 +1057,7 @@ type ValidationRunResultV1Promotion struct {
 
 type ValidationRunResultV1PromotionChecksElem struct {
 	// value >= threshold, > , <= , < respectively.
-	Comparator *ValidationRunResultV1PromotionChecksElemComparator `json:"comparator,omitempty" yaml:"comparator,omitempty" mapstructure:"comparator,omitempty"`
+	Comparator ValidationRunResultV1PromotionChecksElemComparator `json:"comparator" yaml:"comparator" mapstructure:"comparator"`
 
 	// Name corresponds to the JSON schema field "name".
 	Name string `json:"name" yaml:"name" mapstructure:"name"`

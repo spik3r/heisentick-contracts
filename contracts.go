@@ -134,7 +134,34 @@ func Validate(name string, raw []byte) (any, error) {
 	if err := schema.Validate(value); err != nil {
 		return nil, &ContractError{Schema: name, Issues: flatten(err)}
 	}
+	if issues := crossFieldIssues(name, value); len(issues) > 0 {
+		return nil, &ContractError{Schema: name, Issues: issues}
+	}
 	return value, nil
+}
+
+// crossFieldIssues holds the rules that span fields; mirrored in
+// ts/src/index.ts. The schema states the shapes, this states the
+// implications.
+func crossFieldIssues(name string, value any) []string {
+	doc, _ := value.(map[string]any)
+	if doc == nil {
+		return nil
+	}
+	var issues []string
+	if name == "heisentick/validation-run-result" {
+		execution, _ := doc["execution"].(map[string]any)
+		if execution != nil && execution["status"] == "succeeded" {
+			artifacts, _ := doc["artifacts"].(map[string]any)
+			if artifacts == nil || artifacts["report"] == nil {
+				issues = append(issues, "artifacts.report: required when execution.status is succeeded")
+			}
+			if doc["headline"] == nil {
+				issues = append(issues, "headline: must not be null when execution.status is succeeded")
+			}
+		}
+	}
+	return issues
 }
 
 // ValidateAny dispatches on the document's own `schema` field.

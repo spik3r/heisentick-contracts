@@ -334,12 +334,12 @@ export declare const DOCUMENT_SCHEMAS: {
                 passed: import("zod").ZodBoolean;
                 value: import("zod").ZodUnion<readonly [import("zod").ZodNumber, import("zod").ZodNull]>;
                 threshold: import("zod").ZodNumber;
-                comparator: import("zod").ZodOptional<import("zod").ZodEnum<{
+                comparator: import("zod").ZodEnum<{
                     "at-least": "at-least";
                     above: "above";
                     "at-most": "at-most";
                     below: "below";
-                }>>;
+                }>;
             }, import("zod/v4/core").$strict>>>;
         }, import("zod/v4/core").$strict>;
         headline: import("zod").ZodUnion<readonly [import("zod").ZodNull, import("zod").ZodObject<{
@@ -375,13 +375,13 @@ export declare const DOCUMENT_SCHEMAS: {
             }, import("zod/v4/core").$strict>>;
         }, import("zod/v4/core").$strict>]>;
         artifacts: import("zod").ZodObject<{
-            report: import("zod").ZodObject<{
+            report: import("zod").ZodOptional<import("zod").ZodObject<{
                 object: import("zod").ZodString;
                 sha256: import("zod").ZodString;
                 byteLength: import("zod").ZodNumber;
                 schema: import("zod").ZodString;
                 version: import("zod").ZodNumber;
-            }, import("zod/v4/core").$strict>;
+            }, import("zod/v4/core").$strict>>;
             trades: import("zod").ZodOptional<import("zod").ZodObject<{
                 object: import("zod").ZodString;
                 sha256: import("zod").ZodString;
@@ -452,6 +452,7 @@ export declare class ContractError extends Error {
     constructor(message: string, schema: string | null, issues?: readonly string[]);
 }
 export declare function parseDocument<N extends DocumentSchemaName>(name: N, value: unknown): ReturnType<(typeof DOCUMENT_SCHEMAS)[N]['parse']>;
+export declare function crossFieldIssues(name: DocumentSchemaName, doc: unknown): string[];
 export declare function parseAnyDocument(value: unknown): {
     schema: DocumentSchemaName;
     document: unknown;

@@ -29,6 +29,7 @@ const FIXTURE_DOCS: Record<string, DocumentSchemaName> = {
   'validation-run-manifest.v1': 'heisentick/validation-run-manifest',
   'validation-run-request.v1': 'heisentick/validation-run-request',
   'validation-run-result.v1': 'heisentick/validation-run-result',
+  'validation-run-result-failed.v1': 'heisentick/validation-run-result',
   'validation-request-message.v1': 'heisentick/validation-request-message',
   'validation-result-message.v1': 'heisentick/validation-result-message',
 };
@@ -53,12 +54,15 @@ function ajvValidators() {
   };
 }
 
+const CROSS_FIELD_FIXTURES = new Set(['succeeded-without-report.json', 'succeeded-with-null-headline.json']);
+
 const ajvRefFor: Record<string, [string, string | null]> = {
   'bar-binary-layout.v1': ['bar-binary-layout.v1.schema.json', null],
   'candle-snapshot-manifest.v1': ['candle-snapshot-manifest.v1.schema.json', null],
   'validation-run-manifest.v1': ['validation-run-manifest.v1.schema.json', null],
   'validation-run-request.v1': ['validation-run-request.v1.schema.json', null],
   'validation-run-result.v1': ['validation-run-result.v1.schema.json', null],
+  'validation-run-result-failed.v1': ['validation-run-result.v1.schema.json', null],
   'validation-request-message.v1': ['validation-queue-messages.v1.schema.json', '/$defs/validationRequestMessage'],
   'validation-result-message.v1': ['validation-queue-messages.v1.schema.json', '/$defs/validationResultMessage'],
 };
@@ -84,8 +88,11 @@ test('zod and JSON Schema agree: valid fixtures pass both, invalid fixtures fail
     }
     for (const file of readdirSync(join(FIXTURES, dir, 'invalid'))) {
       const value = readJson(join(FIXTURES, dir, 'invalid', file));
-      assert.equal(ajv.validate(schemaFile, ref, value), false, `${dir}/invalid/${file} should fail json schema`);
-      assert.throws(() => parseDocument(name, value), ContractError, `${dir}/invalid/${file} should fail zod`);
+      // Cross-field rules live in code, not in the schema (see crossFieldIssues).
+      if (!CROSS_FIELD_FIXTURES.has(file)) {
+        assert.equal(ajv.validate(schemaFile, ref, value), false, `${dir}/invalid/${file} should fail json schema`);
+      }
+      assert.throws(() => parseDocument(name, value), ContractError, `${dir}/invalid/${file} should fail the package`);
     }
   }
 });

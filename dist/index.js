@@ -35,7 +35,26 @@ export function parseDocument(name, value) {
         const issues = result.error.issues.map((issue) => `${issue.path.map(String).join('.') || '$'}: ${issue.message}`);
         throw new ContractError(`${name} rejected: ${issues[0]}${issues.length > 1 ? ` (+${issues.length - 1} more)` : ''}`, name, issues);
     }
+    const crossField = crossFieldIssues(name, result.data);
+    if (crossField.length)
+        throw new ContractError(`${name} rejected: ${crossField[0]}`, name, crossField);
     return result.data;
+}
+// Rules that span fields. Mirrored in contracts.go (crossFieldIssues); a
+// root-level JSON Schema conditional cannot express them without losing the
+// generated zod object's rejection of unknown fields.
+export function crossFieldIssues(name, doc) {
+    const issues = [];
+    if (name === 'heisentick/validation-run-result') {
+        const d = doc;
+        if (d.execution.status === 'succeeded') {
+            if (!d.artifacts.report)
+                issues.push('artifacts.report: required when execution.status is succeeded');
+            if (d.headline === null)
+                issues.push('headline: must not be null when execution.status is succeeded');
+        }
+    }
+    return issues;
 }
 export function parseAnyDocument(value) {
     const declared = schemaNameOf(value);

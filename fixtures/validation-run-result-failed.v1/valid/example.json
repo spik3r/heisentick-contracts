@@ -1,0 +1,58 @@
+{
+  "schema": "heisentick/validation-run-result",
+  "version": 1,
+  "runId": "0f3c1d2e-4a5b-4c6d-8e9f-0a1b2c3d4e5f",
+  "attempt": 2,
+  "inputFingerprint": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+  "manifestKey": "runs/0f3c1d2e-4a5b-4c6d-8e9f-0a1b2c3d4e5f/manifest.json",
+  "execution": {
+    "status": "failed",
+    "failedStage": "report",
+    "error": {
+      "code": "engine-panic",
+      "message": "index out of range"
+    },
+    "stages": [
+      {
+        "stage": "report",
+        "status": "failed",
+        "durationMs": 1200
+      },
+      {
+        "stage": "grid",
+        "status": "skipped",
+        "durationMs": 0
+      },
+      {
+        "stage": "montecarlo",
+        "status": "skipped",
+        "durationMs": 0
+      },
+      {
+        "stage": "diagnostics",
+        "status": "skipped",
+        "durationMs": 0
+      },
+      {
+        "stage": "assemble",
+        "status": "succeeded",
+        "durationMs": 300
+      }
+    ]
+  },
+  "assessment": {
+    "status": "unassessed"
+  },
+  "promotion": {
+    "status": "unassessed",
+    "policyVersion": 1
+  },
+  "headline": null,
+  "artifacts": {},
+  "engine": {
+    "stratRelease": "v0.2.0",
+    "stratBuildDigest": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+    "validationRelease": "v0.1.0"
+  },
+  "finishedAt": 1600090000000
+}

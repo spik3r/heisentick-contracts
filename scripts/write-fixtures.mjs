@@ -85,6 +85,23 @@ const valid = {
     engine: { stratRelease: 'v0.2.0', stratBuildDigest: SHA, validationRelease: 'v0.1.0' },
     finishedAt: T0 + 90_000_000,
   },
+  'validation-run-result-failed.v1': {
+    schema: 'heisentick/validation-run-result', version: 1, runId: UUID, attempt: 2, inputFingerprint: SHA2,
+    manifestKey: `runs/${UUID}/manifest.json`,
+    execution: { status: 'failed', failedStage: 'report', error: { code: 'engine-panic', message: 'index out of range' }, stages: [
+      { stage: 'report', status: 'failed', durationMs: 1200 },
+      { stage: 'grid', status: 'skipped', durationMs: 0 },
+      { stage: 'montecarlo', status: 'skipped', durationMs: 0 },
+      { stage: 'diagnostics', status: 'skipped', durationMs: 0 },
+      { stage: 'assemble', status: 'succeeded', durationMs: 300 },
+    ] },
+    assessment: { status: 'unassessed' },
+    promotion: { status: 'unassessed', policyVersion: 1 },
+    headline: null,
+    artifacts: {},
+    engine: { stratRelease: 'v0.2.0', stratBuildDigest: SHA, validationRelease: 'v0.1.0' },
+    finishedAt: T0 + 90_000_000,
+  },
   'validation-request-message.v1': {
     schema: 'heisentick/validation-request-message', version: 1, runId: UUID, attempt: 1,
     manifestKey: `runs/${UUID}/manifest.json`, manifestSha256: SHA, inputFingerprint: SHA2, submittedAt: T0,
@@ -131,7 +148,13 @@ const invalid = {
     'null-required-object': (d) => { d.validation = null; },
     'email-as-subject': (d) => { d.requestedBy.subject = ''; },
   },
+  'validation-run-result-failed.v1': {
+    'succeeded-without-report': (d) => { d.execution.status = 'succeeded'; d.headline = { trades: 0, winRate: null, profitFactor: null, net: 0, expectancy: null, maxDrawdown: 0, firstTradeT: null, lastTradeT: null }; },
+    'succeeded-with-null-headline': (d) => { d.execution.status = 'succeeded'; d.artifacts = { report: { object: 'runs/x/1/report.json', sha256: SHA, byteLength: 1, schema: 'heisentick/go-report', version: 1 } }; },
+    'unknown-field': (d) => { d.retry = true; },
+  },
   'validation-run-result.v1': {
+    'missing-comparator': (d) => { delete d.promotion.checks[0].comparator; },
     'unknown-field': (d) => { d.pf = 1; },
     'headline-missing': (d) => { delete d.headline; },
     'bad-stage': (d) => { d.execution.stages[0].stage = 'backtest'; },

@@ -72,12 +72,12 @@ export declare const validationRunResultV1: z.ZodObject<{
             passed: z.ZodBoolean;
             value: z.ZodUnion<readonly [z.ZodNumber, z.ZodNull]>;
             threshold: z.ZodNumber;
-            comparator: z.ZodOptional<z.ZodEnum<{
+            comparator: z.ZodEnum<{
                 "at-least": "at-least";
                 above: "above";
                 "at-most": "at-most";
                 below: "below";
-            }>>;
+            }>;
         }, z.core.$strict>>>;
     }, z.core.$strict>;
     headline: z.ZodUnion<readonly [z.ZodNull, z.ZodObject<{
@@ -113,13 +113,13 @@ export declare const validationRunResultV1: z.ZodObject<{
         }, z.core.$strict>>;
     }, z.core.$strict>]>;
     artifacts: z.ZodObject<{
-        report: z.ZodObject<{
+        report: z.ZodOptional<z.ZodObject<{
             object: z.ZodString;
             sha256: z.ZodString;
             byteLength: z.ZodNumber;
             schema: z.ZodString;
             version: z.ZodNumber;
-        }, z.core.$strict>;
+        }, z.core.$strict>>;
         trades: z.ZodOptional<z.ZodObject<{
             object: z.ZodString;
             sha256: z.ZodString;

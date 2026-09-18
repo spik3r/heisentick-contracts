@@ -49,6 +49,11 @@ Consumers pin a release tag. Plan:
 - Cross-language behaviour (canonical JSON, fingerprint) changes only with a
   new case in `fixtures/canonical/cases.json` and both implementations
   updated in the same PR.
+- No `anyOf`/`if` at a document's root. zod 4 intersections drop the strict
+  object's rejection of unknown fields, so a root-level conditional would
+  silently weaken the contract. Rules that span fields live in
+  `crossFieldIssues` in both packages, with invalid fixtures that only the
+  packages (not Ajv) reject, listed in `CROSS_FIELD_FIXTURES` in the test.
 
 `dist/` is committed. Consumers install the TypeScript package straight
 from a tag (`github:spik3r/heisentick-contracts#vX.Y.Z`), which runs no

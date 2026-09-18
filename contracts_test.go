@@ -13,13 +13,14 @@ import (
 // Fixture directory → document schema name. Mirrors test/contracts.test.ts so
 // both languages judge the same files.
 var fixtureDocs = map[string]string{
-	"bar-binary-layout.v1":          "heisentick/bar-binary-layout",
-	"candle-snapshot-manifest.v1":   "heisentick/candle-snapshot-manifest",
-	"validation-run-manifest.v1":    "heisentick/validation-run-manifest",
-	"validation-run-request.v1":     "heisentick/validation-run-request",
-	"validation-run-result.v1":      "heisentick/validation-run-result",
-	"validation-request-message.v1": "heisentick/validation-request-message",
-	"validation-result-message.v1":  "heisentick/validation-result-message",
+	"bar-binary-layout.v1":            "heisentick/bar-binary-layout",
+	"candle-snapshot-manifest.v1":     "heisentick/candle-snapshot-manifest",
+	"validation-run-manifest.v1":      "heisentick/validation-run-manifest",
+	"validation-run-request.v1":       "heisentick/validation-run-request",
+	"validation-run-result.v1":        "heisentick/validation-run-result",
+	"validation-run-result-failed.v1": "heisentick/validation-run-result",
+	"validation-request-message.v1":   "heisentick/validation-request-message",
+	"validation-result-message.v1":    "heisentick/validation-result-message",
 }
 
 func readFixtures(t *testing.T, dir, kind string) map[string][]byte {

@@ -69,7 +69,7 @@
           "items": {
             "type": "object",
             "additionalProperties": false,
-            "required": ["name", "passed", "value", "threshold"],
+            "required": ["name", "passed", "value", "threshold", "comparator"],
             "properties": {
               "name": { "type": "string", "maxLength": 64 },
               "passed": { "type": "boolean" },
@@ -129,7 +129,7 @@
     "artifacts": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["report"],
+      "description": "Object references. A succeeded run carries report (and a non-null headline); a run that failed before or during Report has none. The schema states the shapes; the rule 'succeeded implies report and headline' is enforced by both packages in code because a root-level conditional would defeat the generated zod object's rejection of unknown fields.",
       "properties": {
         "report": { "$ref": "#/$defs/artifactRef" },
         "trades": { "$ref": "#/$defs/artifactRef" },
