@@ -74,7 +74,7 @@ const valid = {
       { name: 'trades', passed: true, value: 553, threshold: 100, comparator: 'at-least' },
     ] },
     headline: {
-      trades: 553, winRate: 0.41, profitFactor: 1.04, net: 812.5, expectancy: 1.47, maxDrawdown: 1450.25,
+      trades: 553, winRate: 0.41, profitFactor: 1.04, net: 812.5, expectancy: 1.47, maxDrawdown: 14.5, maxDrawdownUnit: 'percent-of-peak-equity',
       firstTradeT: T0 + 7_200_000, lastTradeT: T0 + 80_000_000,
       monteCarlo: { method: 'permutation', iterations: 5000, drawdownP5: 900, drawdownP50: 1500, drawdownP95: 2600 },
     },
@@ -162,6 +162,7 @@ const invalid = {
     'artifact-too-large': (d) => { d.artifacts.report.byteLength = 60 * 1024 * 1024; },
     'attempt-zero': (d) => { d.attempt = 0; },
     'symbolic-comparator': (d) => { d.promotion.checks[0].comparator = '>='; },
+    'bad-drawdown-unit': (d) => { d.headline.maxDrawdownUnit = 'points'; },
   },
   'validation-request-message.v1': {
     'unknown-field': (d) => { d.manifest = {}; },

@@ -94,6 +94,10 @@ export declare const validationRunResultV1: z.ZodObject<{
         net: z.ZodNumber;
         expectancy: z.ZodUnion<readonly [z.ZodNumber, z.ZodNull]>;
         maxDrawdown: z.ZodNumber;
+        maxDrawdownUnit: z.ZodOptional<z.ZodEnum<{
+            "percent-of-peak-equity": "percent-of-peak-equity";
+            currency: "currency";
+        }>>;
         firstTradeT: z.ZodUnion<readonly [z.ZodNumber, z.ZodNull]>;
         lastTradeT: z.ZodUnion<readonly [z.ZodNumber, z.ZodNull]>;
         monteCarlo: z.ZodOptional<z.ZodObject<{

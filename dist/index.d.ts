@@ -356,6 +356,10 @@ export declare const DOCUMENT_SCHEMAS: {
             net: import("zod").ZodNumber;
             expectancy: import("zod").ZodUnion<readonly [import("zod").ZodNumber, import("zod").ZodNull]>;
             maxDrawdown: import("zod").ZodNumber;
+            maxDrawdownUnit: import("zod").ZodOptional<import("zod").ZodEnum<{
+                "percent-of-peak-equity": "percent-of-peak-equity";
+                currency: "currency";
+            }>>;
             firstTradeT: import("zod").ZodUnion<readonly [import("zod").ZodNumber, import("zod").ZodNull]>;
             lastTradeT: import("zod").ZodUnion<readonly [import("zod").ZodNumber, import("zod").ZodNull]>;
             monteCarlo: import("zod").ZodOptional<import("zod").ZodObject<{

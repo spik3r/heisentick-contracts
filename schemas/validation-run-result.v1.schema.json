@@ -97,6 +97,7 @@
             "net": { "type": "number" },
             "expectancy": { "$ref": "common.v1.schema.json#/$defs/nullableMetric" },
             "maxDrawdown": { "type": "number", "minimum": 0 },
+            "maxDrawdownUnit": { "type": "string", "enum": ["percent-of-peak-equity", "currency"], "description": "Unit of maxDrawdown. The Go report emits percent-of-peak-equity; absent means unspecified (pre-0.2.1 producers)." },
             "firstTradeT": { "anyOf": [{ "$ref": "common.v1.schema.json#/$defs/epochMs" }, { "type": "null" }] },
             "lastTradeT": { "anyOf": [{ "$ref": "common.v1.schema.json#/$defs/epochMs" }, { "type": "null" }] },
             "monteCarlo": {

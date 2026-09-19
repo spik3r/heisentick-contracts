@@ -69,6 +69,7 @@
     "net": 812.5,
     "expectancy": 1.47,
     "maxDrawdown": -1,
+    "maxDrawdownUnit": "percent-of-peak-equity",
     "firstTradeT": 1600007200000,
     "lastTradeT": 1600080000000,
     "monteCarlo": {

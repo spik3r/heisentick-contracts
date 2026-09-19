@@ -69,7 +69,7 @@
     "net": 812.5,
     "expectancy": 1.47,
     "maxDrawdown": 14.5,
-    "maxDrawdownUnit": "percent-of-peak-equity",
+    "maxDrawdownUnit": "points",
     "firstTradeT": 1600007200000,
     "lastTradeT": 1600080000000,
     "monteCarlo": {
@@ -101,6 +101,5 @@
     "stratBuildDigest": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
     "validationRelease": "v0.1.0"
   },
-  "finishedAt": 1600090000000,
-  "pf": 1
+  "finishedAt": 1600090000000
 }

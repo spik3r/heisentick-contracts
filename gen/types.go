@@ -980,6 +980,10 @@ type ValidationRunResultV1Headline_1 struct {
 	// MaxDrawdown corresponds to the JSON schema field "maxDrawdown".
 	MaxDrawdown float64 `json:"maxDrawdown" yaml:"maxDrawdown" mapstructure:"maxDrawdown"`
 
+	// Unit of maxDrawdown. The Go report emits percent-of-peak-equity; absent means
+	// unspecified (pre-0.2.1 producers).
+	MaxDrawdownUnit *ValidationRunResultV1Headline_1MaxDrawdownUnit `json:"maxDrawdownUnit,omitempty" yaml:"maxDrawdownUnit,omitempty" mapstructure:"maxDrawdownUnit,omitempty"`
+
 	// MonteCarlo corresponds to the JSON schema field "monteCarlo".
 	MonteCarlo *ValidationRunResultV1Headline_1MonteCarlo `json:"monteCarlo,omitempty" yaml:"monteCarlo,omitempty" mapstructure:"monteCarlo,omitempty"`
 
@@ -1013,6 +1017,11 @@ type ValidationRunResultV1Headline_1Holdout struct {
 	// Trades corresponds to the JSON schema field "trades".
 	Trades int `json:"trades" yaml:"trades" mapstructure:"trades"`
 }
+
+type ValidationRunResultV1Headline_1MaxDrawdownUnit string
+
+const ValidationRunResultV1Headline_1MaxDrawdownUnitCurrency ValidationRunResultV1Headline_1MaxDrawdownUnit = "currency"
+const ValidationRunResultV1Headline_1MaxDrawdownUnitPercentOfPeakEquity ValidationRunResultV1Headline_1MaxDrawdownUnit = "percent-of-peak-equity"
 
 type ValidationRunResultV1Headline_1MonteCarlo struct {
 	// DrawdownP5 corresponds to the JSON schema field "drawdownP5".
