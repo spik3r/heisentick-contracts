@@ -125,6 +125,49 @@ func TestCanonicalCasesMatchTypeScript(t *testing.T) {
 	}
 }
 
+func TestGeneratedCanonicalCasesMatchTypeScript(t *testing.T) {
+	raw, err := os.ReadFile("fixtures/canonical/generated-cases.json")
+	if err != nil {
+		t.Fatal(err)
+	}
+	var fixture struct {
+		Algorithm        string
+		BoundedCaseCount int
+		Cases            []struct {
+			Name      string
+			Seed      string
+			Input     json.RawMessage
+			Canonical string
+			SHA256    string
+		}
+	}
+	if err := json.Unmarshal(raw, &fixture); err != nil {
+		t.Fatal(err)
+	}
+	if fixture.Algorithm != "lcg32-v1" {
+		t.Fatalf("unexpected generated fixture algorithm %q", fixture.Algorithm)
+	}
+	if len(fixture.Cases) == 0 {
+		t.Fatal("generated fixture has no canonical cases")
+	}
+	if len(fixture.Cases) != fixture.BoundedCaseCount {
+		t.Fatalf("generated case count %d, want %d", len(fixture.Cases), fixture.BoundedCaseCount)
+	}
+	for _, c := range fixture.Cases {
+		got, err := CanonicalJSONBytes(c.Input)
+		if err != nil {
+			t.Errorf("%s seed=%s: %v", c.Name, c.Seed, err)
+			continue
+		}
+		if got != c.Canonical {
+			t.Errorf("%s seed=%s:\n got %s\nwant %s", c.Name, c.Seed, got, c.Canonical)
+		}
+		if SHA256Hex(got) != c.SHA256 {
+			t.Errorf("%s seed=%s: sha256 mismatch", c.Name, c.Seed)
+		}
+	}
+}
+
 func TestCanonicalRejectsNonFinite(t *testing.T) {
 	if _, err := CanonicalJSON(map[string]any{"a": []any{1.0, mathInf()}}); err == nil || !strings.Contains(err.Error(), "$.a[1]") {
 		t.Fatalf("expected non-finite error with path, got %v", err)
@@ -132,6 +175,66 @@ func TestCanonicalRejectsNonFinite(t *testing.T) {
 	got, _ := CanonicalJSON(map[string]any{"b": negZero()})
 	if got != `{"b":0}` {
 		t.Fatalf("-0 must canonicalise to 0, got %s", got)
+	}
+}
+
+func TestGeneratedFingerprintsMatchTypeScript(t *testing.T) {
+	raw, err := os.ReadFile("fixtures/canonical/generated-cases.json")
+	if err != nil {
+		t.Fatal(err)
+	}
+	var fixture struct {
+		Fingerprints []struct {
+			Name            string
+			Seed            string
+			Manifest        json.RawMessage
+			IdentityVariant map[string]any
+			MaterialVariant struct {
+				Costs map[string]any
+			}
+			Fingerprint         string
+			MaterialFingerprint string
+		}
+	}
+	if err := json.Unmarshal(raw, &fixture); err != nil {
+		t.Fatal(err)
+	}
+	if len(fixture.Fingerprints) == 0 {
+		t.Fatal("generated fixture has no fingerprint cases")
+	}
+	for _, c := range fixture.Fingerprints {
+		manifest := decodeJSONMap(t, c.Manifest)
+		got, err := InputFingerprint(manifest)
+		if err != nil {
+			t.Errorf("%s seed=%s: %v", c.Name, c.Seed, err)
+			continue
+		}
+		if got != c.Fingerprint {
+			t.Errorf("%s seed=%s: fingerprint %s, want %s", c.Name, c.Seed, got, c.Fingerprint)
+		}
+		identity := cloneJSONMap(t, manifest)
+		for key, value := range c.IdentityVariant {
+			identity[key] = value
+		}
+		again, err := InputFingerprint(identity)
+		if err != nil || again != got {
+			t.Errorf("%s seed=%s: identity changed fingerprint to %s (%v)", c.Name, c.Seed, again, err)
+		}
+		material := cloneJSONMap(t, manifest)
+		costs, ok := material["costs"].(map[string]any)
+		if !ok {
+			t.Fatalf("%s seed=%s: manifest costs is %T", c.Name, c.Seed, material["costs"])
+		}
+		for key, value := range c.MaterialVariant.Costs {
+			costs[key] = value
+		}
+		changed, err := InputFingerprint(material)
+		if err != nil || changed != c.MaterialFingerprint {
+			t.Errorf("%s seed=%s: material fingerprint %s, want %s (%v)", c.Name, c.Seed, changed, c.MaterialFingerprint, err)
+		}
+		if changed == got {
+			t.Errorf("%s seed=%s: material change kept fingerprint %s", c.Name, c.Seed, changed)
+		}
 	}
 }
 
@@ -168,4 +271,24 @@ func TestInputFingerprintMatchesTypeScript(t *testing.T) {
 	if changed == got {
 		t.Fatal("an input change must change the fingerprint")
 	}
+}
+
+func decodeJSONMap(t *testing.T, raw json.RawMessage) map[string]any {
+	t.Helper()
+	dec := json.NewDecoder(strings.NewReader(string(raw)))
+	dec.UseNumber()
+	var value map[string]any
+	if err := dec.Decode(&value); err != nil {
+		t.Fatal(err)
+	}
+	return value
+}
+
+func cloneJSONMap(t *testing.T, value map[string]any) map[string]any {
+	t.Helper()
+	raw, err := json.Marshal(value)
+	if err != nil {
+		t.Fatal(err)
+	}
+	return decodeJSONMap(t, raw)
 }
