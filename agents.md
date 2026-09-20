@@ -3,6 +3,15 @@
 Global rules come from the user's `~/.config/agents/AGENTS.md`. This file
 holds what is specific to this repo. `claude.md` and `codex.md` point here.
 
+## Central backlog
+
+Use [heisentick-backlog](https://github.com/spik3r/heisentick-backlog) as the source of truth for planned work.
+Read its `AGENTS.md`, find or create the relevant task, and claim ownership
+in that task before non-trivial parallel work. Keep task state and acceptance
+criteria there; link implementation PRs back to it. Do not create a second
+local backlog or claims ledger. Keep code-specific instructions and runbooks
+in this repository.
+
 ## What this is
 
 The versioned JSON Schema contracts for every shape that crosses a
@@ -11,7 +20,7 @@ results, candle snapshot manifests, the `.bin` layout. `schemas/` is the
 source of truth; `ts/` (`@heisentick/contracts`, zod) and the Go module root
 (`github.com/spik3r/heisentick-contracts`) are generated or derived from it.
 Consumers pin a release tag. Plan:
-`spik3r/heisentick` → `backlog/plans/2026-09-18-one-engine-migration.md`.
+[central one-engine plan](https://github.com/spik3r/heisentick-backlog/blob/main/plans/2026-09-18-one-engine-migration.md).
 
 ## Layout
 

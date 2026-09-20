@@ -4,7 +4,13 @@ Versioned JSON Schema contracts for the shapes that cross repository
 boundaries in heisentick, with generated zod/TypeScript (`@heisentick/contracts`)
 and Go (`github.com/spik3r/heisentick-contracts`) packages and shared fixtures
 both must pass. Part of the one-engine migration
-(`spik3r/heisentick` → `backlog/plans/2026-09-18-one-engine-migration.md`).
+([central one-engine plan](https://github.com/spik3r/heisentick-backlog/blob/main/plans/2026-09-18-one-engine-migration.md)).
+
+## Planning
+
+Plans, task ownership, dependencies and completion criteria live in the
+[central Heisentick backlog](https://github.com/spik3r/heisentick-backlog). Link implementation PRs to the
+corresponding task there. This repository keeps its code, tests and runbooks.
 
 ## Documents (v0.1)
 
