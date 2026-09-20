@@ -1,0 +1,476 @@
+{
+  "algorithm": "lcg32-v1",
+  "boundedCaseCount": 4,
+  "cases": [
+    {
+      "name": "generated-01",
+      "seed": "0x1a2b3c4d",
+      "input": {
+        "z": {
+          "key-924711ba": 9007199254740992,
+          "😀": -1e-7,
+          "": -0.000001
+        },
+        "a": [
+          true,
+          false,
+          null,
+          "seed-1a2b3c4d-64552 😀 😇 ",
+          {
+            "b": 9007199254740991,
+            "a": 100000000000000000000
+          }
+        ],
+        "text": "seed-1a2b3c4d-64552 😀 😇 ",
+        "boundaries": [
+          0,
+          5e-324,
+          -5e-324,
+          1e-7,
+          -1e-7,
+          0.000001,
+          -0.000001,
+          100000000000000000000,
+          -100000000000000000000,
+          1e+21,
+          -1e+21,
+          1.7976931348623157e+308,
+          -1.7976931348623157e+308,
+          9007199254740991,
+          9007199254740992
+        ],
+        "zero": 0,
+        "nested": [
+          {
+            "😀": 100000000000000000000,
+            "": 0.000001
+          },
+          [
+            0.000001,
+            -100000000000000000000
+          ]
+        ]
+      },
+      "canonical": "{\"a\":[true,false,null,\"seed-1a2b3c4d-64552 😀 😇 \",{\"a\":100000000000000000000,\"b\":9007199254740991}],\"boundaries\":[0,5e-324,-5e-324,1e-7,-1e-7,0.000001,-0.000001,100000000000000000000,-100000000000000000000,1e+21,-1e+21,1.7976931348623157e+308,-1.7976931348623157e+308,9007199254740991,9007199254740992],\"nested\":[{\"😀\":100000000000000000000,\"\":0.000001},[0.000001,-100000000000000000000]],\"text\":\"seed-1a2b3c4d-64552 😀 😇 \",\"z\":{\"key-924711ba\":9007199254740992,\"😀\":-1e-7,\"\":-0.000001},\"zero\":0}",
+      "sha256": "7ee8f84d44b8df952a74220b40105021b01c67e5b25e6777ec7f1c827de16b79"
+    },
+    {
+      "name": "generated-02",
+      "seed": "0xdeadbeef",
+      "input": {
+        "z": {
+          "key-09896e04": 1e+21,
+          "😀": 0.000001,
+          "": 9007199254740992
+        },
+        "a": [
+          true,
+          false,
+          null,
+          "seed-deadbeef-48770 😀 😉 ",
+          {
+            "b": -100000000000000000000,
+            "a": 0
+          }
+        ],
+        "text": "seed-deadbeef-48770 😀 😉 ",
+        "boundaries": [
+          0,
+          5e-324,
+          -5e-324,
+          1e-7,
+          -1e-7,
+          0.000001,
+          -0.000001,
+          100000000000000000000,
+          -100000000000000000000,
+          1e+21,
+          -1e+21,
+          1.7976931348623157e+308,
+          -1.7976931348623157e+308,
+          9007199254740991,
+          9007199254740992
+        ],
+        "zero": 0,
+        "nested": [
+          {
+            "😀": -5e-324,
+            "": -1e+21
+          },
+          [
+            1e-7,
+            1e-7
+          ]
+        ]
+      },
+      "canonical": "{\"a\":[true,false,null,\"seed-deadbeef-48770 😀 😉 \",{\"a\":0,\"b\":-100000000000000000000}],\"boundaries\":[0,5e-324,-5e-324,1e-7,-1e-7,0.000001,-0.000001,100000000000000000000,-100000000000000000000,1e+21,-1e+21,1.7976931348623157e+308,-1.7976931348623157e+308,9007199254740991,9007199254740992],\"nested\":[{\"😀\":-5e-324,\"\":-1e+21},[1e-7,1e-7]],\"text\":\"seed-deadbeef-48770 😀 😉 \",\"z\":{\"key-09896e04\":1e+21,\"😀\":0.000001,\"\":9007199254740992},\"zero\":0}",
+      "sha256": "744833c044ba420f754757d2111a22b635320363c4cf10b053465187d5ee20b3"
+    },
+    {
+      "name": "generated-03",
+      "seed": "0x0badc0de",
+      "input": {
+        "z": {
+          "key-28c4e41f": -1e+21,
+          "😀": -1e-7,
+          "": 5e-324
+        },
+        "a": [
+          true,
+          false,
+          null,
+          "seed-badc0de-25413 😀 😀 ",
+          {
+            "b": -5e-324,
+            "a": 0.000001
+          }
+        ],
+        "text": "seed-badc0de-25413 😀 😀 ",
+        "boundaries": [
+          0,
+          5e-324,
+          -5e-324,
+          1e-7,
+          -1e-7,
+          0.000001,
+          -0.000001,
+          100000000000000000000,
+          -100000000000000000000,
+          1e+21,
+          -1e+21,
+          1.7976931348623157e+308,
+          -1.7976931348623157e+308,
+          9007199254740991,
+          9007199254740992
+        ],
+        "zero": 0,
+        "nested": [
+          {
+            "😀": -1e-7,
+            "": -0.000001
+          },
+          [
+            1e+21,
+            -100000000000000000000
+          ]
+        ]
+      },
+      "canonical": "{\"a\":[true,false,null,\"seed-badc0de-25413 😀 😀 \",{\"a\":0.000001,\"b\":-5e-324}],\"boundaries\":[0,5e-324,-5e-324,1e-7,-1e-7,0.000001,-0.000001,100000000000000000000,-100000000000000000000,1e+21,-1e+21,1.7976931348623157e+308,-1.7976931348623157e+308,9007199254740991,9007199254740992],\"nested\":[{\"😀\":-1e-7,\"\":-0.000001},[1e+21,-100000000000000000000]],\"text\":\"seed-badc0de-25413 😀 😀 \",\"z\":{\"key-28c4e41f\":-1e+21,\"😀\":-1e-7,\"\":5e-324},\"zero\":0}",
+      "sha256": "3746ad1d2c615fa61bd36da8ff39288097565e48ed1c693bd7f93ec831358ca7"
+    },
+    {
+      "name": "generated-04",
+      "seed": "0x2468ace0",
+      "input": {
+        "z": {
+          "key-855a5549": -0.000001,
+          "😀": 9007199254740992,
+          "": 1e+21
+        },
+        "a": [
+          true,
+          false,
+          null,
+          "seed-2468ace0-33951 😀 😂 ",
+          {
+            "b": -5e-324,
+            "a": -5e-324
+          }
+        ],
+        "text": "seed-2468ace0-33951 😀 😂 ",
+        "boundaries": [
+          0,
+          5e-324,
+          -5e-324,
+          1e-7,
+          -1e-7,
+          0.000001,
+          -0.000001,
+          100000000000000000000,
+          -100000000000000000000,
+          1e+21,
+          -1e+21,
+          1.7976931348623157e+308,
+          -1.7976931348623157e+308,
+          9007199254740991,
+          9007199254740992
+        ],
+        "zero": 0,
+        "nested": [
+          {
+            "😀": -0.000001,
+            "": -1e+21
+          },
+          [
+            -1e-7,
+            9007199254740992
+          ]
+        ]
+      },
+      "canonical": "{\"a\":[true,false,null,\"seed-2468ace0-33951 😀 😂 \",{\"a\":-5e-324,\"b\":-5e-324}],\"boundaries\":[0,5e-324,-5e-324,1e-7,-1e-7,0.000001,-0.000001,100000000000000000000,-100000000000000000000,1e+21,-1e+21,1.7976931348623157e+308,-1.7976931348623157e+308,9007199254740991,9007199254740992],\"nested\":[{\"😀\":-0.000001,\"\":-1e+21},[-1e-7,9007199254740992]],\"text\":\"seed-2468ace0-33951 😀 😂 \",\"z\":{\"key-855a5549\":-0.000001,\"😀\":9007199254740992,\"\":1e+21},\"zero\":0}",
+      "sha256": "826731034f9409472f7ee9230380aa68d6487fa1da47e7ee8b78ff78e66030a0"
+    }
+  ],
+  "fingerprints": [
+    {
+      "name": "fingerprint-01",
+      "seed": "0x1a2b3c4d",
+      "manifest": {
+        "schema": "heisentick/validation-run-manifest",
+        "version": 1,
+        "seed": "0x1a2b3c4d",
+        "instrument": "XAUUSD",
+        "numbers": [
+          0,
+          5e-324,
+          -5e-324,
+          1e-7,
+          -1e-7,
+          0.000001,
+          -0.000001,
+          100000000000000000000,
+          -100000000000000000000,
+          1e+21,
+          -1e+21,
+          1.7976931348623157e+308,
+          -1.7976931348623157e+308,
+          9007199254740991,
+          9007199254740992
+        ],
+        "nested": [
+          {
+            "😀": 100000000000000000000,
+            "": 0.000001
+          },
+          [
+            0.000001,
+            -100000000000000000000
+          ]
+        ],
+        "costs": {
+          "slippage": 1e-7
+        },
+        "runId": "run-0",
+        "requestKey": "request-0",
+        "requestedBy": {
+          "subject": "subject-0",
+          "via": "generated"
+        },
+        "submittedAt": 1,
+        "inputFingerprint": "placeholder"
+      },
+      "identityVariant": {
+        "runId": "rerun-0",
+        "requestKey": "retry-0",
+        "requestedBy": {
+          "subject": "other-0",
+          "via": "api"
+        },
+        "submittedAt": 999,
+        "inputFingerprint": "different"
+      },
+      "materialVariant": {
+        "costs": {
+          "slippage": 0.1
+        }
+      },
+      "fingerprint": "e93d33cf6623bbb9b5aa9c7f086ae0e7f0b291d65fb1c11e082c1185bbe0a39f",
+      "materialFingerprint": "85a1c88879396bf18df5d611675ec6f91117f0ccb37c94c4c2a91d68531459fc"
+    },
+    {
+      "name": "fingerprint-02",
+      "seed": "0xdeadbeef",
+      "manifest": {
+        "schema": "heisentick/validation-run-manifest",
+        "version": 1,
+        "seed": "0xdeadbeef",
+        "instrument": "XAUUSD",
+        "numbers": [
+          0,
+          5e-324,
+          -5e-324,
+          1e-7,
+          -1e-7,
+          0.000001,
+          -0.000001,
+          100000000000000000000,
+          -100000000000000000000,
+          1e+21,
+          -1e+21,
+          1.7976931348623157e+308,
+          -1.7976931348623157e+308,
+          9007199254740991,
+          9007199254740992
+        ],
+        "nested": [
+          {
+            "😀": -5e-324,
+            "": -1e+21
+          },
+          [
+            1e-7,
+            1e-7
+          ]
+        ],
+        "costs": {
+          "slippage": -1e-7
+        },
+        "runId": "run-1",
+        "requestKey": "request-1",
+        "requestedBy": {
+          "subject": "subject-1",
+          "via": "generated"
+        },
+        "submittedAt": 2,
+        "inputFingerprint": "placeholder"
+      },
+      "identityVariant": {
+        "runId": "rerun-1",
+        "requestKey": "retry-1",
+        "requestedBy": {
+          "subject": "other-1",
+          "via": "api"
+        },
+        "submittedAt": 999,
+        "inputFingerprint": "different"
+      },
+      "materialVariant": {
+        "costs": {
+          "slippage": -0.1
+        }
+      },
+      "fingerprint": "c58affe10ce5a42502c8921c53105da341bd54d255ab68deb92cf4d81ef7db25",
+      "materialFingerprint": "dc6ec041d6728377cc613ce9168808ae2ee81cba78f876c10b4737567a13545a"
+    },
+    {
+      "name": "fingerprint-03",
+      "seed": "0x0badc0de",
+      "manifest": {
+        "schema": "heisentick/validation-run-manifest",
+        "version": 1,
+        "seed": "0x0badc0de",
+        "instrument": "XAUUSD",
+        "numbers": [
+          0,
+          5e-324,
+          -5e-324,
+          1e-7,
+          -1e-7,
+          0.000001,
+          -0.000001,
+          100000000000000000000,
+          -100000000000000000000,
+          1e+21,
+          -1e+21,
+          1.7976931348623157e+308,
+          -1.7976931348623157e+308,
+          9007199254740991,
+          9007199254740992
+        ],
+        "nested": [
+          {
+            "😀": -1e-7,
+            "": -0.000001
+          },
+          [
+            1e+21,
+            -100000000000000000000
+          ]
+        ],
+        "costs": {
+          "slippage": 1e-7
+        },
+        "runId": "run-2",
+        "requestKey": "request-2",
+        "requestedBy": {
+          "subject": "subject-2",
+          "via": "generated"
+        },
+        "submittedAt": 3,
+        "inputFingerprint": "placeholder"
+      },
+      "identityVariant": {
+        "runId": "rerun-2",
+        "requestKey": "retry-2",
+        "requestedBy": {
+          "subject": "other-2",
+          "via": "api"
+        },
+        "submittedAt": 999,
+        "inputFingerprint": "different"
+      },
+      "materialVariant": {
+        "costs": {
+          "slippage": 0.1
+        }
+      },
+      "fingerprint": "e726986cf79f53e05ffd7e8119e3d2bfa0eb96498c6a9137cfbb55d547ab6019",
+      "materialFingerprint": "934833a401c9ef08c811e5716a42e17b182109cad624a20a4ffdab08c6f182bb"
+    },
+    {
+      "name": "fingerprint-04",
+      "seed": "0x2468ace0",
+      "manifest": {
+        "schema": "heisentick/validation-run-manifest",
+        "version": 1,
+        "seed": "0x2468ace0",
+        "instrument": "XAUUSD",
+        "numbers": [
+          0,
+          5e-324,
+          -5e-324,
+          1e-7,
+          -1e-7,
+          0.000001,
+          -0.000001,
+          100000000000000000000,
+          -100000000000000000000,
+          1e+21,
+          -1e+21,
+          1.7976931348623157e+308,
+          -1.7976931348623157e+308,
+          9007199254740991,
+          9007199254740992
+        ],
+        "nested": [
+          {
+            "😀": -0.000001,
+            "": -1e+21
+          },
+          [
+            -1e-7,
+            9007199254740992
+          ]
+        ],
+        "costs": {
+          "slippage": -1e-7
+        },
+        "runId": "run-3",
+        "requestKey": "request-3",
+        "requestedBy": {
+          "subject": "subject-3",
+          "via": "generated"
+        },
+        "submittedAt": 4,
+        "inputFingerprint": "placeholder"
+      },
+      "identityVariant": {
+        "runId": "rerun-3",
+        "requestKey": "retry-3",
+        "requestedBy": {
+          "subject": "other-3",
+          "via": "api"
+        },
+        "submittedAt": 999,
+        "inputFingerprint": "different"
+      },
+      "materialVariant": {
+        "costs": {
+          "slippage": -0.1
+        }
+      },
+      "fingerprint": "f15bf78cecd8764802c1401c074e57616f636d6b8c976cf6d55a824d0c505697",
+      "materialFingerprint": "253578b6846fdcd3043162613a911f454f9e357b9f12714b34212ce9128ba793"
+    }
+  ]
+}

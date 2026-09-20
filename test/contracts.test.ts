@@ -124,6 +124,49 @@ test('canonical JSON matches the committed cases and rejects non-finite numbers 
   assert.equal(canonicalJson({ b: -0 }), '{"b":0}');
 });
 
+test('bounded generated canonical cases preserve cross-language vectors', () => {
+  const fixture = readJson(join(FIXTURES, 'canonical', 'generated-cases.json')) as {
+    algorithm: string;
+    boundedCaseCount: number;
+    cases: { name: string; seed: string; input: unknown; canonical: string; sha256: string }[];
+    fingerprints: unknown[];
+  };
+  assert.equal(fixture.algorithm, 'lcg32-v1');
+  assert.ok(fixture.cases.length > 0, 'generated fixture has no canonical cases');
+  assert.ok(fixture.fingerprints.length > 0, 'generated fixture has no fingerprint cases');
+  assert.equal(fixture.cases.length, fixture.boundedCaseCount);
+  for (const c of fixture.cases) {
+    assert.equal(canonicalJson(c.input), c.canonical, c.name + ' seed=' + c.seed);
+    assert.equal(sha256Hex(c.canonical), c.sha256, c.name + ' seed=' + c.seed + ' sha256');
+  }
+});
+
+test('generated fingerprints ignore identity and detect material changes', () => {
+  const fixture = readJson(join(FIXTURES, 'canonical', 'generated-cases.json')) as {
+    fingerprints: {
+      name: string;
+      seed: string;
+      manifest: Record<string, unknown>;
+      identityVariant: Record<string, unknown>;
+      materialVariant: { costs: Record<string, unknown> };
+      fingerprint: string;
+      materialFingerprint: string;
+    }[];
+  };
+  for (const c of fixture.fingerprints) {
+    const got = inputFingerprint(c.manifest);
+    assert.equal(got, c.fingerprint, c.name + ' seed=' + c.seed);
+    assert.equal(inputFingerprint({ ...c.manifest, ...c.identityVariant }), got, c.name + ' identity seed=' + c.seed);
+    const material = {
+      ...c.manifest,
+      costs: { ...(c.manifest.costs as Record<string, unknown>), ...c.materialVariant.costs },
+    };
+    const materialFingerprint = inputFingerprint(material);
+    assert.equal(materialFingerprint, c.materialFingerprint, c.name + ' material seed=' + c.seed);
+    assert.notEqual(materialFingerprint, got, c.name + ' material changed seed=' + c.seed);
+  }
+});
+
 test('inputFingerprint ignores submission identity and changes with any input', () => {
   const manifest = readJson(join(FIXTURES, 'validation-run-manifest.v1', 'valid', 'example.json')) as Record<string, unknown>;
   const fp = inputFingerprint(manifest);

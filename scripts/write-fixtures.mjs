@@ -6,6 +6,7 @@
 import { mkdirSync, rmSync, writeFileSync } from 'node:fs';
 import { dirname, join, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { buildGeneratedFixture } from './generated-cases.mjs';
 
 const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 const OUT = join(ROOT, 'fixtures');
@@ -200,4 +201,5 @@ for (const [doc, value] of Object.entries(valid)) {
 }
 mkdirSync(join(OUT, 'canonical'), { recursive: true });
 writeFileSync(join(OUT, 'canonical', 'cases.json'), `${JSON.stringify(canonical, null, 2)}\n`);
+writeFileSync(join(OUT, 'canonical', 'generated-cases.json'), JSON.stringify(buildGeneratedFixture(), null, 2) + '\n');
 console.log(`wrote fixtures for ${Object.keys(valid).length} documents and ${canonical.length} canonical cases`);

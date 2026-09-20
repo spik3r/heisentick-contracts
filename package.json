@@ -22,11 +22,12 @@
   "scripts": {
     "generate": "node scripts/generate.mjs",
     "generate:check": "node scripts/generate.mjs --check",
+    "generated:check": "node scripts/check-generated-cases.mjs --check",
     "build": "tsc -p tsconfig.json",
     "typecheck": "tsc -p tsconfig.test.json",
     "test": "node --import tsx --test test/*.test.ts",
     "test:go": "go test ./...",
-    "check": "pnpm run generate:check && pnpm run typecheck && pnpm test && pnpm run build && pnpm run test:go",
+    "check": "pnpm run generate:check && pnpm run generated:check && pnpm run typecheck && pnpm test && pnpm run build && pnpm run test:go",
     "write-fixtures": "node scripts/write-fixtures.mjs",
     "seal-fixtures": "node scripts/seal-fixtures.mjs"
   },
