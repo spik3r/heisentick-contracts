@@ -18,6 +18,21 @@ for (const c of cases) {
 }
 writeFileSync(casesPath, `${JSON.stringify(cases, null, 2)}\n`);
 
+const generatedCasesPath = join(ROOT, 'fixtures', 'canonical', 'generated-cases.json');
+const generated = JSON.parse(readFileSync(generatedCasesPath, 'utf8'));
+for (const c of generated.cases) {
+  const canonical = canonicalJson(c.input);
+  c.sha256 = sha256Hex(canonical);
+}
+for (const c of generated.fingerprints) {
+  c.fingerprint = inputFingerprint(c.manifest);
+  c.materialFingerprint = inputFingerprint({
+    ...c.manifest,
+    costs: { ...c.manifest.costs, ...c.materialVariant.costs },
+  });
+}
+writeFileSync(generatedCasesPath, JSON.stringify(generated, null, 2) + '\n');
+
 const manifest = JSON.parse(readFileSync(join(ROOT, 'fixtures', 'validation-run-manifest.v1', 'valid', 'example.json'), 'utf8'));
 writeFileSync(join(ROOT, 'fixtures', 'validation-run-manifest.v1', 'fingerprint.txt'), `${inputFingerprint(manifest)}\n`);
 console.log(`sealed ${cases.length} canonical cases and the manifest fingerprint`);
