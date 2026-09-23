@@ -145,7 +145,7 @@
       "required": ["stratRelease", "stratBuildDigest", "validationRelease"],
       "properties": {
         "stratRelease": { "$ref": "common.v1.schema.json#/$defs/semverTag" },
-        "stratBuildDigest": { "$ref": "common.v1.schema.json#/$defs/sha256Hex", "description": "Digest of the binary that actually ran; must equal the manifest's or the API marks the run tainted." },
+        "stratBuildDigest": { "$ref": "common.v1.schema.json#/$defs/sha256Hex", "description": "sha256 reported by the result publisher for its executor binary. The current Lambda producer reports the Assemble executable; local execution reports the standalone strat executable. It does not prove the identity of a statically linked Report engine and need not equal the manifest's release-artifact digest." },
         "validationRelease": { "$ref": "common.v1.schema.json#/$defs/semverTag" }
       }
     },

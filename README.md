@@ -30,6 +30,28 @@ contiguous Float64 columns in the order `t,o,h,l,c,v`, column `i` at byte
 `16 + i*count*8`, missing volume `0`, file sha256 carried by the snapshot
 manifest.
 
+### Engine provenance in validation v1
+
+The two v1 `engine.stratBuildDigest` fields identify different artifacts:
+
+- A run manifest pins the sha256 of the published standalone
+  `heisentick-strat` release artifact selected by the submitter.
+- A run result records the digest reported by its publisher. The deployed
+  Lambda producer reports the Assemble executable; the local worker reports
+  the standalone executable it ran.
+
+These digests need not match. Their equality would not prove which statically
+linked engine the Report Lambda ran. Consumers should compare
+`engine.stratRelease` for the existing v1 release-mismatch check and retain both
+digests as provenance.
+
+Proving the linked engine requires a new result contract version with separate
+identities for the published release artifact, the Report executor that links
+the engine, and the Assemble executor that publishes the result. The producer
+must derive the Report engine release from build metadata and carry the Report
+executor digest to Assemble; it must not copy either identity from the submitted
+manifest.
+
 ## Use
 
 TypeScript:

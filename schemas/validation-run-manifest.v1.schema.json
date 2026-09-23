@@ -34,7 +34,7 @@
       "required": ["stratRelease", "stratBuildDigest", "goVersion", "validationRelease", "reportSchemaVersion", "resultSchemaVersion"],
       "properties": {
         "stratRelease": { "$ref": "common.v1.schema.json#/$defs/semverTag" },
-        "stratBuildDigest": { "$ref": "common.v1.schema.json#/$defs/sha256Hex", "description": "sha256 of the engine binary the workers will run." },
+        "stratBuildDigest": { "$ref": "common.v1.schema.json#/$defs/sha256Hex", "description": "sha256 of the published standalone heisentick-strat release artifact pinned by the submitter. A statically linked validation worker does not execute this artifact, so this digest is release provenance rather than proof of the worker executable." },
         "goVersion": { "type": "string", "pattern": "^go\\d+\\.\\d+(\\.\\d+)?$" },
         "validationRelease": { "$ref": "common.v1.schema.json#/$defs/semverTag", "description": "heisentick-strategy-validation release whose Lambdas execute this run." },
         "reportSchemaVersion": { "type": "integer", "minimum": 1 },

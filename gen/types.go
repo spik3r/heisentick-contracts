@@ -375,7 +375,10 @@ type ValidationRunManifestV1Engine struct {
 	// ResultSchemaVersion corresponds to the JSON schema field "resultSchemaVersion".
 	ResultSchemaVersion int `json:"resultSchemaVersion" yaml:"resultSchemaVersion" mapstructure:"resultSchemaVersion"`
 
-	// sha256 of the engine binary the workers will run.
+	// sha256 of the published standalone heisentick-strat release artifact pinned by
+	// the submitter. A statically linked validation worker does not execute this
+	// artifact, so this digest is release provenance rather than proof of the worker
+	// executable.
 	StratBuildDigest string `json:"stratBuildDigest" yaml:"stratBuildDigest" mapstructure:"stratBuildDigest"`
 
 	// A release tag of a producer repository. Never a branch or 'latest'.
@@ -880,8 +883,10 @@ const ValidationRunResultV1AssessmentStatusNotApplicable ValidationRunResultV1As
 const ValidationRunResultV1AssessmentStatusUnassessed ValidationRunResultV1AssessmentStatus = "unassessed"
 
 type ValidationRunResultV1Engine struct {
-	// Digest of the binary that actually ran; must equal the manifest's or the API
-	// marks the run tainted.
+	// sha256 reported by the result publisher for its executor binary. The current
+	// Lambda producer reports the Assemble executable; local execution reports the
+	// standalone strat executable. It does not prove the identity of a statically
+	// linked Report engine and need not equal the manifest's release-artifact digest.
 	StratBuildDigest string `json:"stratBuildDigest" yaml:"stratBuildDigest" mapstructure:"stratBuildDigest"`
 
 	// A release tag of a producer repository. Never a branch or 'latest'.

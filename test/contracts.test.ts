@@ -112,6 +112,23 @@ test('an unknown or missing schema name is a ContractError, never a pass', () =>
   assert.throws(() => parseAnyDocument(null), ContractError);
 });
 
+test('validation v1 accepts distinct release-artifact and result-publisher digests', () => {
+  const manifest = readJson(join(FIXTURES, 'validation-run-manifest.v1', 'valid', 'example.json')) as Record<string, unknown>;
+  const result = readJson(join(FIXTURES, 'validation-run-result.v1', 'valid', 'example.json')) as Record<string, unknown>;
+  const manifestDigest = 'a'.repeat(64);
+  const publisherDigest = 'b'.repeat(64);
+
+  assert.doesNotThrow(() => parseDocument('heisentick/validation-run-manifest', {
+    ...manifest,
+    engine: { ...(manifest.engine as object), stratBuildDigest: manifestDigest },
+  }));
+  assert.doesNotThrow(() => parseDocument('heisentick/validation-run-result', {
+    ...result,
+    engine: { ...(result.engine as object), stratBuildDigest: publisherDigest },
+  }));
+  assert.notEqual(manifestDigest, publisherDigest);
+});
+
 test('canonical JSON matches the committed cases and rejects non-finite numbers and undefined', () => {
   const cases = readJson(join(FIXTURES, 'canonical', 'cases.json')) as { name: string; input: unknown; canonical: string; sha256?: string }[];
   for (const c of cases) {
