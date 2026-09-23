@@ -468,6 +468,10 @@ type ValidationRunManifestV1Route struct {
 	// RangeMethod corresponds to the JSON schema field "rangeMethod".
 	RangeMethod ValidationRunManifestV1RouteRangeMethod `json:"rangeMethod" yaml:"rangeMethod" mapstructure:"rangeMethod"`
 
+	// Omit for normal declared-route execution. Transfer bypasses only the strategy's
+	// authored route allow-list while retaining the exact source and data identities.
+	RouteMode *ValidationRunManifestV1RouteRouteMode `json:"routeMode,omitempty" yaml:"routeMode,omitempty" mapstructure:"routeMode,omitempty"`
+
 	// Source timeframe for a two-timeframe strategy; null for single-timeframe.
 	SourceTimeframe interface{} `json:"sourceTimeframe" yaml:"sourceTimeframe" mapstructure:"sourceTimeframe"`
 
@@ -503,6 +507,11 @@ type ValidationRunManifestV1RouteRangeMethod string
 
 const ValidationRunManifestV1RouteRangeMethodPivot ValidationRunManifestV1RouteRangeMethod = "pivot"
 const ValidationRunManifestV1RouteRangeMethodZone ValidationRunManifestV1RouteRangeMethod = "zone"
+
+type ValidationRunManifestV1RouteRouteMode string
+
+const ValidationRunManifestV1RouteRouteModeDeclared ValidationRunManifestV1RouteRouteMode = "declared"
+const ValidationRunManifestV1RouteRouteModeTransfer ValidationRunManifestV1RouteRouteMode = "transfer"
 
 type ValidationRunManifestV1RouteSourceTimeframe_0 string
 
@@ -882,6 +891,10 @@ type ValidationRunManifestV2Route struct {
 	// RangeMethod corresponds to the JSON schema field "rangeMethod".
 	RangeMethod ValidationRunManifestV2RouteRangeMethod `json:"rangeMethod" yaml:"rangeMethod" mapstructure:"rangeMethod"`
 
+	// Omit for normal declared-route execution. Transfer bypasses only the strategy's
+	// authored route allow-list while retaining the exact source and data identities.
+	RouteMode *ValidationRunManifestV2RouteRouteMode `json:"routeMode,omitempty" yaml:"routeMode,omitempty" mapstructure:"routeMode,omitempty"`
+
 	// Source timeframe for a two-timeframe strategy; null for single-timeframe.
 	SourceTimeframe interface{} `json:"sourceTimeframe" yaml:"sourceTimeframe" mapstructure:"sourceTimeframe"`
 
@@ -917,6 +930,11 @@ type ValidationRunManifestV2RouteRangeMethod string
 
 const ValidationRunManifestV2RouteRangeMethodPivot ValidationRunManifestV2RouteRangeMethod = "pivot"
 const ValidationRunManifestV2RouteRangeMethodZone ValidationRunManifestV2RouteRangeMethod = "zone"
+
+type ValidationRunManifestV2RouteRouteMode string
+
+const ValidationRunManifestV2RouteRouteModeDeclared ValidationRunManifestV2RouteRouteMode = "declared"
+const ValidationRunManifestV2RouteRouteModeTransfer ValidationRunManifestV2RouteRouteMode = "transfer"
 
 type ValidationRunManifestV2RouteSourceTimeframe_0 string
 
@@ -1078,6 +1096,11 @@ type ValidationRunRequestV1Route struct {
 	// RangeMethod corresponds to the JSON schema field "rangeMethod".
 	RangeMethod ValidationRunRequestV1RouteRangeMethod `json:"rangeMethod,omitempty" yaml:"rangeMethod,omitempty" mapstructure:"rangeMethod,omitempty"`
 
+	// Omit for normal declared-route execution. Transfer explicitly tests the same
+	// strategy source on an undeclared route; it must not change the strategy's
+	// approved routes.
+	RouteMode *ValidationRunRequestV1RouteRouteMode `json:"routeMode,omitempty" yaml:"routeMode,omitempty" mapstructure:"routeMode,omitempty"`
+
 	// Instrument code as the app registers it, upper case.
 	Symbol string `json:"symbol" yaml:"symbol" mapstructure:"symbol"`
 
@@ -1089,6 +1112,11 @@ type ValidationRunRequestV1RouteRangeMethod string
 
 const ValidationRunRequestV1RouteRangeMethodPivot ValidationRunRequestV1RouteRangeMethod = "pivot"
 const ValidationRunRequestV1RouteRangeMethodZone ValidationRunRequestV1RouteRangeMethod = "zone"
+
+type ValidationRunRequestV1RouteRouteMode string
+
+const ValidationRunRequestV1RouteRouteModeDeclared ValidationRunRequestV1RouteRouteMode = "declared"
+const ValidationRunRequestV1RouteRouteModeTransfer ValidationRunRequestV1RouteRouteMode = "transfer"
 
 type ValidationRunRequestV1RouteTimeframe string
 

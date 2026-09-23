@@ -90,6 +90,10 @@ export declare const DOCUMENT_SCHEMAS: {
                 "4h": "4h";
                 "1d": "1d";
             }>;
+            routeMode: import("zod").ZodOptional<import("zod").ZodEnum<{
+                declared: "declared";
+                transfer: "transfer";
+            }>>;
             sourceTimeframe: import("zod").ZodUnion<readonly [import("zod").ZodEnum<{
                 "1m": "1m";
                 "5m": "5m";
@@ -263,6 +267,10 @@ export declare const DOCUMENT_SCHEMAS: {
                 "4h": "4h";
                 "1d": "1d";
             }>;
+            routeMode: import("zod").ZodOptional<import("zod").ZodEnum<{
+                declared: "declared";
+                transfer: "transfer";
+            }>>;
             sourceTimeframe: import("zod").ZodUnion<readonly [import("zod").ZodEnum<{
                 "1m": "1m";
                 "5m": "5m";
@@ -415,6 +423,10 @@ export declare const DOCUMENT_SCHEMAS: {
                 "4h": "4h";
                 "1d": "1d";
             }>;
+            routeMode: import("zod").ZodOptional<import("zod").ZodEnum<{
+                declared: "declared";
+                transfer: "transfer";
+            }>>;
             rangeMethod: import("zod").ZodDefault<import("zod").ZodEnum<{
                 zone: "zone";
                 pivot: "pivot";

@@ -1,6 +1,6 @@
 {
   "name": "@heisentick/contracts",
-  "version": "0.3.0",
+  "version": "0.4.0",
   "private": false,
   "type": "module",
   "description": "Versioned JSON Schema contracts for heisentick repository boundaries, with generated zod/TypeScript and Go types",
