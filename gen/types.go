@@ -604,6 +604,420 @@ type ValidationRunManifestV1ValidationMonteCarlo_1MethodsElem string
 const ValidationRunManifestV1ValidationMonteCarlo_1MethodsElemBootstrap ValidationRunManifestV1ValidationMonteCarlo_1MethodsElem = "bootstrap"
 const ValidationRunManifestV1ValidationMonteCarlo_1MethodsElemPermutation ValidationRunManifestV1ValidationMonteCarlo_1MethodsElem = "permutation"
 
+// Every input of one recorded run, resolved by the API at submission and stored at
+// runs/<runId>/manifest.json. Workers read this and nothing else; they never
+// resolve 'latest'. inputFingerprint is sha256 of the canonical JSON of this
+// document with the fields runId, requestKey, requestedBy, submittedAt and
+// inputFingerprint removed (see docs/canonical-json.md).
+type ValidationRunManifestV2 struct {
+	// Costs corresponds to the JSON schema field "costs".
+	Costs ValidationRunManifestV2Costs `json:"costs" yaml:"costs" mapstructure:"costs"`
+
+	// Data corresponds to the JSON schema field "data".
+	Data ValidationRunManifestV2Data `json:"data" yaml:"data" mapstructure:"data"`
+
+	// Engine corresponds to the JSON schema field "engine".
+	Engine ValidationRunManifestV2Engine `json:"engine" yaml:"engine" mapstructure:"engine"`
+
+	// Execution corresponds to the JSON schema field "execution".
+	Execution ValidationRunManifestV2Execution `json:"execution" yaml:"execution" mapstructure:"execution"`
+
+	// InputFingerprint corresponds to the JSON schema field "inputFingerprint".
+	InputFingerprint string `json:"inputFingerprint" yaml:"inputFingerprint" mapstructure:"inputFingerprint"`
+
+	// Kind corresponds to the JSON schema field "kind".
+	Kind ValidationRunManifestV2Kind `json:"kind" yaml:"kind" mapstructure:"kind"`
+
+	// Policy corresponds to the JSON schema field "policy".
+	Policy ValidationRunManifestV2Policy `json:"policy" yaml:"policy" mapstructure:"policy"`
+
+	// Client idempotency key. A repeated submission with the same key returns the
+	// same runId.
+	RequestKey string `json:"requestKey" yaml:"requestKey" mapstructure:"requestKey"`
+
+	// RequestedBy corresponds to the JSON schema field "requestedBy".
+	RequestedBy ValidationRunManifestV2RequestedBy `json:"requestedBy" yaml:"requestedBy" mapstructure:"requestedBy"`
+
+	// Route corresponds to the JSON schema field "route".
+	Route ValidationRunManifestV2Route `json:"route" yaml:"route" mapstructure:"route"`
+
+	// RunID corresponds to the JSON schema field "runId".
+	RunID string `json:"runId" yaml:"runId" mapstructure:"runId"`
+
+	// Schema corresponds to the JSON schema field "schema".
+	Schema interface{} `json:"schema" yaml:"schema" mapstructure:"schema"`
+
+	// Strategy corresponds to the JSON schema field "strategy".
+	Strategy ValidationRunManifestV2Strategy `json:"strategy" yaml:"strategy" mapstructure:"strategy"`
+
+	// Milliseconds since the Unix epoch, UTC. Every timestamp in every contract uses
+	// this unit.
+	SubmittedAt int `json:"submittedAt" yaml:"submittedAt" mapstructure:"submittedAt"`
+
+	// Validation corresponds to the JSON schema field "validation".
+	Validation ValidationRunManifestV2Validation `json:"validation" yaml:"validation" mapstructure:"validation"`
+
+	// Version corresponds to the JSON schema field "version".
+	Version interface{} `json:"version" yaml:"version" mapstructure:"version"`
+}
+
+type ValidationRunManifestV2Costs struct {
+	// CommissionPerUnit corresponds to the JSON schema field "commissionPerUnit".
+	CommissionPerUnit float64 `json:"commissionPerUnit" yaml:"commissionPerUnit" mapstructure:"commissionPerUnit"`
+
+	// FinancingPerDayBps corresponds to the JSON schema field "financingPerDayBps".
+	FinancingPerDayBps float64 `json:"financingPerDayBps" yaml:"financingPerDayBps" mapstructure:"financingPerDayBps"`
+
+	// Mode corresponds to the JSON schema field "mode".
+	Mode ValidationRunManifestV2CostsMode `json:"mode" yaml:"mode" mapstructure:"mode"`
+
+	// ModelVersion corresponds to the JSON schema field "modelVersion".
+	ModelVersion int `json:"modelVersion" yaml:"modelVersion" mapstructure:"modelVersion"`
+
+	// Price points per side.
+	Slippage float64 `json:"slippage" yaml:"slippage" mapstructure:"slippage"`
+
+	// SlippageBps corresponds to the JSON schema field "slippageBps".
+	SlippageBps float64 `json:"slippageBps" yaml:"slippageBps" mapstructure:"slippageBps"`
+
+	// Spread corresponds to the JSON schema field "spread".
+	Spread float64 `json:"spread" yaml:"spread" mapstructure:"spread"`
+
+	// StartEquity corresponds to the JSON schema field "startEquity".
+	StartEquity float64 `json:"startEquity" yaml:"startEquity" mapstructure:"startEquity"`
+}
+
+type ValidationRunManifestV2CostsMode string
+
+const ValidationRunManifestV2CostsModeHarsh ValidationRunManifestV2CostsMode = "harsh"
+const ValidationRunManifestV2CostsModeRaw ValidationRunManifestV2CostsMode = "raw"
+const ValidationRunManifestV2CostsModeRealistic ValidationRunManifestV2CostsMode = "realistic"
+
+type ValidationRunManifestV2Data struct {
+	// Provider corresponds to the JSON schema field "provider".
+	Provider ValidationRunManifestV2DataProvider `json:"provider" yaml:"provider" mapstructure:"provider"`
+
+	// Series corresponds to the JSON schema field "series".
+	Series []ValidationRunManifestV2DataSeriesElem `json:"series" yaml:"series" mapstructure:"series"`
+}
+
+type ValidationRunManifestV2DataProvider string
+
+const ValidationRunManifestV2DataProviderBinance ValidationRunManifestV2DataProvider = "binance"
+const ValidationRunManifestV2DataProviderDukascopy ValidationRunManifestV2DataProvider = "dukascopy"
+const ValidationRunManifestV2DataProviderSynthetic ValidationRunManifestV2DataProvider = "synthetic"
+
+type ValidationRunManifestV2DataSeriesElem struct {
+	// Count corresponds to the JSON schema field "count".
+	Count int `json:"count" yaml:"count" mapstructure:"count"`
+
+	// Object key without a leading slash; the bucket is configuration, not contract.
+	Object string `json:"object" yaml:"object" mapstructure:"object"`
+
+	// Role corresponds to the JSON schema field "role".
+	Role ValidationRunManifestV2DataSeriesElemRole `json:"role" yaml:"role" mapstructure:"role"`
+
+	// Sha256 corresponds to the JSON schema field "sha256".
+	Sha256 string `json:"sha256" yaml:"sha256" mapstructure:"sha256"`
+
+	// Instrument code as the app registers it, upper case.
+	Symbol string `json:"symbol" yaml:"symbol" mapstructure:"symbol"`
+
+	// Timeframe corresponds to the JSON schema field "timeframe".
+	Timeframe ValidationRunManifestV2DataSeriesElemTimeframe `json:"timeframe" yaml:"timeframe" mapstructure:"timeframe"`
+
+	// First bar the run may read, warm-up included.
+	WindowFromT int `json:"windowFromT" yaml:"windowFromT" mapstructure:"windowFromT"`
+
+	// Exclusive upper bound.
+	WindowToT int `json:"windowToT" yaml:"windowToT" mapstructure:"windowToT"`
+}
+
+type ValidationRunManifestV2DataSeriesElemRole string
+
+const ValidationRunManifestV2DataSeriesElemRoleContext ValidationRunManifestV2DataSeriesElemRole = "context"
+const ValidationRunManifestV2DataSeriesElemRoleEntry ValidationRunManifestV2DataSeriesElemRole = "entry"
+const ValidationRunManifestV2DataSeriesElemRoleHigher ValidationRunManifestV2DataSeriesElemRole = "higher"
+const ValidationRunManifestV2DataSeriesElemRoleSource ValidationRunManifestV2DataSeriesElemRole = "source"
+
+type ValidationRunManifestV2DataSeriesElemTimeframe string
+
+const ValidationRunManifestV2DataSeriesElemTimeframeA15M ValidationRunManifestV2DataSeriesElemTimeframe = "15m"
+const ValidationRunManifestV2DataSeriesElemTimeframeA1D ValidationRunManifestV2DataSeriesElemTimeframe = "1d"
+const ValidationRunManifestV2DataSeriesElemTimeframeA1H ValidationRunManifestV2DataSeriesElemTimeframe = "1h"
+const ValidationRunManifestV2DataSeriesElemTimeframeA1M ValidationRunManifestV2DataSeriesElemTimeframe = "1m"
+const ValidationRunManifestV2DataSeriesElemTimeframeA30M ValidationRunManifestV2DataSeriesElemTimeframe = "30m"
+const ValidationRunManifestV2DataSeriesElemTimeframeA4H ValidationRunManifestV2DataSeriesElemTimeframe = "4h"
+const ValidationRunManifestV2DataSeriesElemTimeframeA5M ValidationRunManifestV2DataSeriesElemTimeframe = "5m"
+
+type ValidationRunManifestV2Engine struct {
+	// Expected heisentick-strat module identity for a statically linked Report
+	// executor. The result producer measures the matching identity independently from
+	// its build metadata.
+	ExpectedLinkedModule ValidationRunManifestV2EngineExpectedLinkedModule `json:"expectedLinkedModule" yaml:"expectedLinkedModule" mapstructure:"expectedLinkedModule"`
+
+	// GoVersion corresponds to the JSON schema field "goVersion".
+	GoVersion string `json:"goVersion" yaml:"goVersion" mapstructure:"goVersion"`
+
+	// ReportSchemaVersion corresponds to the JSON schema field "reportSchemaVersion".
+	ReportSchemaVersion int `json:"reportSchemaVersion" yaml:"reportSchemaVersion" mapstructure:"reportSchemaVersion"`
+
+	// ResultSchemaVersion corresponds to the JSON schema field "resultSchemaVersion".
+	ResultSchemaVersion int `json:"resultSchemaVersion" yaml:"resultSchemaVersion" mapstructure:"resultSchemaVersion"`
+
+	// Published standalone heisentick-strat artifact selected by the submitter. This
+	// is deployment intent; a statically linked Report Lambda does not execute this
+	// artifact.
+	StratReleaseArtifact ValidationRunManifestV2EngineStratReleaseArtifact `json:"stratReleaseArtifact" yaml:"stratReleaseArtifact" mapstructure:"stratReleaseArtifact"`
+
+	// heisentick-strategy-validation release whose Lambdas execute this run.
+	ValidationRelease string `json:"validationRelease" yaml:"validationRelease" mapstructure:"validationRelease"`
+}
+
+// Expected heisentick-strat module identity for a statically linked Report
+// executor. The result producer measures the matching identity independently from
+// its build metadata.
+type ValidationRunManifestV2EngineExpectedLinkedModule struct {
+	// ModulePath corresponds to the JSON schema field "modulePath".
+	ModulePath interface{} `json:"modulePath" yaml:"modulePath" mapstructure:"modulePath"`
+
+	// ModuleSum corresponds to the JSON schema field "moduleSum".
+	ModuleSum string `json:"moduleSum" yaml:"moduleSum" mapstructure:"moduleSum"`
+
+	// A release tag of a producer repository. Never a branch or 'latest'.
+	Release string `json:"release" yaml:"release" mapstructure:"release"`
+}
+
+// Published standalone heisentick-strat artifact selected by the submitter. This
+// is deployment intent; a statically linked Report Lambda does not execute this
+// artifact.
+type ValidationRunManifestV2EngineStratReleaseArtifact struct {
+	// AssetName corresponds to the JSON schema field "assetName".
+	AssetName string `json:"assetName" yaml:"assetName" mapstructure:"assetName"`
+
+	// A release tag of a producer repository. Never a branch or 'latest'.
+	Release string `json:"release" yaml:"release" mapstructure:"release"`
+
+	// Sha256 corresponds to the JSON schema field "sha256".
+	Sha256 string `json:"sha256" yaml:"sha256" mapstructure:"sha256"`
+}
+
+type ValidationRunManifestV2Execution struct {
+	// What happens to a position still open at toT; liquidation is reported as its
+	// own exit reason.
+	EndOfTest ValidationRunManifestV2ExecutionEndOfTest `json:"endOfTest" yaml:"endOfTest" mapstructure:"endOfTest"`
+
+	// FillOn corresponds to the JSON schema field "fillOn".
+	FillOn ValidationRunManifestV2ExecutionFillOn `json:"fillOn" yaml:"fillOn" mapstructure:"fillOn"`
+
+	// First bar on which a trade may be opened.
+	FromT int `json:"fromT" yaml:"fromT" mapstructure:"fromT"`
+
+	// A boundary chosen before the search. Absent or null means the run is entirely
+	// in-sample.
+	HoldoutFromT interface{} `json:"holdoutFromT,omitempty" yaml:"holdoutFromT,omitempty" mapstructure:"holdoutFromT,omitempty"`
+
+	// InitialState corresponds to the JSON schema field "initialState".
+	InitialState ValidationRunManifestV2ExecutionInitialState `json:"initialState" yaml:"initialState" mapstructure:"initialState"`
+
+	// Exclusive.
+	ToT int `json:"toT" yaml:"toT" mapstructure:"toT"`
+
+	// WarmupBars corresponds to the JSON schema field "warmupBars".
+	WarmupBars int `json:"warmupBars" yaml:"warmupBars" mapstructure:"warmupBars"`
+}
+
+type ValidationRunManifestV2ExecutionEndOfTest string
+
+const ValidationRunManifestV2ExecutionEndOfTestLeaveOpen ValidationRunManifestV2ExecutionEndOfTest = "leave-open"
+const ValidationRunManifestV2ExecutionEndOfTestLiquidateLastClose ValidationRunManifestV2ExecutionEndOfTest = "liquidate-last-close"
+
+type ValidationRunManifestV2ExecutionFillOn string
+
+const ValidationRunManifestV2ExecutionFillOnClose ValidationRunManifestV2ExecutionFillOn = "close"
+const ValidationRunManifestV2ExecutionFillOnNextOpen ValidationRunManifestV2ExecutionFillOn = "next-open"
+
+type ValidationRunManifestV2ExecutionInitialState string
+
+const ValidationRunManifestV2ExecutionInitialStateFlat ValidationRunManifestV2ExecutionInitialState = "flat"
+
+type ValidationRunManifestV2Kind string
+
+const ValidationRunManifestV2KindBasket ValidationRunManifestV2Kind = "basket"
+const ValidationRunManifestV2KindReport ValidationRunManifestV2Kind = "report"
+const ValidationRunManifestV2KindValidate ValidationRunManifestV2Kind = "validate"
+
+type ValidationRunManifestV2Policy struct {
+	// The validation profile this run belongs to (decision D-5): strategy × route ×
+	// kind × cost mode × history policy × policy version, rendered by the API.
+	// /latest is per profile.
+	Profile string `json:"profile" yaml:"profile" mapstructure:"profile"`
+
+	// PromotionPolicyVersion corresponds to the JSON schema field
+	// "promotionPolicyVersion".
+	PromotionPolicyVersion int `json:"promotionPolicyVersion" yaml:"promotionPolicyVersion" mapstructure:"promotionPolicyVersion"`
+}
+
+type ValidationRunManifestV2RequestedBy struct {
+	// Opaque principal id; never an email address.
+	Subject string `json:"subject" yaml:"subject" mapstructure:"subject"`
+
+	// Via corresponds to the JSON schema field "via".
+	Via ValidationRunManifestV2RequestedByVia `json:"via" yaml:"via" mapstructure:"via"`
+}
+
+type ValidationRunManifestV2RequestedByVia string
+
+const ValidationRunManifestV2RequestedByViaLabUi ValidationRunManifestV2RequestedByVia = "lab-ui"
+const ValidationRunManifestV2RequestedByViaLocal ValidationRunManifestV2RequestedByVia = "local"
+const ValidationRunManifestV2RequestedByViaOperatorToken ValidationRunManifestV2RequestedByVia = "operator-token"
+
+type ValidationRunManifestV2Route struct {
+	// HigherTimeframe corresponds to the JSON schema field "higherTimeframe".
+	HigherTimeframe interface{} `json:"higherTimeframe" yaml:"higherTimeframe" mapstructure:"higherTimeframe"`
+
+	// Instrument corresponds to the JSON schema field "instrument".
+	Instrument *ValidationRunManifestV2RouteInstrument `json:"instrument,omitempty" yaml:"instrument,omitempty" mapstructure:"instrument,omitempty"`
+
+	// RangeMethod corresponds to the JSON schema field "rangeMethod".
+	RangeMethod ValidationRunManifestV2RouteRangeMethod `json:"rangeMethod" yaml:"rangeMethod" mapstructure:"rangeMethod"`
+
+	// Source timeframe for a two-timeframe strategy; null for single-timeframe.
+	SourceTimeframe interface{} `json:"sourceTimeframe" yaml:"sourceTimeframe" mapstructure:"sourceTimeframe"`
+
+	// Instrument code as the app registers it, upper case.
+	Symbol string `json:"symbol" yaml:"symbol" mapstructure:"symbol"`
+
+	// Entry (chart) timeframe.
+	Timeframe ValidationRunManifestV2RouteTimeframe `json:"timeframe" yaml:"timeframe" mapstructure:"timeframe"`
+}
+
+type ValidationRunManifestV2RouteHigherTimeframe_0 string
+
+const ValidationRunManifestV2RouteHigherTimeframe_0_A15M ValidationRunManifestV2RouteHigherTimeframe_0 = "15m"
+const ValidationRunManifestV2RouteHigherTimeframe_0_A1D ValidationRunManifestV2RouteHigherTimeframe_0 = "1d"
+const ValidationRunManifestV2RouteHigherTimeframe_0_A1H ValidationRunManifestV2RouteHigherTimeframe_0 = "1h"
+const ValidationRunManifestV2RouteHigherTimeframe_0_A1M ValidationRunManifestV2RouteHigherTimeframe_0 = "1m"
+const ValidationRunManifestV2RouteHigherTimeframe_0_A30M ValidationRunManifestV2RouteHigherTimeframe_0 = "30m"
+const ValidationRunManifestV2RouteHigherTimeframe_0_A4H ValidationRunManifestV2RouteHigherTimeframe_0 = "4h"
+const ValidationRunManifestV2RouteHigherTimeframe_0_A5M ValidationRunManifestV2RouteHigherTimeframe_0 = "5m"
+
+type ValidationRunManifestV2RouteInstrument struct {
+	// PointValue corresponds to the JSON schema field "pointValue".
+	PointValue float64 `json:"pointValue" yaml:"pointValue" mapstructure:"pointValue"`
+
+	// QuoteCurrency corresponds to the JSON schema field "quoteCurrency".
+	QuoteCurrency string `json:"quoteCurrency" yaml:"quoteCurrency" mapstructure:"quoteCurrency"`
+
+	// TickSize corresponds to the JSON schema field "tickSize".
+	TickSize float64 `json:"tickSize" yaml:"tickSize" mapstructure:"tickSize"`
+}
+
+type ValidationRunManifestV2RouteRangeMethod string
+
+const ValidationRunManifestV2RouteRangeMethodPivot ValidationRunManifestV2RouteRangeMethod = "pivot"
+const ValidationRunManifestV2RouteRangeMethodZone ValidationRunManifestV2RouteRangeMethod = "zone"
+
+type ValidationRunManifestV2RouteSourceTimeframe_0 string
+
+const ValidationRunManifestV2RouteSourceTimeframe_0_A15M ValidationRunManifestV2RouteSourceTimeframe_0 = "15m"
+const ValidationRunManifestV2RouteSourceTimeframe_0_A1D ValidationRunManifestV2RouteSourceTimeframe_0 = "1d"
+const ValidationRunManifestV2RouteSourceTimeframe_0_A1H ValidationRunManifestV2RouteSourceTimeframe_0 = "1h"
+const ValidationRunManifestV2RouteSourceTimeframe_0_A1M ValidationRunManifestV2RouteSourceTimeframe_0 = "1m"
+const ValidationRunManifestV2RouteSourceTimeframe_0_A30M ValidationRunManifestV2RouteSourceTimeframe_0 = "30m"
+const ValidationRunManifestV2RouteSourceTimeframe_0_A4H ValidationRunManifestV2RouteSourceTimeframe_0 = "4h"
+const ValidationRunManifestV2RouteSourceTimeframe_0_A5M ValidationRunManifestV2RouteSourceTimeframe_0 = "5m"
+
+type ValidationRunManifestV2RouteTimeframe string
+
+const ValidationRunManifestV2RouteTimeframeA15M ValidationRunManifestV2RouteTimeframe = "15m"
+const ValidationRunManifestV2RouteTimeframeA1D ValidationRunManifestV2RouteTimeframe = "1d"
+const ValidationRunManifestV2RouteTimeframeA1H ValidationRunManifestV2RouteTimeframe = "1h"
+const ValidationRunManifestV2RouteTimeframeA1M ValidationRunManifestV2RouteTimeframe = "1m"
+const ValidationRunManifestV2RouteTimeframeA30M ValidationRunManifestV2RouteTimeframe = "30m"
+const ValidationRunManifestV2RouteTimeframeA4H ValidationRunManifestV2RouteTimeframe = "4h"
+const ValidationRunManifestV2RouteTimeframeA5M ValidationRunManifestV2RouteTimeframe = "5m"
+
+type ValidationRunManifestV2Strategy struct {
+	// ID corresponds to the JSON schema field "id".
+	ID string `json:"id" yaml:"id" mapstructure:"id"`
+
+	// Resolved parameter values after defaults. Keys are parameter names; values are
+	// the resolved scalars.
+	Params map[string]interface{} `json:"params" yaml:"params" mapstructure:"params"`
+
+	// Where the frozen source text is stored, when not embedded in the registry
+	// release.
+	SourceObject *string `json:"sourceObject,omitempty" yaml:"sourceObject,omitempty" mapstructure:"sourceObject,omitempty"`
+
+	// sha256 of the .strat text exactly as submitted.
+	SourceSha256 string `json:"sourceSha256" yaml:"sourceSha256" mapstructure:"sourceSha256"`
+}
+
+type ValidationRunManifestV2Validation struct {
+	// Diagnostics corresponds to the JSON schema field "diagnostics".
+	Diagnostics interface{} `json:"diagnostics" yaml:"diagnostics" mapstructure:"diagnostics"`
+
+	// Grid corresponds to the JSON schema field "grid".
+	Grid interface{} `json:"grid" yaml:"grid" mapstructure:"grid"`
+
+	// MonteCarlo corresponds to the JSON schema field "monteCarlo".
+	MonteCarlo interface{} `json:"monteCarlo" yaml:"monteCarlo" mapstructure:"monteCarlo"`
+}
+
+type ValidationRunManifestV2ValidationDiagnostics_1 struct {
+	// HarshCostMode corresponds to the JSON schema field "harshCostMode".
+	HarshCostMode ValidationRunManifestV2ValidationDiagnostics_1HarshCostMode `json:"harshCostMode" yaml:"harshCostMode" mapstructure:"harshCostMode"`
+
+	// RecentMonths corresponds to the JSON schema field "recentMonths".
+	RecentMonths int `json:"recentMonths" yaml:"recentMonths" mapstructure:"recentMonths"`
+}
+
+type ValidationRunManifestV2ValidationDiagnostics_1HarshCostMode string
+
+const ValidationRunManifestV2ValidationDiagnostics_1HarshCostModeHarsh ValidationRunManifestV2ValidationDiagnostics_1HarshCostMode = "harsh"
+const ValidationRunManifestV2ValidationDiagnostics_1HarshCostModeRaw ValidationRunManifestV2ValidationDiagnostics_1HarshCostMode = "raw"
+const ValidationRunManifestV2ValidationDiagnostics_1HarshCostModeRealistic ValidationRunManifestV2ValidationDiagnostics_1HarshCostMode = "realistic"
+
+type ValidationRunManifestV2ValidationGrid_1 struct {
+	// Cells corresponds to the JSON schema field "cells".
+	Cells []ValidationRunManifestV2ValidationGrid_1CellsElem `json:"cells" yaml:"cells" mapstructure:"cells"`
+}
+
+type ValidationRunManifestV2ValidationGrid_1CellsElem struct {
+	// CellIndex corresponds to the JSON schema field "cellIndex".
+	CellIndex int `json:"cellIndex" yaml:"cellIndex" mapstructure:"cellIndex"`
+
+	// CostMode corresponds to the JSON schema field "costMode".
+	CostMode ValidationRunManifestV2ValidationGrid_1CellsElemCostMode `json:"costMode" yaml:"costMode" mapstructure:"costMode"`
+
+	// Params corresponds to the JSON schema field "params".
+	Params map[string]interface{} `json:"params" yaml:"params" mapstructure:"params"`
+}
+
+type ValidationRunManifestV2ValidationGrid_1CellsElemCostMode string
+
+const ValidationRunManifestV2ValidationGrid_1CellsElemCostModeHarsh ValidationRunManifestV2ValidationGrid_1CellsElemCostMode = "harsh"
+const ValidationRunManifestV2ValidationGrid_1CellsElemCostModeRaw ValidationRunManifestV2ValidationGrid_1CellsElemCostMode = "raw"
+const ValidationRunManifestV2ValidationGrid_1CellsElemCostModeRealistic ValidationRunManifestV2ValidationGrid_1CellsElemCostMode = "realistic"
+
+type ValidationRunManifestV2ValidationMonteCarlo_1 struct {
+	// Iterations corresponds to the JSON schema field "iterations".
+	Iterations int `json:"iterations" yaml:"iterations" mapstructure:"iterations"`
+
+	// Methods corresponds to the JSON schema field "methods".
+	Methods []ValidationRunManifestV2ValidationMonteCarlo_1MethodsElem `json:"methods" yaml:"methods" mapstructure:"methods"`
+
+	// Per-cell sub-seeds are derived as sha256(seed || cellIndex), never from
+	// scheduling.
+	Seed int `json:"seed" yaml:"seed" mapstructure:"seed"`
+}
+
+type ValidationRunManifestV2ValidationMonteCarlo_1MethodsElem string
+
+const ValidationRunManifestV2ValidationMonteCarlo_1MethodsElemBootstrap ValidationRunManifestV2ValidationMonteCarlo_1MethodsElem = "bootstrap"
+const ValidationRunManifestV2ValidationMonteCarlo_1MethodsElemPermutation ValidationRunManifestV2ValidationMonteCarlo_1MethodsElem = "permutation"
+
 // Body of POST /api/v1/strategy-validation/runs. The API resolves it into a
 // validation-run-manifest; nothing here is read by a worker. Unknown fields are
 // rejected.
@@ -1099,3 +1513,410 @@ type ValidationRunResultV1PromotionStatus string
 const ValidationRunResultV1PromotionStatusEligible ValidationRunResultV1PromotionStatus = "eligible"
 const ValidationRunResultV1PromotionStatusNotEligible ValidationRunResultV1PromotionStatus = "not-eligible"
 const ValidationRunResultV1PromotionStatusUnassessed ValidationRunResultV1PromotionStatus = "unassessed"
+
+// Written by the Assemble step to runs/<runId>/<attempt>/envelope.json and
+// summarised in the result queue message. Small by design: headline statistics and
+// references. Trade lists and grid cells stay in their own objects. Three statuses
+// are separate on purpose: execution (did it run), assessment (could statistics be
+// judged), promotion (does it clear the policy). Insufficient data is never a
+// failure.
+type ValidationRunResultV2 struct {
+	// Object references. A succeeded run carries report (and a non-null headline); a
+	// run that failed before or during Report has none. The schema states the shapes;
+	// the rule 'succeeded implies report and headline' is enforced by both packages
+	// in code because a root-level conditional would defeat the generated zod
+	// object's rejection of unknown fields.
+	Artifacts ValidationRunResultV2Artifacts `json:"artifacts" yaml:"artifacts" mapstructure:"artifacts"`
+
+	// Assessment corresponds to the JSON schema field "assessment".
+	Assessment ValidationRunResultV2Assessment `json:"assessment" yaml:"assessment" mapstructure:"assessment"`
+
+	// Attempt corresponds to the JSON schema field "attempt".
+	Attempt int `json:"attempt" yaml:"attempt" mapstructure:"attempt"`
+
+	// Engine corresponds to the JSON schema field "engine".
+	Engine ValidationRunResultV2Engine `json:"engine" yaml:"engine" mapstructure:"engine"`
+
+	// Execution corresponds to the JSON schema field "execution".
+	Execution ValidationRunResultV2Execution `json:"execution" yaml:"execution" mapstructure:"execution"`
+
+	// Milliseconds since the Unix epoch, UTC. Every timestamp in every contract uses
+	// this unit.
+	FinishedAt int `json:"finishedAt" yaml:"finishedAt" mapstructure:"finishedAt"`
+
+	// null when execution did not succeed.
+	Headline interface{} `json:"headline" yaml:"headline" mapstructure:"headline"`
+
+	// InputFingerprint corresponds to the JSON schema field "inputFingerprint".
+	InputFingerprint string `json:"inputFingerprint" yaml:"inputFingerprint" mapstructure:"inputFingerprint"`
+
+	// Object key without a leading slash; the bucket is configuration, not contract.
+	ManifestKey string `json:"manifestKey" yaml:"manifestKey" mapstructure:"manifestKey"`
+
+	// Promotion corresponds to the JSON schema field "promotion".
+	Promotion ValidationRunResultV2Promotion `json:"promotion" yaml:"promotion" mapstructure:"promotion"`
+
+	// RunID corresponds to the JSON schema field "runId".
+	RunID string `json:"runId" yaml:"runId" mapstructure:"runId"`
+
+	// Schema corresponds to the JSON schema field "schema".
+	Schema interface{} `json:"schema" yaml:"schema" mapstructure:"schema"`
+
+	// Version corresponds to the JSON schema field "version".
+	Version interface{} `json:"version" yaml:"version" mapstructure:"version"`
+}
+
+// Object references. A succeeded run carries report (and a non-null headline); a
+// run that failed before or during Report has none. The schema states the shapes;
+// the rule 'succeeded implies report and headline' is enforced by both packages in
+// code because a root-level conditional would defeat the generated zod object's
+// rejection of unknown fields.
+type ValidationRunResultV2Artifacts struct {
+	// Diagnostics corresponds to the JSON schema field "diagnostics".
+	Diagnostics *ValidationRunResultV2ArtifactsDiagnostics `json:"diagnostics,omitempty" yaml:"diagnostics,omitempty" mapstructure:"diagnostics,omitempty"`
+
+	// Grid corresponds to the JSON schema field "grid".
+	Grid *ValidationRunResultV2ArtifactsGrid `json:"grid,omitempty" yaml:"grid,omitempty" mapstructure:"grid,omitempty"`
+
+	// MonteCarlo corresponds to the JSON schema field "monteCarlo".
+	MonteCarlo *ValidationRunResultV2ArtifactsMonteCarlo `json:"monteCarlo,omitempty" yaml:"monteCarlo,omitempty" mapstructure:"monteCarlo,omitempty"`
+
+	// Report corresponds to the JSON schema field "report".
+	Report *ValidationRunResultV2ArtifactsReport `json:"report,omitempty" yaml:"report,omitempty" mapstructure:"report,omitempty"`
+
+	// Trades corresponds to the JSON schema field "trades".
+	Trades *ValidationRunResultV2ArtifactsTrades `json:"trades,omitempty" yaml:"trades,omitempty" mapstructure:"trades,omitempty"`
+}
+
+type ValidationRunResultV2ArtifactsDiagnostics struct {
+	// ByteLength corresponds to the JSON schema field "byteLength".
+	ByteLength int `json:"byteLength" yaml:"byteLength" mapstructure:"byteLength"`
+
+	// Object key without a leading slash; the bucket is configuration, not contract.
+	Object string `json:"object" yaml:"object" mapstructure:"object"`
+
+	// Schema corresponds to the JSON schema field "schema".
+	Schema string `json:"schema" yaml:"schema" mapstructure:"schema"`
+
+	// Sha256 corresponds to the JSON schema field "sha256".
+	Sha256 string `json:"sha256" yaml:"sha256" mapstructure:"sha256"`
+
+	// Version corresponds to the JSON schema field "version".
+	Version int `json:"version" yaml:"version" mapstructure:"version"`
+}
+
+type ValidationRunResultV2ArtifactsGrid struct {
+	// ByteLength corresponds to the JSON schema field "byteLength".
+	ByteLength int `json:"byteLength" yaml:"byteLength" mapstructure:"byteLength"`
+
+	// Object key without a leading slash; the bucket is configuration, not contract.
+	Object string `json:"object" yaml:"object" mapstructure:"object"`
+
+	// Schema corresponds to the JSON schema field "schema".
+	Schema string `json:"schema" yaml:"schema" mapstructure:"schema"`
+
+	// Sha256 corresponds to the JSON schema field "sha256".
+	Sha256 string `json:"sha256" yaml:"sha256" mapstructure:"sha256"`
+
+	// Version corresponds to the JSON schema field "version".
+	Version int `json:"version" yaml:"version" mapstructure:"version"`
+}
+
+type ValidationRunResultV2ArtifactsMonteCarlo struct {
+	// ByteLength corresponds to the JSON schema field "byteLength".
+	ByteLength int `json:"byteLength" yaml:"byteLength" mapstructure:"byteLength"`
+
+	// Object key without a leading slash; the bucket is configuration, not contract.
+	Object string `json:"object" yaml:"object" mapstructure:"object"`
+
+	// Schema corresponds to the JSON schema field "schema".
+	Schema string `json:"schema" yaml:"schema" mapstructure:"schema"`
+
+	// Sha256 corresponds to the JSON schema field "sha256".
+	Sha256 string `json:"sha256" yaml:"sha256" mapstructure:"sha256"`
+
+	// Version corresponds to the JSON schema field "version".
+	Version int `json:"version" yaml:"version" mapstructure:"version"`
+}
+
+type ValidationRunResultV2ArtifactsReport struct {
+	// ByteLength corresponds to the JSON schema field "byteLength".
+	ByteLength int `json:"byteLength" yaml:"byteLength" mapstructure:"byteLength"`
+
+	// Object key without a leading slash; the bucket is configuration, not contract.
+	Object string `json:"object" yaml:"object" mapstructure:"object"`
+
+	// Schema corresponds to the JSON schema field "schema".
+	Schema string `json:"schema" yaml:"schema" mapstructure:"schema"`
+
+	// Sha256 corresponds to the JSON schema field "sha256".
+	Sha256 string `json:"sha256" yaml:"sha256" mapstructure:"sha256"`
+
+	// Version corresponds to the JSON schema field "version".
+	Version int `json:"version" yaml:"version" mapstructure:"version"`
+}
+
+type ValidationRunResultV2ArtifactsTrades struct {
+	// ByteLength corresponds to the JSON schema field "byteLength".
+	ByteLength int `json:"byteLength" yaml:"byteLength" mapstructure:"byteLength"`
+
+	// Object key without a leading slash; the bucket is configuration, not contract.
+	Object string `json:"object" yaml:"object" mapstructure:"object"`
+
+	// Schema corresponds to the JSON schema field "schema".
+	Schema string `json:"schema" yaml:"schema" mapstructure:"schema"`
+
+	// Sha256 corresponds to the JSON schema field "sha256".
+	Sha256 string `json:"sha256" yaml:"sha256" mapstructure:"sha256"`
+
+	// Version corresponds to the JSON schema field "version".
+	Version int `json:"version" yaml:"version" mapstructure:"version"`
+}
+
+type ValidationRunResultV2Assessment struct {
+	// MinimumTrades corresponds to the JSON schema field "minimumTrades".
+	MinimumTrades *int `json:"minimumTrades,omitempty" yaml:"minimumTrades,omitempty" mapstructure:"minimumTrades,omitempty"`
+
+	// Reason corresponds to the JSON schema field "reason".
+	Reason *ValidationRunResultV2AssessmentReason `json:"reason,omitempty" yaml:"reason,omitempty" mapstructure:"reason,omitempty"`
+
+	// Status corresponds to the JSON schema field "status".
+	Status ValidationRunResultV2AssessmentStatus `json:"status" yaml:"status" mapstructure:"status"`
+}
+
+type ValidationRunResultV2AssessmentReason string
+
+const ValidationRunResultV2AssessmentReasonInsufficientData ValidationRunResultV2AssessmentReason = "insufficient-data"
+const ValidationRunResultV2AssessmentReasonNoLosses ValidationRunResultV2AssessmentReason = "no-losses"
+const ValidationRunResultV2AssessmentReasonNoTrades ValidationRunResultV2AssessmentReason = "no-trades"
+const ValidationRunResultV2AssessmentReasonNoWins ValidationRunResultV2AssessmentReason = "no-wins"
+const ValidationRunResultV2AssessmentReasonNotApplicable ValidationRunResultV2AssessmentReason = "not-applicable"
+
+type ValidationRunResultV2AssessmentStatus string
+
+const ValidationRunResultV2AssessmentStatusAssessed ValidationRunResultV2AssessmentStatus = "assessed"
+const ValidationRunResultV2AssessmentStatusInsufficientData ValidationRunResultV2AssessmentStatus = "insufficient-data"
+const ValidationRunResultV2AssessmentStatusNotApplicable ValidationRunResultV2AssessmentStatus = "not-applicable"
+const ValidationRunResultV2AssessmentStatusUnassessed ValidationRunResultV2AssessmentStatus = "unassessed"
+
+type ValidationRunResultV2Engine struct {
+	// AssembleExecutor corresponds to the JSON schema field "assembleExecutor".
+	AssembleExecutor ValidationRunResultV2EngineAssembleExecutor `json:"assembleExecutor" yaml:"assembleExecutor" mapstructure:"assembleExecutor"`
+
+	// Identity measured by the Report executor. It must not be copied from the
+	// submitted manifest.
+	LinkedEngine interface{} `json:"linkedEngine" yaml:"linkedEngine" mapstructure:"linkedEngine"`
+
+	// heisentick-strategy-validation module version read from the Assemble
+	// executable's Go build metadata.
+	ValidationRelease string `json:"validationRelease" yaml:"validationRelease" mapstructure:"validationRelease"`
+}
+
+type ValidationRunResultV2EngineAssembleExecutor struct {
+	// sha256 measured by the Assemble executable over itself.
+	Sha256 string `json:"sha256" yaml:"sha256" mapstructure:"sha256"`
+}
+
+type ValidationRunResultV2Execution struct {
+	// Error corresponds to the JSON schema field "error".
+	Error *ValidationRunResultV2ExecutionError `json:"error,omitempty" yaml:"error,omitempty" mapstructure:"error,omitempty"`
+
+	// FailedStage corresponds to the JSON schema field "failedStage".
+	FailedStage *ValidationRunResultV2ExecutionFailedStage `json:"failedStage,omitempty" yaml:"failedStage,omitempty" mapstructure:"failedStage,omitempty"`
+
+	// Stages corresponds to the JSON schema field "stages".
+	Stages []ValidationRunResultV2ExecutionStagesElem `json:"stages" yaml:"stages" mapstructure:"stages"`
+
+	// Status corresponds to the JSON schema field "status".
+	Status ValidationRunResultV2ExecutionStatus `json:"status" yaml:"status" mapstructure:"status"`
+}
+
+type ValidationRunResultV2ExecutionError struct {
+	// Code corresponds to the JSON schema field "code".
+	Code string `json:"code" yaml:"code" mapstructure:"code"`
+
+	// Message corresponds to the JSON schema field "message".
+	Message string `json:"message" yaml:"message" mapstructure:"message"`
+}
+
+type ValidationRunResultV2ExecutionFailedStage string
+
+const ValidationRunResultV2ExecutionFailedStageAssemble ValidationRunResultV2ExecutionFailedStage = "assemble"
+const ValidationRunResultV2ExecutionFailedStageDiagnostics ValidationRunResultV2ExecutionFailedStage = "diagnostics"
+const ValidationRunResultV2ExecutionFailedStageGrid ValidationRunResultV2ExecutionFailedStage = "grid"
+const ValidationRunResultV2ExecutionFailedStageMontecarlo ValidationRunResultV2ExecutionFailedStage = "montecarlo"
+const ValidationRunResultV2ExecutionFailedStageReport ValidationRunResultV2ExecutionFailedStage = "report"
+
+type ValidationRunResultV2ExecutionStagesElem struct {
+	// BilledMs corresponds to the JSON schema field "billedMs".
+	BilledMs *int `json:"billedMs,omitempty" yaml:"billedMs,omitempty" mapstructure:"billedMs,omitempty"`
+
+	// Grid only: cells completed.
+	Cells *int `json:"cells,omitempty" yaml:"cells,omitempty" mapstructure:"cells,omitempty"`
+
+	// DurationMs corresponds to the JSON schema field "durationMs".
+	DurationMs int `json:"durationMs" yaml:"durationMs" mapstructure:"durationMs"`
+
+	// MaxMemoryMb corresponds to the JSON schema field "maxMemoryMb".
+	MaxMemoryMb *int `json:"maxMemoryMb,omitempty" yaml:"maxMemoryMb,omitempty" mapstructure:"maxMemoryMb,omitempty"`
+
+	// Stage corresponds to the JSON schema field "stage".
+	Stage ValidationRunResultV2ExecutionStagesElemStage `json:"stage" yaml:"stage" mapstructure:"stage"`
+
+	// Status corresponds to the JSON schema field "status".
+	Status ValidationRunResultV2ExecutionStagesElemStatus `json:"status" yaml:"status" mapstructure:"status"`
+}
+
+type ValidationRunResultV2ExecutionStagesElemStage string
+
+const ValidationRunResultV2ExecutionStagesElemStageAssemble ValidationRunResultV2ExecutionStagesElemStage = "assemble"
+const ValidationRunResultV2ExecutionStagesElemStageDiagnostics ValidationRunResultV2ExecutionStagesElemStage = "diagnostics"
+const ValidationRunResultV2ExecutionStagesElemStageGrid ValidationRunResultV2ExecutionStagesElemStage = "grid"
+const ValidationRunResultV2ExecutionStagesElemStageMontecarlo ValidationRunResultV2ExecutionStagesElemStage = "montecarlo"
+const ValidationRunResultV2ExecutionStagesElemStageReport ValidationRunResultV2ExecutionStagesElemStage = "report"
+
+type ValidationRunResultV2ExecutionStagesElemStatus string
+
+const ValidationRunResultV2ExecutionStagesElemStatusFailed ValidationRunResultV2ExecutionStagesElemStatus = "failed"
+const ValidationRunResultV2ExecutionStagesElemStatusSkipped ValidationRunResultV2ExecutionStagesElemStatus = "skipped"
+const ValidationRunResultV2ExecutionStagesElemStatusSucceeded ValidationRunResultV2ExecutionStagesElemStatus = "succeeded"
+const ValidationRunResultV2ExecutionStagesElemStatusTimeout ValidationRunResultV2ExecutionStagesElemStatus = "timeout"
+
+type ValidationRunResultV2ExecutionStatus string
+
+const ValidationRunResultV2ExecutionStatusCancelled ValidationRunResultV2ExecutionStatus = "cancelled"
+const ValidationRunResultV2ExecutionStatusFailed ValidationRunResultV2ExecutionStatus = "failed"
+const ValidationRunResultV2ExecutionStatusSucceeded ValidationRunResultV2ExecutionStatus = "succeeded"
+const ValidationRunResultV2ExecutionStatusTimeout ValidationRunResultV2ExecutionStatus = "timeout"
+
+type ValidationRunResultV2Headline_1 struct {
+	// A derived statistic. null means undefined for a stated reason (for example no
+	// trades), never 'unknown'.
+	Expectancy interface{} `json:"expectancy" yaml:"expectancy" mapstructure:"expectancy"`
+
+	// FirstTradeT corresponds to the JSON schema field "firstTradeT".
+	FirstTradeT interface{} `json:"firstTradeT" yaml:"firstTradeT" mapstructure:"firstTradeT"`
+
+	// Present only when the manifest carried holdoutFromT.
+	Holdout *ValidationRunResultV2Headline_1Holdout `json:"holdout,omitempty" yaml:"holdout,omitempty" mapstructure:"holdout,omitempty"`
+
+	// LastTradeT corresponds to the JSON schema field "lastTradeT".
+	LastTradeT interface{} `json:"lastTradeT" yaml:"lastTradeT" mapstructure:"lastTradeT"`
+
+	// MaxDrawdown corresponds to the JSON schema field "maxDrawdown".
+	MaxDrawdown float64 `json:"maxDrawdown" yaml:"maxDrawdown" mapstructure:"maxDrawdown"`
+
+	// Unit of maxDrawdown. The Go report emits percent-of-peak-equity; absent means
+	// unspecified (pre-0.2.1 producers).
+	MaxDrawdownUnit *ValidationRunResultV2Headline_1MaxDrawdownUnit `json:"maxDrawdownUnit,omitempty" yaml:"maxDrawdownUnit,omitempty" mapstructure:"maxDrawdownUnit,omitempty"`
+
+	// MonteCarlo corresponds to the JSON schema field "monteCarlo".
+	MonteCarlo *ValidationRunResultV2Headline_1MonteCarlo `json:"monteCarlo,omitempty" yaml:"monteCarlo,omitempty" mapstructure:"monteCarlo,omitempty"`
+
+	// Net corresponds to the JSON schema field "net".
+	Net float64 `json:"net" yaml:"net" mapstructure:"net"`
+
+	// A derived statistic. null means undefined for a stated reason (for example no
+	// trades), never 'unknown'.
+	ProfitFactor interface{} `json:"profitFactor" yaml:"profitFactor" mapstructure:"profitFactor"`
+
+	// ProfitFactorReason corresponds to the JSON schema field "profitFactorReason".
+	ProfitFactorReason *ValidationRunResultV2Headline_1ProfitFactorReason `json:"profitFactorReason,omitempty" yaml:"profitFactorReason,omitempty" mapstructure:"profitFactorReason,omitempty"`
+
+	// Trades corresponds to the JSON schema field "trades".
+	Trades int `json:"trades" yaml:"trades" mapstructure:"trades"`
+
+	// A derived statistic. null means undefined for a stated reason (for example no
+	// trades), never 'unknown'.
+	WinRate interface{} `json:"winRate" yaml:"winRate" mapstructure:"winRate"`
+}
+
+// Present only when the manifest carried holdoutFromT.
+type ValidationRunResultV2Headline_1Holdout struct {
+	// Net corresponds to the JSON schema field "net".
+	Net float64 `json:"net" yaml:"net" mapstructure:"net"`
+
+	// A derived statistic. null means undefined for a stated reason (for example no
+	// trades), never 'unknown'.
+	ProfitFactor interface{} `json:"profitFactor" yaml:"profitFactor" mapstructure:"profitFactor"`
+
+	// Trades corresponds to the JSON schema field "trades".
+	Trades int `json:"trades" yaml:"trades" mapstructure:"trades"`
+}
+
+type ValidationRunResultV2Headline_1MaxDrawdownUnit string
+
+const ValidationRunResultV2Headline_1MaxDrawdownUnitCurrency ValidationRunResultV2Headline_1MaxDrawdownUnit = "currency"
+const ValidationRunResultV2Headline_1MaxDrawdownUnitPercentOfPeakEquity ValidationRunResultV2Headline_1MaxDrawdownUnit = "percent-of-peak-equity"
+
+type ValidationRunResultV2Headline_1MonteCarlo struct {
+	// DrawdownP5 corresponds to the JSON schema field "drawdownP5".
+	DrawdownP5 float64 `json:"drawdownP5" yaml:"drawdownP5" mapstructure:"drawdownP5"`
+
+	// DrawdownP50 corresponds to the JSON schema field "drawdownP50".
+	DrawdownP50 float64 `json:"drawdownP50" yaml:"drawdownP50" mapstructure:"drawdownP50"`
+
+	// DrawdownP95 corresponds to the JSON schema field "drawdownP95".
+	DrawdownP95 float64 `json:"drawdownP95" yaml:"drawdownP95" mapstructure:"drawdownP95"`
+
+	// Iterations corresponds to the JSON schema field "iterations".
+	Iterations int `json:"iterations" yaml:"iterations" mapstructure:"iterations"`
+
+	// Method corresponds to the JSON schema field "method".
+	Method ValidationRunResultV2Headline_1MonteCarloMethod `json:"method" yaml:"method" mapstructure:"method"`
+}
+
+type ValidationRunResultV2Headline_1MonteCarloMethod string
+
+const ValidationRunResultV2Headline_1MonteCarloMethodBootstrap ValidationRunResultV2Headline_1MonteCarloMethod = "bootstrap"
+const ValidationRunResultV2Headline_1MonteCarloMethodPermutation ValidationRunResultV2Headline_1MonteCarloMethod = "permutation"
+
+type ValidationRunResultV2Headline_1ProfitFactorReason string
+
+const ValidationRunResultV2Headline_1ProfitFactorReasonInsufficientData ValidationRunResultV2Headline_1ProfitFactorReason = "insufficient-data"
+const ValidationRunResultV2Headline_1ProfitFactorReasonNoLosses ValidationRunResultV2Headline_1ProfitFactorReason = "no-losses"
+const ValidationRunResultV2Headline_1ProfitFactorReasonNoTrades ValidationRunResultV2Headline_1ProfitFactorReason = "no-trades"
+const ValidationRunResultV2Headline_1ProfitFactorReasonNoWins ValidationRunResultV2Headline_1ProfitFactorReason = "no-wins"
+const ValidationRunResultV2Headline_1ProfitFactorReasonNotApplicable ValidationRunResultV2Headline_1ProfitFactorReason = "not-applicable"
+
+type ValidationRunResultV2Promotion struct {
+	// Checks corresponds to the JSON schema field "checks".
+	Checks []ValidationRunResultV2PromotionChecksElem `json:"checks,omitempty" yaml:"checks,omitempty" mapstructure:"checks,omitempty"`
+
+	// PolicyVersion corresponds to the JSON schema field "policyVersion".
+	PolicyVersion int `json:"policyVersion" yaml:"policyVersion" mapstructure:"policyVersion"`
+
+	// Status corresponds to the JSON schema field "status".
+	Status ValidationRunResultV2PromotionStatus `json:"status" yaml:"status" mapstructure:"status"`
+}
+
+type ValidationRunResultV2PromotionChecksElem struct {
+	// value >= threshold, > , <= , < respectively.
+	Comparator ValidationRunResultV2PromotionChecksElemComparator `json:"comparator" yaml:"comparator" mapstructure:"comparator"`
+
+	// Name corresponds to the JSON schema field "name".
+	Name string `json:"name" yaml:"name" mapstructure:"name"`
+
+	// Passed corresponds to the JSON schema field "passed".
+	Passed bool `json:"passed" yaml:"passed" mapstructure:"passed"`
+
+	// Threshold corresponds to the JSON schema field "threshold".
+	Threshold float64 `json:"threshold" yaml:"threshold" mapstructure:"threshold"`
+
+	// A derived statistic. null means undefined for a stated reason (for example no
+	// trades), never 'unknown'.
+	Value interface{} `json:"value" yaml:"value" mapstructure:"value"`
+}
+
+type ValidationRunResultV2PromotionChecksElemComparator string
+
+const ValidationRunResultV2PromotionChecksElemComparatorAbove ValidationRunResultV2PromotionChecksElemComparator = "above"
+const ValidationRunResultV2PromotionChecksElemComparatorAtLeast ValidationRunResultV2PromotionChecksElemComparator = "at-least"
+const ValidationRunResultV2PromotionChecksElemComparatorAtMost ValidationRunResultV2PromotionChecksElemComparator = "at-most"
+const ValidationRunResultV2PromotionChecksElemComparatorBelow ValidationRunResultV2PromotionChecksElemComparator = "below"
+
+type ValidationRunResultV2PromotionStatus string
+
+const ValidationRunResultV2PromotionStatusEligible ValidationRunResultV2PromotionStatus = "eligible"
+const ValidationRunResultV2PromotionStatusNotEligible ValidationRunResultV2PromotionStatus = "not-eligible"
+const ValidationRunResultV2PromotionStatusUnassessed ValidationRunResultV2PromotionStatus = "unassessed"

@@ -54,7 +54,7 @@ export declare const DOCUMENT_SCHEMAS: {
         }, import("zod/v4/core").$strict>;
         supersedes: import("zod").ZodOptional<import("zod").ZodUnion<readonly [import("zod").ZodString, import("zod").ZodNull]>>;
     }, import("zod/v4/core").$strict>;
-    readonly 'heisentick/validation-run-manifest': import("zod").ZodObject<{
+    readonly 'heisentick/validation-run-manifest': import("zod").ZodUnion<[import("zod").ZodObject<{
         schema: import("zod").ZodLiteral<"heisentick/validation-run-manifest">;
         version: import("zod").ZodLiteral<1>;
         runId: import("zod").ZodString;
@@ -219,7 +219,180 @@ export declare const DOCUMENT_SCHEMAS: {
             }>;
         }, import("zod/v4/core").$strict>;
         submittedAt: import("zod").ZodNumber;
-    }, import("zod/v4/core").$strict>;
+    }, import("zod/v4/core").$strict>, import("zod").ZodObject<{
+        schema: import("zod").ZodLiteral<"heisentick/validation-run-manifest">;
+        version: import("zod").ZodLiteral<2>;
+        runId: import("zod").ZodString;
+        requestKey: import("zod").ZodString;
+        inputFingerprint: import("zod").ZodString;
+        kind: import("zod").ZodEnum<{
+            report: "report";
+            validate: "validate";
+            basket: "basket";
+        }>;
+        strategy: import("zod").ZodObject<{
+            id: import("zod").ZodString;
+            sourceSha256: import("zod").ZodString;
+            sourceObject: import("zod").ZodOptional<import("zod").ZodString>;
+            params: import("zod").ZodRecord<import("zod").ZodString, import("zod").ZodUnion<readonly [import("zod").ZodNumber, import("zod").ZodString, import("zod").ZodBoolean]>>;
+        }, import("zod/v4/core").$strict>;
+        engine: import("zod").ZodObject<{
+            stratReleaseArtifact: import("zod").ZodObject<{
+                release: import("zod").ZodString;
+                assetName: import("zod").ZodString;
+                sha256: import("zod").ZodString;
+            }, import("zod/v4/core").$strict>;
+            expectedLinkedModule: import("zod").ZodObject<{
+                modulePath: import("zod").ZodLiteral<"github.com/spik3r/heisentick-strat">;
+                release: import("zod").ZodString;
+                moduleSum: import("zod").ZodString;
+            }, import("zod/v4/core").$strict>;
+            goVersion: import("zod").ZodString;
+            validationRelease: import("zod").ZodString;
+            reportSchemaVersion: import("zod").ZodNumber;
+            resultSchemaVersion: import("zod").ZodNumber;
+        }, import("zod/v4/core").$strict>;
+        route: import("zod").ZodObject<{
+            symbol: import("zod").ZodString;
+            timeframe: import("zod").ZodEnum<{
+                "1m": "1m";
+                "5m": "5m";
+                "15m": "15m";
+                "30m": "30m";
+                "1h": "1h";
+                "4h": "4h";
+                "1d": "1d";
+            }>;
+            sourceTimeframe: import("zod").ZodUnion<readonly [import("zod").ZodEnum<{
+                "1m": "1m";
+                "5m": "5m";
+                "15m": "15m";
+                "30m": "30m";
+                "1h": "1h";
+                "4h": "4h";
+                "1d": "1d";
+            }>, import("zod").ZodNull]>;
+            higherTimeframe: import("zod").ZodUnion<readonly [import("zod").ZodEnum<{
+                "1m": "1m";
+                "5m": "5m";
+                "15m": "15m";
+                "30m": "30m";
+                "1h": "1h";
+                "4h": "4h";
+                "1d": "1d";
+            }>, import("zod").ZodNull]>;
+            rangeMethod: import("zod").ZodEnum<{
+                zone: "zone";
+                pivot: "pivot";
+            }>;
+            instrument: import("zod").ZodOptional<import("zod").ZodObject<{
+                tickSize: import("zod").ZodNumber;
+                pointValue: import("zod").ZodNumber;
+                quoteCurrency: import("zod").ZodString;
+            }, import("zod/v4/core").$strict>>;
+        }, import("zod/v4/core").$strict>;
+        data: import("zod").ZodObject<{
+            provider: import("zod").ZodEnum<{
+                dukascopy: "dukascopy";
+                binance: "binance";
+                synthetic: "synthetic";
+            }>;
+            series: import("zod").ZodArray<import("zod").ZodObject<{
+                role: import("zod").ZodEnum<{
+                    entry: "entry";
+                    source: "source";
+                    higher: "higher";
+                    context: "context";
+                }>;
+                symbol: import("zod").ZodString;
+                timeframe: import("zod").ZodEnum<{
+                    "1m": "1m";
+                    "5m": "5m";
+                    "15m": "15m";
+                    "30m": "30m";
+                    "1h": "1h";
+                    "4h": "4h";
+                    "1d": "1d";
+                }>;
+                object: import("zod").ZodString;
+                sha256: import("zod").ZodString;
+                count: import("zod").ZodNumber;
+                windowFromT: import("zod").ZodNumber;
+                windowToT: import("zod").ZodNumber;
+            }, import("zod/v4/core").$strict>>;
+        }, import("zod/v4/core").$strict>;
+        execution: import("zod").ZodObject<{
+            fromT: import("zod").ZodNumber;
+            toT: import("zod").ZodNumber;
+            warmupBars: import("zod").ZodNumber;
+            fillOn: import("zod").ZodEnum<{
+                close: "close";
+                "next-open": "next-open";
+            }>;
+            initialState: import("zod").ZodLiteral<"flat">;
+            endOfTest: import("zod").ZodEnum<{
+                "liquidate-last-close": "liquidate-last-close";
+                "leave-open": "leave-open";
+            }>;
+            holdoutFromT: import("zod").ZodOptional<import("zod").ZodUnion<readonly [import("zod").ZodNumber, import("zod").ZodNull]>>;
+        }, import("zod/v4/core").$strict>;
+        costs: import("zod").ZodObject<{
+            modelVersion: import("zod").ZodNumber;
+            mode: import("zod").ZodEnum<{
+                raw: "raw";
+                realistic: "realistic";
+                harsh: "harsh";
+            }>;
+            slippage: import("zod").ZodNumber;
+            slippageBps: import("zod").ZodNumber;
+            spread: import("zod").ZodNumber;
+            commissionPerUnit: import("zod").ZodNumber;
+            financingPerDayBps: import("zod").ZodNumber;
+            startEquity: import("zod").ZodNumber;
+        }, import("zod/v4/core").$strict>;
+        validation: import("zod").ZodObject<{
+            grid: import("zod").ZodUnion<readonly [import("zod").ZodNull, import("zod").ZodObject<{
+                cells: import("zod").ZodArray<import("zod").ZodObject<{
+                    cellIndex: import("zod").ZodNumber;
+                    params: import("zod").ZodRecord<import("zod").ZodString, import("zod").ZodUnion<readonly [import("zod").ZodNumber, import("zod").ZodString, import("zod").ZodBoolean]>>;
+                    costMode: import("zod").ZodEnum<{
+                        raw: "raw";
+                        realistic: "realistic";
+                        harsh: "harsh";
+                    }>;
+                }, import("zod/v4/core").$strict>>;
+            }, import("zod/v4/core").$strict>]>;
+            monteCarlo: import("zod").ZodUnion<readonly [import("zod").ZodNull, import("zod").ZodObject<{
+                methods: import("zod").ZodArray<import("zod").ZodEnum<{
+                    permutation: "permutation";
+                    bootstrap: "bootstrap";
+                }>>;
+                iterations: import("zod").ZodNumber;
+                seed: import("zod").ZodNumber;
+            }, import("zod/v4/core").$strict>]>;
+            diagnostics: import("zod").ZodUnion<readonly [import("zod").ZodNull, import("zod").ZodObject<{
+                recentMonths: import("zod").ZodNumber;
+                harshCostMode: import("zod").ZodEnum<{
+                    raw: "raw";
+                    realistic: "realistic";
+                    harsh: "harsh";
+                }>;
+            }, import("zod/v4/core").$strict>]>;
+        }, import("zod/v4/core").$strict>;
+        policy: import("zod").ZodObject<{
+            promotionPolicyVersion: import("zod").ZodNumber;
+            profile: import("zod").ZodString;
+        }, import("zod/v4/core").$strict>;
+        requestedBy: import("zod").ZodObject<{
+            subject: import("zod").ZodString;
+            via: import("zod").ZodEnum<{
+                "lab-ui": "lab-ui";
+                "operator-token": "operator-token";
+                local: "local";
+            }>;
+        }, import("zod/v4/core").$strict>;
+        submittedAt: import("zod").ZodNumber;
+    }, import("zod/v4/core").$strict>]>;
     readonly 'heisentick/validation-run-request': import("zod").ZodObject<{
         schema: import("zod").ZodLiteral<"heisentick/validation-run-request">;
         version: import("zod").ZodLiteral<1>;
@@ -261,7 +434,7 @@ export declare const DOCUMENT_SCHEMAS: {
         seed: import("zod").ZodOptional<import("zod").ZodNumber>;
         params: import("zod").ZodOptional<import("zod").ZodRecord<import("zod").ZodString, import("zod").ZodUnion<readonly [import("zod").ZodNumber, import("zod").ZodString, import("zod").ZodBoolean]>>>;
     }, import("zod/v4/core").$strict>;
-    readonly 'heisentick/validation-run-result': import("zod").ZodObject<{
+    readonly 'heisentick/validation-run-result': import("zod").ZodUnion<[import("zod").ZodObject<{
         schema: import("zod").ZodLiteral<"heisentick/validation-run-result">;
         version: import("zod").ZodLiteral<1>;
         runId: import("zod").ZodString;
@@ -421,7 +594,169 @@ export declare const DOCUMENT_SCHEMAS: {
             validationRelease: import("zod").ZodString;
         }, import("zod/v4/core").$strict>;
         finishedAt: import("zod").ZodNumber;
-    }, import("zod/v4/core").$strict>;
+    }, import("zod/v4/core").$strict>, import("zod").ZodObject<{
+        schema: import("zod").ZodLiteral<"heisentick/validation-run-result">;
+        version: import("zod").ZodLiteral<2>;
+        runId: import("zod").ZodString;
+        attempt: import("zod").ZodNumber;
+        inputFingerprint: import("zod").ZodString;
+        manifestKey: import("zod").ZodString;
+        execution: import("zod").ZodObject<{
+            status: import("zod").ZodEnum<{
+                succeeded: "succeeded";
+                failed: "failed";
+                cancelled: "cancelled";
+                timeout: "timeout";
+            }>;
+            failedStage: import("zod").ZodOptional<import("zod").ZodEnum<{
+                report: "report";
+                grid: "grid";
+                diagnostics: "diagnostics";
+                montecarlo: "montecarlo";
+                assemble: "assemble";
+            }>>;
+            error: import("zod").ZodOptional<import("zod").ZodObject<{
+                code: import("zod").ZodString;
+                message: import("zod").ZodString;
+            }, import("zod/v4/core").$strict>>;
+            stages: import("zod").ZodArray<import("zod").ZodObject<{
+                stage: import("zod").ZodEnum<{
+                    report: "report";
+                    grid: "grid";
+                    diagnostics: "diagnostics";
+                    montecarlo: "montecarlo";
+                    assemble: "assemble";
+                }>;
+                status: import("zod").ZodEnum<{
+                    succeeded: "succeeded";
+                    failed: "failed";
+                    timeout: "timeout";
+                    skipped: "skipped";
+                }>;
+                durationMs: import("zod").ZodNumber;
+                billedMs: import("zod").ZodOptional<import("zod").ZodNumber>;
+                maxMemoryMb: import("zod").ZodOptional<import("zod").ZodNumber>;
+                cells: import("zod").ZodOptional<import("zod").ZodNumber>;
+            }, import("zod/v4/core").$strict>>;
+        }, import("zod/v4/core").$strict>;
+        assessment: import("zod").ZodObject<{
+            status: import("zod").ZodEnum<{
+                assessed: "assessed";
+                "insufficient-data": "insufficient-data";
+                "not-applicable": "not-applicable";
+                unassessed: "unassessed";
+            }>;
+            reason: import("zod").ZodOptional<import("zod").ZodEnum<{
+                "insufficient-data": "insufficient-data";
+                "not-applicable": "not-applicable";
+                "no-trades": "no-trades";
+                "no-losses": "no-losses";
+                "no-wins": "no-wins";
+            }>>;
+            minimumTrades: import("zod").ZodOptional<import("zod").ZodNumber>;
+        }, import("zod/v4/core").$strict>;
+        promotion: import("zod").ZodObject<{
+            status: import("zod").ZodEnum<{
+                unassessed: "unassessed";
+                eligible: "eligible";
+                "not-eligible": "not-eligible";
+            }>;
+            policyVersion: import("zod").ZodNumber;
+            checks: import("zod").ZodOptional<import("zod").ZodArray<import("zod").ZodObject<{
+                name: import("zod").ZodString;
+                passed: import("zod").ZodBoolean;
+                value: import("zod").ZodUnion<readonly [import("zod").ZodNumber, import("zod").ZodNull]>;
+                threshold: import("zod").ZodNumber;
+                comparator: import("zod").ZodEnum<{
+                    "at-least": "at-least";
+                    above: "above";
+                    "at-most": "at-most";
+                    below: "below";
+                }>;
+            }, import("zod/v4/core").$strict>>>;
+        }, import("zod/v4/core").$strict>;
+        headline: import("zod").ZodUnion<readonly [import("zod").ZodNull, import("zod").ZodObject<{
+            trades: import("zod").ZodNumber;
+            winRate: import("zod").ZodUnion<readonly [import("zod").ZodNumber, import("zod").ZodNull]>;
+            profitFactor: import("zod").ZodUnion<readonly [import("zod").ZodNumber, import("zod").ZodNull]>;
+            profitFactorReason: import("zod").ZodOptional<import("zod").ZodEnum<{
+                "insufficient-data": "insufficient-data";
+                "not-applicable": "not-applicable";
+                "no-trades": "no-trades";
+                "no-losses": "no-losses";
+                "no-wins": "no-wins";
+            }>>;
+            net: import("zod").ZodNumber;
+            expectancy: import("zod").ZodUnion<readonly [import("zod").ZodNumber, import("zod").ZodNull]>;
+            maxDrawdown: import("zod").ZodNumber;
+            maxDrawdownUnit: import("zod").ZodOptional<import("zod").ZodEnum<{
+                "percent-of-peak-equity": "percent-of-peak-equity";
+                currency: "currency";
+            }>>;
+            firstTradeT: import("zod").ZodUnion<readonly [import("zod").ZodNumber, import("zod").ZodNull]>;
+            lastTradeT: import("zod").ZodUnion<readonly [import("zod").ZodNumber, import("zod").ZodNull]>;
+            monteCarlo: import("zod").ZodOptional<import("zod").ZodObject<{
+                method: import("zod").ZodEnum<{
+                    permutation: "permutation";
+                    bootstrap: "bootstrap";
+                }>;
+                iterations: import("zod").ZodNumber;
+                drawdownP5: import("zod").ZodNumber;
+                drawdownP50: import("zod").ZodNumber;
+                drawdownP95: import("zod").ZodNumber;
+            }, import("zod/v4/core").$strict>>;
+            holdout: import("zod").ZodOptional<import("zod").ZodObject<{
+                trades: import("zod").ZodNumber;
+                profitFactor: import("zod").ZodUnion<readonly [import("zod").ZodNumber, import("zod").ZodNull]>;
+                net: import("zod").ZodNumber;
+            }, import("zod/v4/core").$strict>>;
+        }, import("zod/v4/core").$strict>]>;
+        artifacts: import("zod").ZodObject<{
+            report: import("zod").ZodOptional<import("zod").ZodObject<{
+                object: import("zod").ZodString;
+                sha256: import("zod").ZodString;
+                byteLength: import("zod").ZodNumber;
+                schema: import("zod").ZodString;
+                version: import("zod").ZodNumber;
+            }, import("zod/v4/core").$strict>>;
+            trades: import("zod").ZodOptional<import("zod").ZodObject<{
+                object: import("zod").ZodString;
+                sha256: import("zod").ZodString;
+                byteLength: import("zod").ZodNumber;
+                schema: import("zod").ZodString;
+                version: import("zod").ZodNumber;
+            }, import("zod/v4/core").$strict>>;
+            grid: import("zod").ZodOptional<import("zod").ZodObject<{
+                object: import("zod").ZodString;
+                sha256: import("zod").ZodString;
+                byteLength: import("zod").ZodNumber;
+                schema: import("zod").ZodString;
+                version: import("zod").ZodNumber;
+            }, import("zod/v4/core").$strict>>;
+            monteCarlo: import("zod").ZodOptional<import("zod").ZodObject<{
+                object: import("zod").ZodString;
+                sha256: import("zod").ZodString;
+                byteLength: import("zod").ZodNumber;
+                schema: import("zod").ZodString;
+                version: import("zod").ZodNumber;
+            }, import("zod/v4/core").$strict>>;
+            diagnostics: import("zod").ZodOptional<import("zod").ZodObject<{
+                object: import("zod").ZodString;
+                sha256: import("zod").ZodString;
+                byteLength: import("zod").ZodNumber;
+                schema: import("zod").ZodString;
+                version: import("zod").ZodNumber;
+            }, import("zod/v4/core").$strict>>;
+        }, import("zod/v4/core").$strict>;
+        engine: import("zod").ZodObject<{
+            linkedEngine: import("zod").ZodAny;
+            assembleExecutor: import("zod").ZodObject<{
+                sha256: import("zod").ZodString;
+            }, import("zod/v4/core").$strict>;
+            validationRelease: import("zod").ZodString;
+        }, import("zod/v4/core").$strict>;
+        finishedAt: import("zod").ZodNumber;
+    }, import("zod/v4/core").$strict>]>;
     readonly 'heisentick/validation-request-message': import("zod").ZodObject<{
         schema: import("zod").ZodLiteral<"heisentick/validation-request-message">;
         version: import("zod").ZodLiteral<1>;

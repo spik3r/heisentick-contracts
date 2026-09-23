@@ -129,6 +129,85 @@ test('validation v1 accepts distinct release-artifact and result-publisher diges
   assert.notEqual(manifestDigest, publisherDigest);
 });
 
+test('validation v2 separates requested artifact, linked engine, and executors', () => {
+  const manifestV1 = readJson(join(FIXTURES, 'validation-run-manifest.v1', 'valid', 'example.json')) as Record<string, unknown>;
+  const resultV1 = readJson(join(FIXTURES, 'validation-run-result.v1', 'valid', 'example.json')) as Record<string, unknown>;
+  const v1Engine = manifestV1.engine as Record<string, unknown>;
+  const manifestV2 = {
+    ...manifestV1,
+    version: 2,
+    engine: {
+      stratReleaseArtifact: {
+        release: 'v0.7.0',
+        assetName: 'heisentick-linux-arm64',
+        sha256: 'a'.repeat(64),
+      },
+      expectedLinkedModule: {
+        modulePath: 'github.com/spik3r/heisentick-strat',
+        release: 'v0.7.0',
+        moduleSum: 'h1:1SNXS6pBprVScNWq5L8jP+rrqGDLXdwtGQzfTR7vYJc=',
+      },
+      goVersion: v1Engine.goVersion,
+      validationRelease: v1Engine.validationRelease,
+      reportSchemaVersion: v1Engine.reportSchemaVersion,
+      resultSchemaVersion: 2,
+    },
+  };
+  const resultV2 = {
+    ...resultV1,
+    version: 2,
+    engine: {
+      linkedEngine: {
+        status: 'measured',
+        modulePath: 'github.com/spik3r/heisentick-strat',
+        release: 'v0.7.0',
+        moduleSum: 'h1:1SNXS6pBprVScNWq5L8jP+rrqGDLXdwtGQzfTR7vYJc=',
+        reportExecutorSha256: 'b'.repeat(64),
+      },
+      assembleExecutor: { sha256: 'c'.repeat(64) },
+      validationRelease: 'v0.4.0',
+    },
+  };
+
+  assert.doesNotThrow(() => parseDocument('heisentick/validation-run-manifest', manifestV2));
+  assert.doesNotThrow(() => parseDocument('heisentick/validation-run-result', resultV2));
+  assert.doesNotThrow(() => parseDocument('heisentick/validation-run-manifest', manifestV1));
+  assert.doesNotThrow(() => parseDocument('heisentick/validation-run-result', resultV1));
+
+  assert.throws(() => parseDocument('heisentick/validation-run-manifest', {
+    ...manifestV2,
+    engine: {
+      ...manifestV2.engine,
+      expectedLinkedModule: { ...manifestV2.engine.expectedLinkedModule, release: 'v0.7.1' },
+    },
+  }), /must equal engine\.stratReleaseArtifact\.release/);
+
+  assert.throws(() => parseDocument('heisentick/validation-run-result', {
+    ...resultV2,
+    engine: { ...resultV2.engine, linkedEngine: { status: 'unavailable', reason: 'report-not-started' } },
+  }), /must be measured when execution.status is succeeded/);
+  assert.throws(() => parseDocument('heisentick/validation-run-result', {
+    ...resultV2,
+    engine: {
+      ...resultV2.engine,
+      linkedEngine: { ...resultV2.engine.linkedEngine, moduleSum: 'not-a-go-module-sum' },
+    },
+  }), /engine\.linkedEngine/);
+});
+
+test('validation v2 permits an explicit unavailable Report identity only for a failed run', () => {
+  const failedV1 = readJson(join(FIXTURES, 'validation-run-result-failed.v1', 'valid', 'example.json')) as Record<string, unknown>;
+  assert.doesNotThrow(() => parseDocument('heisentick/validation-run-result', {
+    ...failedV1,
+    version: 2,
+    engine: {
+      linkedEngine: { status: 'unavailable', reason: 'report-not-started' },
+      assembleExecutor: { sha256: 'c'.repeat(64) },
+      validationRelease: 'v0.4.0',
+    },
+  }));
+});
+
 test('canonical JSON matches the committed cases and rejects non-finite numbers and undefined', () => {
   const cases = readJson(join(FIXTURES, 'canonical', 'cases.json')) as { name: string; input: unknown; canonical: string; sha256?: string }[];
   for (const c of cases) {

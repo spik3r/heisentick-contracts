@@ -13,9 +13,9 @@ export type { JsonValue } from './canonical.js';
 export const DOCUMENT_SCHEMAS = {
   'heisentick/bar-binary-layout': gen.barBinaryLayoutV1,
   'heisentick/candle-snapshot-manifest': gen.candleSnapshotManifestV1,
-  'heisentick/validation-run-manifest': gen.validationRunManifestV1,
+  'heisentick/validation-run-manifest': gen.validationRunManifestV1.or(gen.validationRunManifestV2),
   'heisentick/validation-run-request': gen.validationRunRequestV1,
-  'heisentick/validation-run-result': gen.validationRunResultV1,
+  'heisentick/validation-run-result': gen.validationRunResultV1.or(gen.validationRunResultV2),
   'heisentick/validation-request-message': gen.validationQueueMessagesV1ValidationRequestMessage,
   'heisentick/validation-result-message': gen.validationQueueMessagesV1ValidationResultMessage,
 } as const satisfies Record<string, ZodType>;
@@ -57,11 +57,21 @@ export function parseDocument(name: DocumentSchemaName, value: unknown): unknown
 // generated zod object's rejection of unknown fields.
 export function crossFieldIssues(name: DocumentSchemaName, doc: unknown): string[] {
   const issues: string[] = [];
+  if (name === 'heisentick/validation-run-manifest') {
+    const d = doc as { version: number; engine?: { stratReleaseArtifact?: { release?: string }; expectedLinkedModule?: { release?: string } } };
+    if (d.version === 2 && d.engine?.stratReleaseArtifact?.release !== d.engine?.expectedLinkedModule?.release) {
+      issues.push('engine.expectedLinkedModule.release: must equal engine.stratReleaseArtifact.release');
+    }
+  }
   if (name === 'heisentick/validation-run-result') {
     const d = doc as { execution: { status: string }; artifacts: { report?: unknown }; headline: unknown };
     if (d.execution.status === 'succeeded') {
       if (!d.artifacts.report) issues.push('artifacts.report: required when execution.status is succeeded');
       if (d.headline === null) issues.push('headline: must not be null when execution.status is succeeded');
+      const v2 = doc as { version: number; engine?: { linkedEngine?: { status?: string } } };
+      if (v2.version === 2 && v2.engine?.linkedEngine?.status !== 'measured') {
+        issues.push('engine.linkedEngine.status: must be measured when execution.status is succeeded');
+      }
     }
   }
   return issues;

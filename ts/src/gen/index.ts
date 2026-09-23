@@ -3,14 +3,18 @@ export * from './barBinaryLayoutV1.js';
 export * from './candleSnapshotManifestV1.js';
 export * from './validationQueueMessagesV1.js';
 export * from './validationRunManifestV1.js';
+export * from './validationRunManifestV2.js';
 export * from './validationRunRequestV1.js';
 export * from './validationRunResultV1.js';
+export * from './validationRunResultV2.js';
 
 export const SCHEMA_FILES = {
   "barBinaryLayoutV1": "bar-binary-layout.v1.schema.json",
   "candleSnapshotManifestV1": "candle-snapshot-manifest.v1.schema.json",
   "validationQueueMessagesV1": "validation-queue-messages.v1.schema.json",
   "validationRunManifestV1": "validation-run-manifest.v1.schema.json",
+  "validationRunManifestV2": "validation-run-manifest.v2.schema.json",
   "validationRunRequestV1": "validation-run-request.v1.schema.json",
-  "validationRunResultV1": "validation-run-result.v1.schema.json"
+  "validationRunResultV1": "validation-run-result.v1.schema.json",
+  "validationRunResultV2": "validation-run-result.v2.schema.json"
 } as const;

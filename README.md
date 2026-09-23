@@ -30,6 +30,29 @@ contiguous Float64 columns in the order `t,o,h,l,c,v`, column `i` at byte
 `16 + i*count*8`, missing volume `0`, file sha256 carried by the snapshot
 manifest.
 
+### Engine provenance in validation v2
+
+Version 2 separates submission intent from measured execution identity:
+
+- Manifest `engine.stratReleaseArtifact` names the published standalone asset,
+  release and sha256 selected by the submitter.
+- Manifest `engine.expectedLinkedModule` pins the module path, release and Go
+  module sum that the Report executor is expected to measure independently.
+- Result `engine.linkedEngine` carries the strat module path, release and Go
+  module sum read from the Report executable's build metadata, plus the sha256
+  of that Report executable.
+- Result `engine.assembleExecutor.sha256` is measured by Assemble over its own
+  executable. Result `engine.validationRelease` is also read from Assemble's
+  build metadata.
+
+A successful v2 result requires a measured linked engine. A failed run may use
+an explicit unavailable status only when Report did not produce identity. The
+producer must carry the Report-derived object unchanged through later stages;
+Assemble cannot fill it from manifest values. Consumers compare the measured
+linked release with the requested release before admitting evidence and retain
+all three artifact identities. Version 1 remains accepted for historical data
+with the weaker provenance described below.
+
 ### Engine provenance in validation v1
 
 The two v1 `engine.stratBuildDigest` fields identify different artifacts:
