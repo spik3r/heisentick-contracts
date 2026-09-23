@@ -73,6 +73,32 @@ func TestUnknownSchemaIsAnError(t *testing.T) {
 	}
 }
 
+func TestValidationV2DispatchAndLinkedEngineRequirement(t *testing.T) {
+	raw := []byte(`{
+        "schema":"heisentick/validation-run-result","version":2,
+        "runId":"01234567-89ab-4cde-8fab-0123456789ab","attempt":1,
+        "inputFingerprint":"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "manifestKey":"runs/example/manifest.json",
+        "execution":{"status":"failed","failedStage":"report","error":{"code":"engine-error","message":"failed"},"stages":[]},
+        "assessment":{"status":"unassessed"},
+        "promotion":{"status":"unassessed","policyVersion":1},
+        "headline":null,"artifacts":{},
+        "engine":{"linkedEngine":{"status":"unavailable","reason":"report-not-started"},"assembleExecutor":{"sha256":"cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc"},"validationRelease":"v0.4.0"},
+        "finishedAt":1600000000000
+    }`)
+	if _, err := Validate("heisentick/validation-run-result", raw); err != nil {
+		t.Fatalf("v2 failed result: %v", err)
+	}
+	succeeded := strings.Replace(string(raw), `"status":"failed"`, `"status":"succeeded"`, 1)
+	if _, err := Validate("heisentick/validation-run-result", []byte(succeeded)); err == nil {
+		t.Fatal("expected succeeded result with unavailable Report identity to fail")
+	}
+	unknown := strings.Replace(string(raw), `"version":2`, `"version":3`, 1)
+	if _, err := Validate("heisentick/validation-run-result", []byte(unknown)); err == nil || !strings.Contains(err.Error(), "unknown document version 3") {
+		t.Fatalf("expected unknown version rejection, got %v", err)
+	}
+}
+
 func TestDecodeIntoGeneratedStruct(t *testing.T) {
 	raw, err := os.ReadFile("fixtures/candle-snapshot-manifest.v1/valid/example.json")
 	if err != nil {

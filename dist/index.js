@@ -6,9 +6,9 @@ export { canonicalJson, inputFingerprint, sha256Hex, CanonicalJsonError, MANIFES
 export const DOCUMENT_SCHEMAS = {
     'heisentick/bar-binary-layout': gen.barBinaryLayoutV1,
     'heisentick/candle-snapshot-manifest': gen.candleSnapshotManifestV1,
-    'heisentick/validation-run-manifest': gen.validationRunManifestV1,
+    'heisentick/validation-run-manifest': gen.validationRunManifestV1.or(gen.validationRunManifestV2),
     'heisentick/validation-run-request': gen.validationRunRequestV1,
-    'heisentick/validation-run-result': gen.validationRunResultV1,
+    'heisentick/validation-run-result': gen.validationRunResultV1.or(gen.validationRunResultV2),
     'heisentick/validation-request-message': gen.validationQueueMessagesV1ValidationRequestMessage,
     'heisentick/validation-result-message': gen.validationQueueMessagesV1ValidationResultMessage,
 };
@@ -45,6 +45,12 @@ export function parseDocument(name, value) {
 // generated zod object's rejection of unknown fields.
 export function crossFieldIssues(name, doc) {
     const issues = [];
+    if (name === 'heisentick/validation-run-manifest') {
+        const d = doc;
+        if (d.version === 2 && d.engine?.stratReleaseArtifact?.release !== d.engine?.expectedLinkedModule?.release) {
+            issues.push('engine.expectedLinkedModule.release: must equal engine.stratReleaseArtifact.release');
+        }
+    }
     if (name === 'heisentick/validation-run-result') {
         const d = doc;
         if (d.execution.status === 'succeeded') {
@@ -52,6 +58,10 @@ export function crossFieldIssues(name, doc) {
                 issues.push('artifacts.report: required when execution.status is succeeded');
             if (d.headline === null)
                 issues.push('headline: must not be null when execution.status is succeeded');
+            const v2 = doc;
+            if (v2.version === 2 && v2.engine?.linkedEngine?.status !== 'measured') {
+                issues.push('engine.linkedEngine.status: must be measured when execution.status is succeeded');
+            }
         }
     }
     return issues;

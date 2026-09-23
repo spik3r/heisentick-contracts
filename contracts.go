@@ -21,14 +21,14 @@ var schemaFS embed.FS
 // Document names are the `schema` field value each document carries. The
 // table maps them to the schema file (and JSON pointer, for the queue
 // messages that share one file).
-var documents = map[string]struct{ file, pointer string }{
-	"heisentick/bar-binary-layout":          {"bar-binary-layout.v1.schema.json", ""},
-	"heisentick/candle-snapshot-manifest":   {"candle-snapshot-manifest.v1.schema.json", ""},
-	"heisentick/validation-run-manifest":    {"validation-run-manifest.v1.schema.json", ""},
-	"heisentick/validation-run-request":     {"validation-run-request.v1.schema.json", ""},
-	"heisentick/validation-run-result":      {"validation-run-result.v1.schema.json", ""},
-	"heisentick/validation-request-message": {"validation-queue-messages.v1.schema.json", "/$defs/validationRequestMessage"},
-	"heisentick/validation-result-message":  {"validation-queue-messages.v1.schema.json", "/$defs/validationResultMessage"},
+var documents = map[string]map[int]struct{ file, pointer string }{
+	"heisentick/bar-binary-layout":          {1: {"bar-binary-layout.v1.schema.json", ""}},
+	"heisentick/candle-snapshot-manifest":   {1: {"candle-snapshot-manifest.v1.schema.json", ""}},
+	"heisentick/validation-run-manifest":    {1: {"validation-run-manifest.v1.schema.json", ""}, 2: {"validation-run-manifest.v2.schema.json", ""}},
+	"heisentick/validation-run-request":     {1: {"validation-run-request.v1.schema.json", ""}},
+	"heisentick/validation-run-result":      {1: {"validation-run-result.v1.schema.json", ""}, 2: {"validation-run-result.v2.schema.json", ""}},
+	"heisentick/validation-request-message": {1: {"validation-queue-messages.v1.schema.json", "/$defs/validationRequestMessage"}},
+	"heisentick/validation-result-message":  {1: {"validation-queue-messages.v1.schema.json", "/$defs/validationResultMessage"}},
 }
 
 // DocumentNames lists every schema name this release validates.
@@ -63,7 +63,7 @@ var englishPrinter = message.NewPrinter(language.English)
 
 var (
 	compileOnce sync.Once
-	compiled    map[string]*jsonschema.Schema
+	compiled    map[string]map[int]*jsonschema.Schema
 	compileErr  error
 )
 
@@ -92,29 +92,36 @@ func compileAll() {
 			return
 		}
 	}
-	compiled = make(map[string]*jsonschema.Schema, len(documents))
-	for name, loc := range documents {
-		ref := loc.file
-		if loc.pointer != "" {
-			ref += "#" + loc.pointer
+	compiled = make(map[string]map[int]*jsonschema.Schema, len(documents))
+	for name, versions := range documents {
+		compiled[name] = make(map[int]*jsonschema.Schema, len(versions))
+		for version, loc := range versions {
+			ref := loc.file
+			if loc.pointer != "" {
+				ref += "#" + loc.pointer
+			}
+			schema, err := compiler.Compile(ref)
+			if err != nil {
+				compileErr = fmt.Errorf("compile %s: %w", ref, err)
+				return
+			}
+			compiled[name][version] = schema
 		}
-		schema, err := compiler.Compile(ref)
-		if err != nil {
-			compileErr = fmt.Errorf("compile %s: %w", ref, err)
-			return
-		}
-		compiled[name] = schema
 	}
 }
 
-func schemaFor(name string) (*jsonschema.Schema, error) {
+func schemaFor(name string, version int) (*jsonschema.Schema, error) {
 	compileOnce.Do(compileAll)
 	if compileErr != nil {
 		return nil, compileErr
 	}
-	schema, ok := compiled[name]
+	versions, ok := compiled[name]
 	if !ok {
 		return nil, &ContractError{Schema: name, Issues: []string{"unknown document schema"}}
+	}
+	schema, ok := versions[version]
+	if !ok {
+		return nil, &ContractError{Schema: name, Issues: []string{fmt.Sprintf("unknown document version %d", version)}}
 	}
 	return schema, nil
 }
@@ -123,7 +130,13 @@ func schemaFor(name string) (*jsonschema.Schema, error) {
 // success, returns the decoded value (numbers as json.Number, so nothing is
 // rounded before the caller decides).
 func Validate(name string, raw []byte) (any, error) {
-	schema, err := schemaFor(name)
+	var head struct {
+		Version int `json:"version"`
+	}
+	if err := json.Unmarshal(raw, &head); err != nil {
+		return nil, &ContractError{Schema: name, Issues: []string{"invalid JSON: " + err.Error()}}
+	}
+	schema, err := schemaFor(name, head.Version)
 	if err != nil {
 		return nil, err
 	}
@@ -149,6 +162,16 @@ func crossFieldIssues(name string, value any) []string {
 		return nil
 	}
 	var issues []string
+	if name == "heisentick/validation-run-manifest" {
+		if version, _ := doc["version"].(json.Number); version.String() == "2" {
+			engine, _ := doc["engine"].(map[string]any)
+			artifact, _ := engine["stratReleaseArtifact"].(map[string]any)
+			expected, _ := engine["expectedLinkedModule"].(map[string]any)
+			if artifact["release"] != expected["release"] {
+				issues = append(issues, "engine.expectedLinkedModule.release: must equal engine.stratReleaseArtifact.release")
+			}
+		}
+	}
 	if name == "heisentick/validation-run-result" {
 		execution, _ := doc["execution"].(map[string]any)
 		if execution != nil && execution["status"] == "succeeded" {
@@ -158,6 +181,13 @@ func crossFieldIssues(name string, value any) []string {
 			}
 			if doc["headline"] == nil {
 				issues = append(issues, "headline: must not be null when execution.status is succeeded")
+			}
+			if version, _ := doc["version"].(json.Number); version.String() == "2" {
+				engine, _ := doc["engine"].(map[string]any)
+				linked, _ := engine["linkedEngine"].(map[string]any)
+				if linked == nil || linked["status"] != "measured" {
+					issues = append(issues, "engine.linkedEngine.status: must be measured when execution.status is succeeded")
+				}
 			}
 		}
 	}
