@@ -21,6 +21,10 @@ export declare const validationRunRequestV1: z.ZodObject<{
             "4h": "4h";
             "1d": "1d";
         }>;
+        routeMode: z.ZodOptional<z.ZodEnum<{
+            declared: "declared";
+            transfer: "transfer";
+        }>>;
         rangeMethod: z.ZodDefault<z.ZodEnum<{
             zone: "zone";
             pivot: "pivot";

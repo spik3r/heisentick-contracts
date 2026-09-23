@@ -35,6 +35,10 @@ export declare const validationRunManifestV1: z.ZodObject<{
             "4h": "4h";
             "1d": "1d";
         }>;
+        routeMode: z.ZodOptional<z.ZodEnum<{
+            declared: "declared";
+            transfer: "transfer";
+        }>>;
         sourceTimeframe: z.ZodUnion<readonly [z.ZodEnum<{
             "1m": "1m";
             "5m": "5m";

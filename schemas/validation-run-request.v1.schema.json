@@ -23,6 +23,7 @@
       "properties": {
         "symbol": { "$ref": "common.v1.schema.json#/$defs/symbol" },
         "timeframe": { "$ref": "common.v1.schema.json#/$defs/timeframe" },
+        "routeMode": { "type": "string", "enum": ["declared", "transfer"], "description": "Omit for normal declared-route execution. Transfer explicitly tests the same strategy source on an undeclared route; it must not change the strategy's approved routes." },
         "rangeMethod": { "type": "string", "enum": ["zone", "pivot"], "default": "zone" }
       }
     },

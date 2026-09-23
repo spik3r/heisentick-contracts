@@ -106,6 +106,21 @@ test('unknown fields are rejected on every document', () => {
   }
 });
 
+test('transfer route mode is opt-in and preserved in request and manifest', () => {
+  const request = readJson(join(FIXTURES, 'validation-run-request.v1', 'valid', 'example.json')) as Record<string, any>;
+  const manifest = readJson(join(FIXTURES, 'validation-run-manifest.v1', 'valid', 'example.json')) as Record<string, any>;
+  assert.equal(parseDocument('heisentick/validation-run-request', request).route.routeMode, undefined);
+  assert.equal(parseDocument('heisentick/validation-run-manifest', manifest).route.routeMode, undefined);
+  for (const [name, document] of [
+    ['heisentick/validation-run-request', request],
+    ['heisentick/validation-run-manifest', manifest],
+  ] as const) {
+    const transfer = { ...document, route: { ...document.route, routeMode: 'transfer' } };
+    assert.equal(parseDocument(name, transfer).route.routeMode, 'transfer');
+    assert.throws(() => parseDocument(name, { ...document, route: { ...document.route, routeMode: 'forced' } }), ContractError);
+  }
+});
+
 test('an unknown or missing schema name is a ContractError, never a pass', () => {
   assert.throws(() => parseAnyDocument({ schema: 'heisentick/nope', version: 1 }), /unknown document schema "heisentick\/nope"/);
   assert.throws(() => parseAnyDocument({ version: 1 }), /missing schema field/);
@@ -170,6 +185,10 @@ test('validation v2 separates requested artifact, linked engine, and executors',
   };
 
   assert.doesNotThrow(() => parseDocument('heisentick/validation-run-manifest', manifestV2));
+  assert.equal(parseDocument('heisentick/validation-run-manifest', {
+    ...manifestV2,
+    route: { ...(manifestV1.route as object), routeMode: 'transfer' },
+  }).route.routeMode, 'transfer');
   assert.doesNotThrow(() => parseDocument('heisentick/validation-run-result', resultV2));
   assert.doesNotThrow(() => parseDocument('heisentick/validation-run-manifest', manifestV1));
   assert.doesNotThrow(() => parseDocument('heisentick/validation-run-result', resultV1));

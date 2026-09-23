@@ -48,6 +48,7 @@
       "properties": {
         "symbol": { "$ref": "common.v1.schema.json#/$defs/symbol" },
         "timeframe": { "$ref": "common.v1.schema.json#/$defs/timeframe", "description": "Entry (chart) timeframe." },
+        "routeMode": { "type": "string", "enum": ["declared", "transfer"], "description": "Omit for normal declared-route execution. Transfer bypasses only the strategy's authored route allow-list while retaining the exact source and data identities." },
         "sourceTimeframe": { "anyOf": [{ "$ref": "common.v1.schema.json#/$defs/timeframe" }, { "type": "null" }], "description": "Source timeframe for a two-timeframe strategy; null for single-timeframe." },
         "higherTimeframe": { "anyOf": [{ "$ref": "common.v1.schema.json#/$defs/timeframe" }, { "type": "null" }] },
         "rangeMethod": { "type": "string", "enum": ["zone", "pivot"] },

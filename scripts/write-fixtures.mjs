@@ -134,6 +134,7 @@ const invalid = {
   },
   'validation-run-request.v1': {
     'unknown-field': (d) => { d.engine = 'js'; },
+    'bad-route-mode': (d) => { d.route.routeMode = 'forced'; },
     'missing-request-key': (d) => { delete d.requestKey; },
     'iterations-too-many': (d) => { d.monteCarloIterations = 50000; },
     'bad-date': (d) => { d.window.from = '2020/01/01'; },
@@ -141,6 +142,7 @@ const invalid = {
   },
   'validation-run-manifest.v1': {
     'unknown-field': (d) => { d.latest = true; },
+    'bad-route-mode': (d) => { d.route.routeMode = 'forced'; },
     'missing-fingerprint': (d) => { delete d.inputFingerprint; },
     'empty-series': (d) => { d.data.series = []; },
     'grid-too-large': (d) => { d.validation.grid.cells = Array.from({ length: 65 }, (_, i) => ({ cellIndex: i, params: {}, costMode: 'raw' })); },
