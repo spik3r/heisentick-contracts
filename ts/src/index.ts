@@ -18,6 +18,7 @@ export const DOCUMENT_SCHEMAS = {
   'heisentick/validation-run-result': gen.validationRunResultV1.or(gen.validationRunResultV2),
   'heisentick/validation-request-message': gen.validationQueueMessagesV1ValidationRequestMessage,
   'heisentick/validation-result-message': gen.validationQueueMessagesV1ValidationResultMessage,
+  'heisentick/session-feature-rows': gen.sessionFeatureRowsV1,
 } as const satisfies Record<string, ZodType>;
 
 export type DocumentSchemaName = keyof typeof DOCUMENT_SCHEMAS;

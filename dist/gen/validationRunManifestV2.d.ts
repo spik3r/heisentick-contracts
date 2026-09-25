@@ -83,8 +83,8 @@ export declare const validationRunManifestV2: z.ZodObject<{
         }>;
         series: z.ZodArray<z.ZodObject<{
             role: z.ZodEnum<{
-                entry: "entry";
                 source: "source";
+                entry: "entry";
                 higher: "higher";
                 context: "context";
             }>;

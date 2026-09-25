@@ -155,6 +155,510 @@ const CandleSnapshotManifestV1TimeframeA30M CandleSnapshotManifestV1Timeframe = 
 const CandleSnapshotManifestV1TimeframeA4H CandleSnapshotManifestV1Timeframe = "4h"
 const CandleSnapshotManifestV1TimeframeA5M CandleSnapshotManifestV1Timeframe = "5m"
 
+type Direction interface{}
+
+type SessionFeatureRow struct {
+	// Summary and volume-profile levels of the Asia window bars, all strictly before
+	// decisionTs.
+	Asia SessionFeatureRowAsia `json:"asia" yaml:"asia" mapstructure:"asia"`
+
+	// UTC calendar date this row's Asia session and decision belong to.
+	Date string `json:"date" yaml:"date" mapstructure:"date"`
+
+	// London decision timestamp: this date at sessionConfig.londonStartHourUtc, UTC.
+	DecisionTs int `json:"decisionTs" yaml:"decisionTs" mapstructure:"decisionTs"`
+
+	// Categorical buckets, named exactly as scripts/research/vpSessionCorrelation.mjs
+	// computes them. null means the underlying comparison was undefined for this row
+	// (for example a zero-range session), not that the feature is unsupported.
+	Features SessionFeatureRowFeatures `json:"features" yaml:"features" mapstructure:"features"`
+
+	// Open price of the first bar at or after decisionTs. The decision reference
+	// price; not a look-ahead field.
+	LondonOpen float64 `json:"londonOpen" yaml:"londonOpen" mapstructure:"londonOpen"`
+
+	// Prior UTC day's high/low and volume-profile levels, all fully in the past
+	// relative to decisionTs. null when the prior day could not be computed (e.g. no
+	// prior-day bars available) - the row is otherwise still emitted.
+	PriorDay interface{} `json:"priorDay" yaml:"priorDay" mapstructure:"priorDay"`
+}
+
+// Summary and volume-profile levels of the Asia window bars, all strictly before
+// decisionTs.
+type SessionFeatureRowAsia struct {
+	// BarCount corresponds to the JSON schema field "barCount".
+	BarCount int `json:"barCount" yaml:"barCount" mapstructure:"barCount"`
+
+	// Close corresponds to the JSON schema field "close".
+	Close float64 `json:"close" yaml:"close" mapstructure:"close"`
+
+	// Up-volume minus down-volume across the Asia window (engine/volumeProfile.js
+	// upVolume - downVolume).
+	Delta float64 `json:"delta" yaml:"delta" mapstructure:"delta"`
+
+	// High corresponds to the JSON schema field "high".
+	High float64 `json:"high" yaml:"high" mapstructure:"high"`
+
+	// Low corresponds to the JSON schema field "low".
+	Low float64 `json:"low" yaml:"low" mapstructure:"low"`
+
+	// Open corresponds to the JSON schema field "open".
+	Open float64 `json:"open" yaml:"open" mapstructure:"open"`
+
+	// Point of control price of the Asia-window volume profile.
+	Poc float64 `json:"poc" yaml:"poc" mapstructure:"poc"`
+
+	// Value-area high.
+	Vah float64 `json:"vah" yaml:"vah" mapstructure:"vah"`
+
+	// Value-area low.
+	Val float64 `json:"val" yaml:"val" mapstructure:"val"`
+}
+
+// Categorical buckets, named exactly as scripts/research/vpSessionCorrelation.mjs
+// computes them. null means the underlying comparison was undefined for this row
+// (for example a zero-range session), not that the feature is unsupported.
+type SessionFeatureRowFeatures struct {
+	// AsiaCloseVsPoc corresponds to the JSON schema field "asiaCloseVsPoc".
+	AsiaCloseVsPoc interface{} `json:"asiaCloseVsPoc" yaml:"asiaCloseVsPoc" mapstructure:"asiaCloseVsPoc"`
+
+	// AsiaDeltaSign corresponds to the JSON schema field "asiaDeltaSign".
+	AsiaDeltaSign interface{} `json:"asiaDeltaSign" yaml:"asiaDeltaSign" mapstructure:"asiaDeltaSign"`
+
+	// AsiaDirection corresponds to the JSON schema field "asiaDirection".
+	AsiaDirection interface{} `json:"asiaDirection" yaml:"asiaDirection" mapstructure:"asiaDirection"`
+
+	// AsiaPocSide corresponds to the JSON schema field "asiaPocSide".
+	AsiaPocSide interface{} `json:"asiaPocSide" yaml:"asiaPocSide" mapstructure:"asiaPocSide"`
+
+	// AsiaPocVsPriorDayPoc corresponds to the JSON schema field
+	// "asiaPocVsPriorDayPoc".
+	AsiaPocVsPriorDayPoc interface{} `json:"asiaPocVsPriorDayPoc" yaml:"asiaPocVsPriorDayPoc" mapstructure:"asiaPocVsPriorDayPoc"`
+
+	// AsiaPocZone corresponds to the JSON schema field "asiaPocZone".
+	AsiaPocZone interface{} `json:"asiaPocZone" yaml:"asiaPocZone" mapstructure:"asiaPocZone"`
+
+	// AsiaVaWidth corresponds to the JSON schema field "asiaVaWidth".
+	AsiaVaWidth interface{} `json:"asiaVaWidth" yaml:"asiaVaWidth" mapstructure:"asiaVaWidth"`
+
+	// LondonOpenVsAsiaPoc corresponds to the JSON schema field "londonOpenVsAsiaPoc".
+	LondonOpenVsAsiaPoc interface{} `json:"londonOpenVsAsiaPoc" yaml:"londonOpenVsAsiaPoc" mapstructure:"londonOpenVsAsiaPoc"`
+
+	// LondonOpenVsAsiaValue corresponds to the JSON schema field
+	// "londonOpenVsAsiaValue".
+	LondonOpenVsAsiaValue interface{} `json:"londonOpenVsAsiaValue" yaml:"londonOpenVsAsiaValue" mapstructure:"londonOpenVsAsiaValue"`
+
+	// LondonOpenVsPriorDayPoc corresponds to the JSON schema field
+	// "londonOpenVsPriorDayPoc".
+	LondonOpenVsPriorDayPoc interface{} `json:"londonOpenVsPriorDayPoc" yaml:"londonOpenVsPriorDayPoc" mapstructure:"londonOpenVsPriorDayPoc"`
+
+	// LondonOpenVsPriorDayValue corresponds to the JSON schema field
+	// "londonOpenVsPriorDayValue".
+	LondonOpenVsPriorDayValue interface{} `json:"londonOpenVsPriorDayValue" yaml:"londonOpenVsPriorDayValue" mapstructure:"londonOpenVsPriorDayValue"`
+
+	// PriorDayCloseVsPoc corresponds to the JSON schema field "priorDayCloseVsPoc".
+	PriorDayCloseVsPoc interface{} `json:"priorDayCloseVsPoc" yaml:"priorDayCloseVsPoc" mapstructure:"priorDayCloseVsPoc"`
+
+	// PriorDayPocZone corresponds to the JSON schema field "priorDayPocZone".
+	PriorDayPocZone interface{} `json:"priorDayPocZone" yaml:"priorDayPocZone" mapstructure:"priorDayPocZone"`
+}
+
+type SessionFeatureRowFeaturesAsiaCloseVsPoc_1 string
+
+const SessionFeatureRowFeaturesAsiaCloseVsPoc_1_Above SessionFeatureRowFeaturesAsiaCloseVsPoc_1 = "above"
+const SessionFeatureRowFeaturesAsiaCloseVsPoc_1_At SessionFeatureRowFeaturesAsiaCloseVsPoc_1 = "at"
+const SessionFeatureRowFeaturesAsiaCloseVsPoc_1_Below SessionFeatureRowFeaturesAsiaCloseVsPoc_1 = "below"
+
+type SessionFeatureRowFeaturesAsiaDeltaSign_1 string
+
+const SessionFeatureRowFeaturesAsiaDeltaSign_1_Flat SessionFeatureRowFeaturesAsiaDeltaSign_1 = "flat"
+const SessionFeatureRowFeaturesAsiaDeltaSign_1_Negative SessionFeatureRowFeaturesAsiaDeltaSign_1 = "negative"
+const SessionFeatureRowFeaturesAsiaDeltaSign_1_Positive SessionFeatureRowFeaturesAsiaDeltaSign_1 = "positive"
+
+type SessionFeatureRowFeaturesAsiaDirection_1 string
+
+const SessionFeatureRowFeaturesAsiaDirection_1_Down SessionFeatureRowFeaturesAsiaDirection_1 = "down"
+const SessionFeatureRowFeaturesAsiaDirection_1_Flat SessionFeatureRowFeaturesAsiaDirection_1 = "flat"
+const SessionFeatureRowFeaturesAsiaDirection_1_Up SessionFeatureRowFeaturesAsiaDirection_1 = "up"
+
+type SessionFeatureRowFeaturesAsiaPocSide_1 string
+
+const SessionFeatureRowFeaturesAsiaPocSide_1_AboveMid SessionFeatureRowFeaturesAsiaPocSide_1 = "aboveMid"
+const SessionFeatureRowFeaturesAsiaPocSide_1_BelowMid SessionFeatureRowFeaturesAsiaPocSide_1 = "belowMid"
+const SessionFeatureRowFeaturesAsiaPocSide_1_NearMid SessionFeatureRowFeaturesAsiaPocSide_1 = "nearMid"
+
+type SessionFeatureRowFeaturesAsiaPocVsPriorDayPoc_1 string
+
+const SessionFeatureRowFeaturesAsiaPocVsPriorDayPoc_1_Above SessionFeatureRowFeaturesAsiaPocVsPriorDayPoc_1 = "above"
+const SessionFeatureRowFeaturesAsiaPocVsPriorDayPoc_1_At SessionFeatureRowFeaturesAsiaPocVsPriorDayPoc_1 = "at"
+const SessionFeatureRowFeaturesAsiaPocVsPriorDayPoc_1_Below SessionFeatureRowFeaturesAsiaPocVsPriorDayPoc_1 = "below"
+
+type SessionFeatureRowFeaturesAsiaPocZone_1 string
+
+const SessionFeatureRowFeaturesAsiaPocZone_1_Bottom SessionFeatureRowFeaturesAsiaPocZone_1 = "bottom"
+const SessionFeatureRowFeaturesAsiaPocZone_1_Middle SessionFeatureRowFeaturesAsiaPocZone_1 = "middle"
+const SessionFeatureRowFeaturesAsiaPocZone_1_Top SessionFeatureRowFeaturesAsiaPocZone_1 = "top"
+
+type SessionFeatureRowFeaturesAsiaVaWidth_1 string
+
+const SessionFeatureRowFeaturesAsiaVaWidth_1_Narrow SessionFeatureRowFeaturesAsiaVaWidth_1 = "narrow"
+const SessionFeatureRowFeaturesAsiaVaWidth_1_Normal SessionFeatureRowFeaturesAsiaVaWidth_1 = "normal"
+const SessionFeatureRowFeaturesAsiaVaWidth_1_Wide SessionFeatureRowFeaturesAsiaVaWidth_1 = "wide"
+
+type SessionFeatureRowFeaturesLondonOpenVsAsiaPoc_1 string
+
+const SessionFeatureRowFeaturesLondonOpenVsAsiaPoc_1_Above SessionFeatureRowFeaturesLondonOpenVsAsiaPoc_1 = "above"
+const SessionFeatureRowFeaturesLondonOpenVsAsiaPoc_1_At SessionFeatureRowFeaturesLondonOpenVsAsiaPoc_1 = "at"
+const SessionFeatureRowFeaturesLondonOpenVsAsiaPoc_1_Below SessionFeatureRowFeaturesLondonOpenVsAsiaPoc_1 = "below"
+
+type SessionFeatureRowFeaturesLondonOpenVsAsiaValue_1 string
+
+const SessionFeatureRowFeaturesLondonOpenVsAsiaValue_1_AboveVA SessionFeatureRowFeaturesLondonOpenVsAsiaValue_1 = "aboveVA"
+const SessionFeatureRowFeaturesLondonOpenVsAsiaValue_1_BelowVA SessionFeatureRowFeaturesLondonOpenVsAsiaValue_1 = "belowVA"
+const SessionFeatureRowFeaturesLondonOpenVsAsiaValue_1_InsideVA SessionFeatureRowFeaturesLondonOpenVsAsiaValue_1 = "insideVA"
+
+type SessionFeatureRowFeaturesLondonOpenVsPriorDayPoc_1 string
+
+const SessionFeatureRowFeaturesLondonOpenVsPriorDayPoc_1_Above SessionFeatureRowFeaturesLondonOpenVsPriorDayPoc_1 = "above"
+const SessionFeatureRowFeaturesLondonOpenVsPriorDayPoc_1_At SessionFeatureRowFeaturesLondonOpenVsPriorDayPoc_1 = "at"
+const SessionFeatureRowFeaturesLondonOpenVsPriorDayPoc_1_Below SessionFeatureRowFeaturesLondonOpenVsPriorDayPoc_1 = "below"
+
+type SessionFeatureRowFeaturesLondonOpenVsPriorDayValue_1 string
+
+const SessionFeatureRowFeaturesLondonOpenVsPriorDayValue_1_AboveVA SessionFeatureRowFeaturesLondonOpenVsPriorDayValue_1 = "aboveVA"
+const SessionFeatureRowFeaturesLondonOpenVsPriorDayValue_1_BelowVA SessionFeatureRowFeaturesLondonOpenVsPriorDayValue_1 = "belowVA"
+const SessionFeatureRowFeaturesLondonOpenVsPriorDayValue_1_InsideVA SessionFeatureRowFeaturesLondonOpenVsPriorDayValue_1 = "insideVA"
+
+type SessionFeatureRowFeaturesPriorDayCloseVsPoc_1 string
+
+const SessionFeatureRowFeaturesPriorDayCloseVsPoc_1_Above SessionFeatureRowFeaturesPriorDayCloseVsPoc_1 = "above"
+const SessionFeatureRowFeaturesPriorDayCloseVsPoc_1_At SessionFeatureRowFeaturesPriorDayCloseVsPoc_1 = "at"
+const SessionFeatureRowFeaturesPriorDayCloseVsPoc_1_Below SessionFeatureRowFeaturesPriorDayCloseVsPoc_1 = "below"
+
+type SessionFeatureRowFeaturesPriorDayPocZone_1 string
+
+const SessionFeatureRowFeaturesPriorDayPocZone_1_Bottom SessionFeatureRowFeaturesPriorDayPocZone_1 = "bottom"
+const SessionFeatureRowFeaturesPriorDayPocZone_1_Middle SessionFeatureRowFeaturesPriorDayPocZone_1 = "middle"
+const SessionFeatureRowFeaturesPriorDayPocZone_1_Top SessionFeatureRowFeaturesPriorDayPocZone_1 = "top"
+
+type SessionFeatureRowPriorDay_1 struct {
+	// High corresponds to the JSON schema field "high".
+	High float64 `json:"high" yaml:"high" mapstructure:"high"`
+
+	// Low corresponds to the JSON schema field "low".
+	Low float64 `json:"low" yaml:"low" mapstructure:"low"`
+
+	// Poc corresponds to the JSON schema field "poc".
+	Poc float64 `json:"poc" yaml:"poc" mapstructure:"poc"`
+
+	// Vah corresponds to the JSON schema field "vah".
+	Vah float64 `json:"vah" yaml:"vah" mapstructure:"vah"`
+
+	// Val corresponds to the JSON schema field "val".
+	Val float64 `json:"val" yaml:"val" mapstructure:"val"`
+}
+
+// One-row-per-UTC-trading-day session features, written by a heisentick research
+// export (scripts/research/vpSessionCorrelation.mjs --rows-out) for consumption by
+// heisentick-ml and other offline research repositories. The engine is the single
+// source of truth for every indicator/level here (volume profile, POC, value
+// area); consumers must not re-derive them from raw bars. Every field on a row is
+// computable using only bars timestamped strictly before that row's decisionTs,
+// with one exception: londonOpen is the open price of the first bar at or after
+// decisionTs, i.e. the decision reference price itself, not a look-ahead value.
+// This document carries features only; outcome/label columns (what happened after
+// decisionTs) are a research concern and are computed downstream in Python, never
+// written here.
+type SessionFeatureRowsV1 struct {
+	// Engine corresponds to the JSON schema field "engine".
+	Engine SessionFeatureRowsV1Engine `json:"engine" yaml:"engine" mapstructure:"engine"`
+
+	// Milliseconds since the Unix epoch, UTC. Every timestamp in every contract uses
+	// this unit.
+	GeneratedAt int `json:"generatedAt" yaml:"generatedAt" mapstructure:"generatedAt"`
+
+	// Instrument code as the app registers it, upper case.
+	Instrument string `json:"instrument" yaml:"instrument" mapstructure:"instrument"`
+
+	// Rows corresponds to the JSON schema field "rows".
+	Rows []SessionFeatureRowsV1RowsElem `json:"rows" yaml:"rows" mapstructure:"rows"`
+
+	// Schema corresponds to the JSON schema field "schema".
+	Schema interface{} `json:"schema" yaml:"schema" mapstructure:"schema"`
+
+	// SessionConfig corresponds to the JSON schema field "sessionConfig".
+	SessionConfig SessionFeatureRowsV1SessionConfig `json:"sessionConfig" yaml:"sessionConfig" mapstructure:"sessionConfig"`
+
+	// Source corresponds to the JSON schema field "source".
+	Source SessionFeatureRowsV1Source `json:"source" yaml:"source" mapstructure:"source"`
+
+	// Timeframe corresponds to the JSON schema field "timeframe".
+	Timeframe SessionFeatureRowsV1Timeframe `json:"timeframe" yaml:"timeframe" mapstructure:"timeframe"`
+
+	// Version corresponds to the JSON schema field "version".
+	Version interface{} `json:"version" yaml:"version" mapstructure:"version"`
+}
+
+type SessionFeatureRowsV1Engine struct {
+	// heisentick repository commit the export ran from, when available.
+	GitSha *string `json:"gitSha,omitempty" yaml:"gitSha,omitempty" mapstructure:"gitSha,omitempty"`
+
+	// Package corresponds to the JSON schema field "package".
+	Package interface{} `json:"package" yaml:"package" mapstructure:"package"`
+
+	// engine/package.json version at export time, when available.
+	Version *string `json:"version,omitempty" yaml:"version,omitempty" mapstructure:"version,omitempty"`
+}
+
+type SessionFeatureRowsV1RowsElem struct {
+	// Summary and volume-profile levels of the Asia window bars, all strictly before
+	// decisionTs.
+	Asia SessionFeatureRowsV1RowsElemAsia `json:"asia" yaml:"asia" mapstructure:"asia"`
+
+	// UTC calendar date this row's Asia session and decision belong to.
+	Date string `json:"date" yaml:"date" mapstructure:"date"`
+
+	// London decision timestamp: this date at sessionConfig.londonStartHourUtc, UTC.
+	DecisionTs int `json:"decisionTs" yaml:"decisionTs" mapstructure:"decisionTs"`
+
+	// Categorical buckets, named exactly as scripts/research/vpSessionCorrelation.mjs
+	// computes them. null means the underlying comparison was undefined for this row
+	// (for example a zero-range session), not that the feature is unsupported.
+	Features SessionFeatureRowsV1RowsElemFeatures `json:"features" yaml:"features" mapstructure:"features"`
+
+	// Open price of the first bar at or after decisionTs. The decision reference
+	// price; not a look-ahead field.
+	LondonOpen float64 `json:"londonOpen" yaml:"londonOpen" mapstructure:"londonOpen"`
+
+	// Prior UTC day's high/low and volume-profile levels, all fully in the past
+	// relative to decisionTs. null when the prior day could not be computed (e.g. no
+	// prior-day bars available) - the row is otherwise still emitted.
+	PriorDay interface{} `json:"priorDay" yaml:"priorDay" mapstructure:"priorDay"`
+}
+
+// Summary and volume-profile levels of the Asia window bars, all strictly before
+// decisionTs.
+type SessionFeatureRowsV1RowsElemAsia struct {
+	// BarCount corresponds to the JSON schema field "barCount".
+	BarCount int `json:"barCount" yaml:"barCount" mapstructure:"barCount"`
+
+	// Close corresponds to the JSON schema field "close".
+	Close float64 `json:"close" yaml:"close" mapstructure:"close"`
+
+	// Up-volume minus down-volume across the Asia window (engine/volumeProfile.js
+	// upVolume - downVolume).
+	Delta float64 `json:"delta" yaml:"delta" mapstructure:"delta"`
+
+	// High corresponds to the JSON schema field "high".
+	High float64 `json:"high" yaml:"high" mapstructure:"high"`
+
+	// Low corresponds to the JSON schema field "low".
+	Low float64 `json:"low" yaml:"low" mapstructure:"low"`
+
+	// Open corresponds to the JSON schema field "open".
+	Open float64 `json:"open" yaml:"open" mapstructure:"open"`
+
+	// Point of control price of the Asia-window volume profile.
+	Poc float64 `json:"poc" yaml:"poc" mapstructure:"poc"`
+
+	// Value-area high.
+	Vah float64 `json:"vah" yaml:"vah" mapstructure:"vah"`
+
+	// Value-area low.
+	Val float64 `json:"val" yaml:"val" mapstructure:"val"`
+}
+
+// Categorical buckets, named exactly as scripts/research/vpSessionCorrelation.mjs
+// computes them. null means the underlying comparison was undefined for this row
+// (for example a zero-range session), not that the feature is unsupported.
+type SessionFeatureRowsV1RowsElemFeatures struct {
+	// AsiaCloseVsPoc corresponds to the JSON schema field "asiaCloseVsPoc".
+	AsiaCloseVsPoc interface{} `json:"asiaCloseVsPoc" yaml:"asiaCloseVsPoc" mapstructure:"asiaCloseVsPoc"`
+
+	// AsiaDeltaSign corresponds to the JSON schema field "asiaDeltaSign".
+	AsiaDeltaSign interface{} `json:"asiaDeltaSign" yaml:"asiaDeltaSign" mapstructure:"asiaDeltaSign"`
+
+	// AsiaDirection corresponds to the JSON schema field "asiaDirection".
+	AsiaDirection interface{} `json:"asiaDirection" yaml:"asiaDirection" mapstructure:"asiaDirection"`
+
+	// AsiaPocSide corresponds to the JSON schema field "asiaPocSide".
+	AsiaPocSide interface{} `json:"asiaPocSide" yaml:"asiaPocSide" mapstructure:"asiaPocSide"`
+
+	// AsiaPocVsPriorDayPoc corresponds to the JSON schema field
+	// "asiaPocVsPriorDayPoc".
+	AsiaPocVsPriorDayPoc interface{} `json:"asiaPocVsPriorDayPoc" yaml:"asiaPocVsPriorDayPoc" mapstructure:"asiaPocVsPriorDayPoc"`
+
+	// AsiaPocZone corresponds to the JSON schema field "asiaPocZone".
+	AsiaPocZone interface{} `json:"asiaPocZone" yaml:"asiaPocZone" mapstructure:"asiaPocZone"`
+
+	// AsiaVaWidth corresponds to the JSON schema field "asiaVaWidth".
+	AsiaVaWidth interface{} `json:"asiaVaWidth" yaml:"asiaVaWidth" mapstructure:"asiaVaWidth"`
+
+	// LondonOpenVsAsiaPoc corresponds to the JSON schema field "londonOpenVsAsiaPoc".
+	LondonOpenVsAsiaPoc interface{} `json:"londonOpenVsAsiaPoc" yaml:"londonOpenVsAsiaPoc" mapstructure:"londonOpenVsAsiaPoc"`
+
+	// LondonOpenVsAsiaValue corresponds to the JSON schema field
+	// "londonOpenVsAsiaValue".
+	LondonOpenVsAsiaValue interface{} `json:"londonOpenVsAsiaValue" yaml:"londonOpenVsAsiaValue" mapstructure:"londonOpenVsAsiaValue"`
+
+	// LondonOpenVsPriorDayPoc corresponds to the JSON schema field
+	// "londonOpenVsPriorDayPoc".
+	LondonOpenVsPriorDayPoc interface{} `json:"londonOpenVsPriorDayPoc" yaml:"londonOpenVsPriorDayPoc" mapstructure:"londonOpenVsPriorDayPoc"`
+
+	// LondonOpenVsPriorDayValue corresponds to the JSON schema field
+	// "londonOpenVsPriorDayValue".
+	LondonOpenVsPriorDayValue interface{} `json:"londonOpenVsPriorDayValue" yaml:"londonOpenVsPriorDayValue" mapstructure:"londonOpenVsPriorDayValue"`
+
+	// PriorDayCloseVsPoc corresponds to the JSON schema field "priorDayCloseVsPoc".
+	PriorDayCloseVsPoc interface{} `json:"priorDayCloseVsPoc" yaml:"priorDayCloseVsPoc" mapstructure:"priorDayCloseVsPoc"`
+
+	// PriorDayPocZone corresponds to the JSON schema field "priorDayPocZone".
+	PriorDayPocZone interface{} `json:"priorDayPocZone" yaml:"priorDayPocZone" mapstructure:"priorDayPocZone"`
+}
+
+type SessionFeatureRowsV1RowsElemFeaturesAsiaCloseVsPoc_1 string
+
+const SessionFeatureRowsV1RowsElemFeaturesAsiaCloseVsPoc_1_Above SessionFeatureRowsV1RowsElemFeaturesAsiaCloseVsPoc_1 = "above"
+const SessionFeatureRowsV1RowsElemFeaturesAsiaCloseVsPoc_1_At SessionFeatureRowsV1RowsElemFeaturesAsiaCloseVsPoc_1 = "at"
+const SessionFeatureRowsV1RowsElemFeaturesAsiaCloseVsPoc_1_Below SessionFeatureRowsV1RowsElemFeaturesAsiaCloseVsPoc_1 = "below"
+
+type SessionFeatureRowsV1RowsElemFeaturesAsiaDeltaSign_1 string
+
+const SessionFeatureRowsV1RowsElemFeaturesAsiaDeltaSign_1_Flat SessionFeatureRowsV1RowsElemFeaturesAsiaDeltaSign_1 = "flat"
+const SessionFeatureRowsV1RowsElemFeaturesAsiaDeltaSign_1_Negative SessionFeatureRowsV1RowsElemFeaturesAsiaDeltaSign_1 = "negative"
+const SessionFeatureRowsV1RowsElemFeaturesAsiaDeltaSign_1_Positive SessionFeatureRowsV1RowsElemFeaturesAsiaDeltaSign_1 = "positive"
+
+type SessionFeatureRowsV1RowsElemFeaturesAsiaDirection_1 string
+
+const SessionFeatureRowsV1RowsElemFeaturesAsiaDirection_1_Down SessionFeatureRowsV1RowsElemFeaturesAsiaDirection_1 = "down"
+const SessionFeatureRowsV1RowsElemFeaturesAsiaDirection_1_Flat SessionFeatureRowsV1RowsElemFeaturesAsiaDirection_1 = "flat"
+const SessionFeatureRowsV1RowsElemFeaturesAsiaDirection_1_Up SessionFeatureRowsV1RowsElemFeaturesAsiaDirection_1 = "up"
+
+type SessionFeatureRowsV1RowsElemFeaturesAsiaPocSide_1 string
+
+const SessionFeatureRowsV1RowsElemFeaturesAsiaPocSide_1_AboveMid SessionFeatureRowsV1RowsElemFeaturesAsiaPocSide_1 = "aboveMid"
+const SessionFeatureRowsV1RowsElemFeaturesAsiaPocSide_1_BelowMid SessionFeatureRowsV1RowsElemFeaturesAsiaPocSide_1 = "belowMid"
+const SessionFeatureRowsV1RowsElemFeaturesAsiaPocSide_1_NearMid SessionFeatureRowsV1RowsElemFeaturesAsiaPocSide_1 = "nearMid"
+
+type SessionFeatureRowsV1RowsElemFeaturesAsiaPocVsPriorDayPoc_1 string
+
+const SessionFeatureRowsV1RowsElemFeaturesAsiaPocVsPriorDayPoc_1_Above SessionFeatureRowsV1RowsElemFeaturesAsiaPocVsPriorDayPoc_1 = "above"
+const SessionFeatureRowsV1RowsElemFeaturesAsiaPocVsPriorDayPoc_1_At SessionFeatureRowsV1RowsElemFeaturesAsiaPocVsPriorDayPoc_1 = "at"
+const SessionFeatureRowsV1RowsElemFeaturesAsiaPocVsPriorDayPoc_1_Below SessionFeatureRowsV1RowsElemFeaturesAsiaPocVsPriorDayPoc_1 = "below"
+
+type SessionFeatureRowsV1RowsElemFeaturesAsiaPocZone_1 string
+
+const SessionFeatureRowsV1RowsElemFeaturesAsiaPocZone_1_Bottom SessionFeatureRowsV1RowsElemFeaturesAsiaPocZone_1 = "bottom"
+const SessionFeatureRowsV1RowsElemFeaturesAsiaPocZone_1_Middle SessionFeatureRowsV1RowsElemFeaturesAsiaPocZone_1 = "middle"
+const SessionFeatureRowsV1RowsElemFeaturesAsiaPocZone_1_Top SessionFeatureRowsV1RowsElemFeaturesAsiaPocZone_1 = "top"
+
+type SessionFeatureRowsV1RowsElemFeaturesAsiaVaWidth_1 string
+
+const SessionFeatureRowsV1RowsElemFeaturesAsiaVaWidth_1_Narrow SessionFeatureRowsV1RowsElemFeaturesAsiaVaWidth_1 = "narrow"
+const SessionFeatureRowsV1RowsElemFeaturesAsiaVaWidth_1_Normal SessionFeatureRowsV1RowsElemFeaturesAsiaVaWidth_1 = "normal"
+const SessionFeatureRowsV1RowsElemFeaturesAsiaVaWidth_1_Wide SessionFeatureRowsV1RowsElemFeaturesAsiaVaWidth_1 = "wide"
+
+type SessionFeatureRowsV1RowsElemFeaturesLondonOpenVsAsiaPoc_1 string
+
+const SessionFeatureRowsV1RowsElemFeaturesLondonOpenVsAsiaPoc_1_Above SessionFeatureRowsV1RowsElemFeaturesLondonOpenVsAsiaPoc_1 = "above"
+const SessionFeatureRowsV1RowsElemFeaturesLondonOpenVsAsiaPoc_1_At SessionFeatureRowsV1RowsElemFeaturesLondonOpenVsAsiaPoc_1 = "at"
+const SessionFeatureRowsV1RowsElemFeaturesLondonOpenVsAsiaPoc_1_Below SessionFeatureRowsV1RowsElemFeaturesLondonOpenVsAsiaPoc_1 = "below"
+
+type SessionFeatureRowsV1RowsElemFeaturesLondonOpenVsAsiaValue_1 string
+
+const SessionFeatureRowsV1RowsElemFeaturesLondonOpenVsAsiaValue_1_AboveVA SessionFeatureRowsV1RowsElemFeaturesLondonOpenVsAsiaValue_1 = "aboveVA"
+const SessionFeatureRowsV1RowsElemFeaturesLondonOpenVsAsiaValue_1_BelowVA SessionFeatureRowsV1RowsElemFeaturesLondonOpenVsAsiaValue_1 = "belowVA"
+const SessionFeatureRowsV1RowsElemFeaturesLondonOpenVsAsiaValue_1_InsideVA SessionFeatureRowsV1RowsElemFeaturesLondonOpenVsAsiaValue_1 = "insideVA"
+
+type SessionFeatureRowsV1RowsElemFeaturesLondonOpenVsPriorDayPoc_1 string
+
+const SessionFeatureRowsV1RowsElemFeaturesLondonOpenVsPriorDayPoc_1_Above SessionFeatureRowsV1RowsElemFeaturesLondonOpenVsPriorDayPoc_1 = "above"
+const SessionFeatureRowsV1RowsElemFeaturesLondonOpenVsPriorDayPoc_1_At SessionFeatureRowsV1RowsElemFeaturesLondonOpenVsPriorDayPoc_1 = "at"
+const SessionFeatureRowsV1RowsElemFeaturesLondonOpenVsPriorDayPoc_1_Below SessionFeatureRowsV1RowsElemFeaturesLondonOpenVsPriorDayPoc_1 = "below"
+
+type SessionFeatureRowsV1RowsElemFeaturesLondonOpenVsPriorDayValue_1 string
+
+const SessionFeatureRowsV1RowsElemFeaturesLondonOpenVsPriorDayValue_1_AboveVA SessionFeatureRowsV1RowsElemFeaturesLondonOpenVsPriorDayValue_1 = "aboveVA"
+const SessionFeatureRowsV1RowsElemFeaturesLondonOpenVsPriorDayValue_1_BelowVA SessionFeatureRowsV1RowsElemFeaturesLondonOpenVsPriorDayValue_1 = "belowVA"
+const SessionFeatureRowsV1RowsElemFeaturesLondonOpenVsPriorDayValue_1_InsideVA SessionFeatureRowsV1RowsElemFeaturesLondonOpenVsPriorDayValue_1 = "insideVA"
+
+type SessionFeatureRowsV1RowsElemFeaturesPriorDayCloseVsPoc_1 string
+
+const SessionFeatureRowsV1RowsElemFeaturesPriorDayCloseVsPoc_1_Above SessionFeatureRowsV1RowsElemFeaturesPriorDayCloseVsPoc_1 = "above"
+const SessionFeatureRowsV1RowsElemFeaturesPriorDayCloseVsPoc_1_At SessionFeatureRowsV1RowsElemFeaturesPriorDayCloseVsPoc_1 = "at"
+const SessionFeatureRowsV1RowsElemFeaturesPriorDayCloseVsPoc_1_Below SessionFeatureRowsV1RowsElemFeaturesPriorDayCloseVsPoc_1 = "below"
+
+type SessionFeatureRowsV1RowsElemFeaturesPriorDayPocZone_1 string
+
+const SessionFeatureRowsV1RowsElemFeaturesPriorDayPocZone_1_Bottom SessionFeatureRowsV1RowsElemFeaturesPriorDayPocZone_1 = "bottom"
+const SessionFeatureRowsV1RowsElemFeaturesPriorDayPocZone_1_Middle SessionFeatureRowsV1RowsElemFeaturesPriorDayPocZone_1 = "middle"
+const SessionFeatureRowsV1RowsElemFeaturesPriorDayPocZone_1_Top SessionFeatureRowsV1RowsElemFeaturesPriorDayPocZone_1 = "top"
+
+type SessionFeatureRowsV1RowsElemPriorDay_1 struct {
+	// High corresponds to the JSON schema field "high".
+	High float64 `json:"high" yaml:"high" mapstructure:"high"`
+
+	// Low corresponds to the JSON schema field "low".
+	Low float64 `json:"low" yaml:"low" mapstructure:"low"`
+
+	// Poc corresponds to the JSON schema field "poc".
+	Poc float64 `json:"poc" yaml:"poc" mapstructure:"poc"`
+
+	// Vah corresponds to the JSON schema field "vah".
+	Vah float64 `json:"vah" yaml:"vah" mapstructure:"vah"`
+
+	// Val corresponds to the JSON schema field "val".
+	Val float64 `json:"val" yaml:"val" mapstructure:"val"`
+}
+
+type SessionFeatureRowsV1SessionConfig struct {
+	// AsiaEndHourUtc corresponds to the JSON schema field "asiaEndHourUtc".
+	AsiaEndHourUtc int `json:"asiaEndHourUtc" yaml:"asiaEndHourUtc" mapstructure:"asiaEndHourUtc"`
+
+	// Asia window start, UTC hour. The window is [asiaStartHourUtc, asiaEndHourUtc).
+	AsiaStartHourUtc int `json:"asiaStartHourUtc" yaml:"asiaStartHourUtc" mapstructure:"asiaStartHourUtc"`
+
+	// Volume-profile row count used for the prior-day profile.
+	DayRows *int `json:"dayRows,omitempty" yaml:"dayRows,omitempty" mapstructure:"dayRows,omitempty"`
+
+	// The London decision hour, UTC. Each row's decisionTs is this hour on that row's
+	// date. Every feature on the row uses only bars strictly before decisionTs.
+	LondonStartHourUtc int `json:"londonStartHourUtc" yaml:"londonStartHourUtc" mapstructure:"londonStartHourUtc"`
+
+	// Minimum bars required inside the Asia window for a day to be kept.
+	MinAsiaBars *int `json:"minAsiaBars,omitempty" yaml:"minAsiaBars,omitempty" mapstructure:"minAsiaBars,omitempty"`
+
+	// Volume-profile row count used for the Asia-session profile.
+	SessionRows *int `json:"sessionRows,omitempty" yaml:"sessionRows,omitempty" mapstructure:"sessionRows,omitempty"`
+
+	// Target value-area percentage used to compute vah/val.
+	ValueAreaPercent *float64 `json:"valueAreaPercent,omitempty" yaml:"valueAreaPercent,omitempty" mapstructure:"valueAreaPercent,omitempty"`
+}
+
+type SessionFeatureRowsV1Source struct {
+	// Path or filename of the bar data the rows were computed from, as reported by
+	// the loader (e.g. "5m.json" or "5m.bin"). Not a contract-wide s3Key: this file
+	// is local/offline, never uploaded.
+	DataFile string `json:"dataFile" yaml:"dataFile" mapstructure:"dataFile"`
+
+	// sha256 of the source data file's bytes, when computed.
+	Sha256 *string `json:"sha256,omitempty" yaml:"sha256,omitempty" mapstructure:"sha256,omitempty"`
+}
+
+type SessionFeatureRowsV1Timeframe string
+
+const SessionFeatureRowsV1TimeframeA15M SessionFeatureRowsV1Timeframe = "15m"
+const SessionFeatureRowsV1TimeframeA1D SessionFeatureRowsV1Timeframe = "1d"
+const SessionFeatureRowsV1TimeframeA1H SessionFeatureRowsV1Timeframe = "1h"
+const SessionFeatureRowsV1TimeframeA1M SessionFeatureRowsV1Timeframe = "1m"
+const SessionFeatureRowsV1TimeframeA30M SessionFeatureRowsV1Timeframe = "30m"
+const SessionFeatureRowsV1TimeframeA4H SessionFeatureRowsV1Timeframe = "4h"
+const SessionFeatureRowsV1TimeframeA5M SessionFeatureRowsV1Timeframe = "5m"
+
+type SideOfMid interface{}
+
+type SignedBucket interface{}
+
 type ValidationRequestMessage struct {
 	// Attempt corresponds to the JSON schema field "attempt".
 	Attempt int `json:"attempt" yaml:"attempt" mapstructure:"attempt"`
@@ -1948,3 +2452,11 @@ type ValidationRunResultV2PromotionStatus string
 const ValidationRunResultV2PromotionStatusEligible ValidationRunResultV2PromotionStatus = "eligible"
 const ValidationRunResultV2PromotionStatusNotEligible ValidationRunResultV2PromotionStatus = "not-eligible"
 const ValidationRunResultV2PromotionStatusUnassessed ValidationRunResultV2PromotionStatus = "unassessed"
+
+type VsLevel interface{}
+
+type VsValueArea interface{}
+
+type WidthBucket interface{}
+
+type Zone3 interface{}

@@ -29,6 +29,7 @@ var documents = map[string]map[int]struct{ file, pointer string }{
 	"heisentick/validation-run-result":      {1: {"validation-run-result.v1.schema.json", ""}, 2: {"validation-run-result.v2.schema.json", ""}},
 	"heisentick/validation-request-message": {1: {"validation-queue-messages.v1.schema.json", "/$defs/validationRequestMessage"}},
 	"heisentick/validation-result-message":  {1: {"validation-queue-messages.v1.schema.json", "/$defs/validationResultMessage"}},
+	"heisentick/session-feature-rows":       {1: {"session-feature-rows.v1.schema.json", ""}},
 }
 
 // DocumentNames lists every schema name this release validates.

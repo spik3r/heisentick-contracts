@@ -1,0 +1,132 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "session-feature-rows.v1.schema.json",
+  "title": "Session feature rows",
+  "description": "One-row-per-UTC-trading-day session features, written by a heisentick research export (scripts/research/vpSessionCorrelation.mjs --rows-out) for consumption by heisentick-ml and other offline research repositories. The engine is the single source of truth for every indicator/level here (volume profile, POC, value area); consumers must not re-derive them from raw bars. Every field on a row is computable using only bars timestamped strictly before that row's decisionTs, with one exception: londonOpen is the open price of the first bar at or after decisionTs, i.e. the decision reference price itself, not a look-ahead value. This document carries features only; outcome/label columns (what happened after decisionTs) are a research concern and are computed downstream in Python, never written here.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema", "version", "instrument", "timeframe", "sessionConfig", "engine", "source", "generatedAt", "rows"],
+  "properties": {
+    "schema": { "const": "heisentick/session-feature-rows" },
+    "version": { "const": 1 },
+    "instrument": { "$ref": "common.v1.schema.json#/$defs/symbol" },
+    "timeframe": { "$ref": "common.v1.schema.json#/$defs/timeframe" },
+    "sessionConfig": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["asiaStartHourUtc", "asiaEndHourUtc", "londonStartHourUtc"],
+      "properties": {
+        "asiaStartHourUtc": { "type": "integer", "minimum": 0, "maximum": 24, "description": "Asia window start, UTC hour. The window is [asiaStartHourUtc, asiaEndHourUtc)." },
+        "asiaEndHourUtc": { "type": "integer", "minimum": 0, "maximum": 24 },
+        "londonStartHourUtc": { "type": "integer", "minimum": 0, "maximum": 24, "description": "The London decision hour, UTC. Each row's decisionTs is this hour on that row's date. Every feature on the row uses only bars strictly before decisionTs." },
+        "valueAreaPercent": { "type": "number", "exclusiveMinimum": 0, "maximum": 100, "description": "Target value-area percentage used to compute vah/val." },
+        "sessionRows": { "type": "integer", "minimum": 1, "description": "Volume-profile row count used for the Asia-session profile." },
+        "dayRows": { "type": "integer", "minimum": 1, "description": "Volume-profile row count used for the prior-day profile." },
+        "minAsiaBars": { "type": "integer", "minimum": 0, "description": "Minimum bars required inside the Asia window for a day to be kept." }
+      }
+    },
+    "engine": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["package"],
+      "properties": {
+        "package": { "const": "@heisentick/engine" },
+        "version": { "type": "string", "maxLength": 64, "description": "engine/package.json version at export time, when available." },
+        "gitSha": { "type": "string", "pattern": "^[0-9a-f]{7,40}$", "description": "heisentick repository commit the export ran from, when available." }
+      }
+    },
+    "source": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["dataFile"],
+      "properties": {
+        "dataFile": { "type": "string", "minLength": 1, "maxLength": 1024, "description": "Path or filename of the bar data the rows were computed from, as reported by the loader (e.g. \"5m.json\" or \"5m.bin\"). Not a contract-wide s3Key: this file is local/offline, never uploaded." },
+        "sha256": { "$ref": "common.v1.schema.json#/$defs/sha256Hex", "description": "sha256 of the source data file's bytes, when computed." }
+      }
+    },
+    "generatedAt": { "$ref": "common.v1.schema.json#/$defs/epochMs" },
+    "rows": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/sessionFeatureRow" }
+    }
+  },
+  "$defs": {
+    "sessionFeatureRow": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["date", "decisionTs", "asia", "londonOpen", "priorDay", "features"],
+      "properties": {
+        "date": { "$ref": "common.v1.schema.json#/$defs/isoDate", "description": "UTC calendar date this row's Asia session and decision belong to." },
+        "decisionTs": { "$ref": "common.v1.schema.json#/$defs/epochMs", "description": "London decision timestamp: this date at sessionConfig.londonStartHourUtc, UTC." },
+        "asia": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["open", "high", "low", "close", "barCount", "poc", "vah", "val", "delta"],
+          "description": "Summary and volume-profile levels of the Asia window bars, all strictly before decisionTs.",
+          "properties": {
+            "open": { "type": "number" },
+            "high": { "type": "number" },
+            "low": { "type": "number" },
+            "close": { "type": "number" },
+            "barCount": { "type": "integer", "minimum": 1 },
+            "poc": { "type": "number", "description": "Point of control price of the Asia-window volume profile." },
+            "vah": { "type": "number", "description": "Value-area high." },
+            "val": { "type": "number", "description": "Value-area low." },
+            "delta": { "type": "number", "description": "Up-volume minus down-volume across the Asia window (engine/volumeProfile.js upVolume - downVolume)." }
+          }
+        },
+        "londonOpen": { "type": "number", "description": "Open price of the first bar at or after decisionTs. The decision reference price; not a look-ahead field." },
+        "priorDay": {
+          "description": "Prior UTC day's high/low and volume-profile levels, all fully in the past relative to decisionTs. null when the prior day could not be computed (e.g. no prior-day bars available) - the row is otherwise still emitted.",
+          "anyOf": [
+            { "type": "null" },
+            {
+              "type": "object",
+              "additionalProperties": false,
+              "required": ["high", "low", "poc", "vah", "val"],
+              "properties": {
+                "high": { "type": "number" },
+                "low": { "type": "number" },
+                "poc": { "type": "number" },
+                "vah": { "type": "number" },
+                "val": { "type": "number" }
+              }
+            }
+          ]
+        },
+        "features": {
+          "type": "object",
+          "additionalProperties": false,
+          "description": "Categorical buckets, named exactly as scripts/research/vpSessionCorrelation.mjs computes them. null means the underlying comparison was undefined for this row (for example a zero-range session), not that the feature is unsupported.",
+          "required": [
+            "asiaPocZone", "asiaPocSide", "asiaCloseVsPoc", "londonOpenVsAsiaPoc", "londonOpenVsAsiaValue",
+            "asiaDeltaSign", "asiaDirection", "asiaVaWidth", "priorDayPocZone", "priorDayCloseVsPoc",
+            "londonOpenVsPriorDayPoc", "londonOpenVsPriorDayValue", "asiaPocVsPriorDayPoc"
+          ],
+          "properties": {
+            "asiaPocZone": { "$ref": "#/$defs/zone3" },
+            "asiaPocSide": { "$ref": "#/$defs/sideOfMid" },
+            "asiaCloseVsPoc": { "$ref": "#/$defs/vsLevel" },
+            "londonOpenVsAsiaPoc": { "$ref": "#/$defs/vsLevel" },
+            "londonOpenVsAsiaValue": { "$ref": "#/$defs/vsValueArea" },
+            "asiaDeltaSign": { "$ref": "#/$defs/signedBucket" },
+            "asiaDirection": { "$ref": "#/$defs/direction" },
+            "asiaVaWidth": { "$ref": "#/$defs/widthBucket" },
+            "priorDayPocZone": { "$ref": "#/$defs/zone3" },
+            "priorDayCloseVsPoc": { "$ref": "#/$defs/vsLevel" },
+            "londonOpenVsPriorDayPoc": { "$ref": "#/$defs/vsLevel" },
+            "londonOpenVsPriorDayValue": { "$ref": "#/$defs/vsValueArea" },
+            "asiaPocVsPriorDayPoc": { "$ref": "#/$defs/vsLevel" }
+          }
+        }
+      }
+    },
+    "zone3": { "anyOf": [{ "type": "null" }, { "type": "string", "enum": ["bottom", "middle", "top"] }] },
+    "sideOfMid": { "anyOf": [{ "type": "null" }, { "type": "string", "enum": ["belowMid", "aboveMid", "nearMid"] }] },
+    "vsLevel": { "anyOf": [{ "type": "null" }, { "type": "string", "enum": ["above", "below", "at"] }] },
+    "vsValueArea": { "anyOf": [{ "type": "null" }, { "type": "string", "enum": ["aboveVA", "belowVA", "insideVA"] }] },
+    "direction": { "anyOf": [{ "type": "null" }, { "type": "string", "enum": ["up", "down", "flat"] }] },
+    "signedBucket": { "anyOf": [{ "type": "null" }, { "type": "string", "enum": ["positive", "negative", "flat"] }] },
+    "widthBucket": { "anyOf": [{ "type": "null" }, { "type": "string", "enum": ["narrow", "normal", "wide"] }] }
+  }
+}
