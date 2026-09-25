@@ -122,10 +122,17 @@ const valid = {
     generatedAt: T0 + 90_000_000,
     rows: [
       {
+        // Full shape, including the fields added in the 0.6.0 minor release
+        // (asia.rangeEstimators, priorDayAtr14, priorDay.close) - proves a
+        // row using them validates.
         date: '2026-01-05', decisionTs: T0,
-        asia: { open: 2000.1, high: 2005.4, low: 1998.2, close: 2002.7, barCount: 84, poc: 2001.5, vah: 2003.8, val: 1999.6, delta: 12.4 },
+        asia: {
+          open: 2000.1, high: 2005.4, low: 1998.2, close: 2002.7, barCount: 84, poc: 2001.5, vah: 2003.8, val: 1999.6, delta: 12.4,
+          rangeEstimators: { parkinsonBp: 41.2, garmanKlassBp: 39.7, rogersSatchellBp: 40.5 },
+        },
         londonOpen: 2002.9,
-        priorDay: { high: 2010.2, low: 1990.5, poc: 1999.4, vah: 2003.1, val: 1996.2 },
+        priorDayAtr14: 18.6,
+        priorDay: { high: 2010.2, low: 1990.5, close: 2003.4, poc: 1999.4, vah: 2003.1, val: 1996.2 },
         features: {
           asiaPocZone: 'middle', asiaPocSide: 'nearMid', asiaCloseVsPoc: 'above',
           londonOpenVsAsiaPoc: 'above', londonOpenVsAsiaValue: 'insideVA',
@@ -136,6 +143,9 @@ const valid = {
         },
       },
       {
+        // No 0.6.0 fields at all - proves a row shaped like the pre-0.6.0
+        // contract (asia.rangeEstimators, priorDayAtr14, priorDay.close all
+        // absent) still validates, unchanged.
         date: '2026-01-06', decisionTs: T0 + 86_400_000,
         asia: { open: 2002.9, high: 2004.0, low: 2001.0, close: 2001.2, barCount: 61, poc: 2002.1, vah: 2003.5, val: 2001.4, delta: -3.1 },
         londonOpen: 2001.3,
@@ -229,6 +239,11 @@ const invalid = {
     'row-bad-feature-value': (d) => { d.rows[0].features.asiaDirection = 'sideways'; },
     'row-prior-day-missing-poc': (d) => { delete d.rows[0].priorDay.poc; },
     'row-date-not-iso': (d) => { d.rows[0].date = '01/05/2026'; },
+    'row-range-estimator-wrong-type': (d) => { d.rows[0].asia.rangeEstimators.parkinsonBp = '41.2'; },
+    'row-range-estimator-missing-field': (d) => { delete d.rows[0].asia.rangeEstimators.garmanKlassBp; },
+    'row-range-estimator-unknown-field': (d) => { d.rows[0].asia.rangeEstimators.closeToCloseBp = 40.1; },
+    'row-prior-day-atr-wrong-type': (d) => { d.rows[0].priorDayAtr14 = '18.6'; },
+    'row-prior-day-close-wrong-type': (d) => { d.rows[0].priorDay.close = '2003.4'; },
   },
 };
 

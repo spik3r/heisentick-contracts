@@ -840,11 +840,18 @@ export declare const DOCUMENT_SCHEMAS: {
                 vah: import("zod").ZodNumber;
                 val: import("zod").ZodNumber;
                 delta: import("zod").ZodNumber;
+                rangeEstimators: import("zod").ZodOptional<import("zod").ZodObject<{
+                    parkinsonBp: import("zod").ZodUnion<readonly [import("zod").ZodNull, import("zod").ZodNumber]>;
+                    garmanKlassBp: import("zod").ZodUnion<readonly [import("zod").ZodNull, import("zod").ZodNumber]>;
+                    rogersSatchellBp: import("zod").ZodUnion<readonly [import("zod").ZodNull, import("zod").ZodNumber]>;
+                }, import("zod/v4/core").$strict>>;
             }, import("zod/v4/core").$strict>;
             londonOpen: import("zod").ZodNumber;
+            priorDayAtr14: import("zod").ZodOptional<import("zod").ZodUnion<readonly [import("zod").ZodNull, import("zod").ZodNumber]>>;
             priorDay: import("zod").ZodUnion<readonly [import("zod").ZodNull, import("zod").ZodObject<{
                 high: import("zod").ZodNumber;
                 low: import("zod").ZodNumber;
+                close: import("zod").ZodOptional<import("zod").ZodNumber>;
                 poc: import("zod").ZodNumber;
                 vah: import("zod").ZodNumber;
                 val: import("zod").ZodNumber;

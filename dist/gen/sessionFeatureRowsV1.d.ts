@@ -44,11 +44,18 @@ export declare const sessionFeatureRowsV1: z.ZodObject<{
             vah: z.ZodNumber;
             val: z.ZodNumber;
             delta: z.ZodNumber;
+            rangeEstimators: z.ZodOptional<z.ZodObject<{
+                parkinsonBp: z.ZodUnion<readonly [z.ZodNull, z.ZodNumber]>;
+                garmanKlassBp: z.ZodUnion<readonly [z.ZodNull, z.ZodNumber]>;
+                rogersSatchellBp: z.ZodUnion<readonly [z.ZodNull, z.ZodNumber]>;
+            }, z.core.$strict>>;
         }, z.core.$strict>;
         londonOpen: z.ZodNumber;
+        priorDayAtr14: z.ZodOptional<z.ZodUnion<readonly [z.ZodNull, z.ZodNumber]>>;
         priorDay: z.ZodUnion<readonly [z.ZodNull, z.ZodObject<{
             high: z.ZodNumber;
             low: z.ZodNumber;
+            close: z.ZodOptional<z.ZodNumber>;
             poc: z.ZodNumber;
             vah: z.ZodNumber;
             val: z.ZodNumber;
