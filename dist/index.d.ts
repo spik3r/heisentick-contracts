@@ -130,8 +130,8 @@ export declare const DOCUMENT_SCHEMAS: {
             }>;
             series: import("zod").ZodArray<import("zod").ZodObject<{
                 role: import("zod").ZodEnum<{
-                    entry: "entry";
                     source: "source";
+                    entry: "entry";
                     higher: "higher";
                     context: "context";
                 }>;
@@ -307,8 +307,8 @@ export declare const DOCUMENT_SCHEMAS: {
             }>;
             series: import("zod").ZodArray<import("zod").ZodObject<{
                 role: import("zod").ZodEnum<{
-                    entry: "entry";
                     source: "source";
+                    entry: "entry";
                     higher: "higher";
                     context: "context";
                 }>;
@@ -520,10 +520,10 @@ export declare const DOCUMENT_SCHEMAS: {
                 value: import("zod").ZodUnion<readonly [import("zod").ZodNumber, import("zod").ZodNull]>;
                 threshold: import("zod").ZodNumber;
                 comparator: import("zod").ZodEnum<{
-                    "at-least": "at-least";
                     above: "above";
-                    "at-most": "at-most";
                     below: "below";
+                    "at-least": "at-least";
+                    "at-most": "at-most";
                 }>;
             }, import("zod/v4/core").$strict>>>;
         }, import("zod/v4/core").$strict>;
@@ -680,10 +680,10 @@ export declare const DOCUMENT_SCHEMAS: {
                 value: import("zod").ZodUnion<readonly [import("zod").ZodNumber, import("zod").ZodNull]>;
                 threshold: import("zod").ZodNumber;
                 comparator: import("zod").ZodEnum<{
-                    "at-least": "at-least";
                     above: "above";
-                    "at-most": "at-most";
                     below: "below";
+                    "at-least": "at-least";
+                    "at-most": "at-most";
                 }>;
             }, import("zod/v4/core").$strict>>>;
         }, import("zod/v4/core").$strict>;
@@ -794,6 +794,129 @@ export declare const DOCUMENT_SCHEMAS: {
         envelopeSha256: import("zod").ZodOptional<import("zod").ZodString>;
         executionArn: import("zod").ZodOptional<import("zod").ZodString>;
         finishedAt: import("zod").ZodNumber;
+    }, import("zod/v4/core").$strict>;
+    readonly 'heisentick/session-feature-rows': import("zod").ZodObject<{
+        schema: import("zod").ZodLiteral<"heisentick/session-feature-rows">;
+        version: import("zod").ZodLiteral<1>;
+        instrument: import("zod").ZodString;
+        timeframe: import("zod").ZodEnum<{
+            "1m": "1m";
+            "5m": "5m";
+            "15m": "15m";
+            "30m": "30m";
+            "1h": "1h";
+            "4h": "4h";
+            "1d": "1d";
+        }>;
+        sessionConfig: import("zod").ZodObject<{
+            asiaStartHourUtc: import("zod").ZodNumber;
+            asiaEndHourUtc: import("zod").ZodNumber;
+            londonStartHourUtc: import("zod").ZodNumber;
+            valueAreaPercent: import("zod").ZodOptional<import("zod").ZodNumber>;
+            sessionRows: import("zod").ZodOptional<import("zod").ZodNumber>;
+            dayRows: import("zod").ZodOptional<import("zod").ZodNumber>;
+            minAsiaBars: import("zod").ZodOptional<import("zod").ZodNumber>;
+        }, import("zod/v4/core").$strict>;
+        engine: import("zod").ZodObject<{
+            package: import("zod").ZodLiteral<"@heisentick/engine">;
+            version: import("zod").ZodOptional<import("zod").ZodString>;
+            gitSha: import("zod").ZodOptional<import("zod").ZodString>;
+        }, import("zod/v4/core").$strict>;
+        source: import("zod").ZodObject<{
+            dataFile: import("zod").ZodString;
+            sha256: import("zod").ZodOptional<import("zod").ZodString>;
+        }, import("zod/v4/core").$strict>;
+        generatedAt: import("zod").ZodNumber;
+        rows: import("zod").ZodArray<import("zod").ZodObject<{
+            date: import("zod").ZodString;
+            decisionTs: import("zod").ZodNumber;
+            asia: import("zod").ZodObject<{
+                open: import("zod").ZodNumber;
+                high: import("zod").ZodNumber;
+                low: import("zod").ZodNumber;
+                close: import("zod").ZodNumber;
+                barCount: import("zod").ZodNumber;
+                poc: import("zod").ZodNumber;
+                vah: import("zod").ZodNumber;
+                val: import("zod").ZodNumber;
+                delta: import("zod").ZodNumber;
+            }, import("zod/v4/core").$strict>;
+            londonOpen: import("zod").ZodNumber;
+            priorDay: import("zod").ZodUnion<readonly [import("zod").ZodNull, import("zod").ZodObject<{
+                high: import("zod").ZodNumber;
+                low: import("zod").ZodNumber;
+                poc: import("zod").ZodNumber;
+                vah: import("zod").ZodNumber;
+                val: import("zod").ZodNumber;
+            }, import("zod/v4/core").$strict>]>;
+            features: import("zod").ZodObject<{
+                asiaPocZone: import("zod").ZodUnion<readonly [import("zod").ZodNull, import("zod").ZodEnum<{
+                    bottom: "bottom";
+                    middle: "middle";
+                    top: "top";
+                }>]>;
+                asiaPocSide: import("zod").ZodUnion<readonly [import("zod").ZodNull, import("zod").ZodEnum<{
+                    belowMid: "belowMid";
+                    aboveMid: "aboveMid";
+                    nearMid: "nearMid";
+                }>]>;
+                asiaCloseVsPoc: import("zod").ZodUnion<readonly [import("zod").ZodNull, import("zod").ZodEnum<{
+                    above: "above";
+                    below: "below";
+                    at: "at";
+                }>]>;
+                londonOpenVsAsiaPoc: import("zod").ZodUnion<readonly [import("zod").ZodNull, import("zod").ZodEnum<{
+                    above: "above";
+                    below: "below";
+                    at: "at";
+                }>]>;
+                londonOpenVsAsiaValue: import("zod").ZodUnion<readonly [import("zod").ZodNull, import("zod").ZodEnum<{
+                    aboveVA: "aboveVA";
+                    belowVA: "belowVA";
+                    insideVA: "insideVA";
+                }>]>;
+                asiaDeltaSign: import("zod").ZodUnion<readonly [import("zod").ZodNull, import("zod").ZodEnum<{
+                    positive: "positive";
+                    negative: "negative";
+                    flat: "flat";
+                }>]>;
+                asiaDirection: import("zod").ZodUnion<readonly [import("zod").ZodNull, import("zod").ZodEnum<{
+                    flat: "flat";
+                    up: "up";
+                    down: "down";
+                }>]>;
+                asiaVaWidth: import("zod").ZodUnion<readonly [import("zod").ZodNull, import("zod").ZodEnum<{
+                    narrow: "narrow";
+                    normal: "normal";
+                    wide: "wide";
+                }>]>;
+                priorDayPocZone: import("zod").ZodUnion<readonly [import("zod").ZodNull, import("zod").ZodEnum<{
+                    bottom: "bottom";
+                    middle: "middle";
+                    top: "top";
+                }>]>;
+                priorDayCloseVsPoc: import("zod").ZodUnion<readonly [import("zod").ZodNull, import("zod").ZodEnum<{
+                    above: "above";
+                    below: "below";
+                    at: "at";
+                }>]>;
+                londonOpenVsPriorDayPoc: import("zod").ZodUnion<readonly [import("zod").ZodNull, import("zod").ZodEnum<{
+                    above: "above";
+                    below: "below";
+                    at: "at";
+                }>]>;
+                londonOpenVsPriorDayValue: import("zod").ZodUnion<readonly [import("zod").ZodNull, import("zod").ZodEnum<{
+                    aboveVA: "aboveVA";
+                    belowVA: "belowVA";
+                    insideVA: "insideVA";
+                }>]>;
+                asiaPocVsPriorDayPoc: import("zod").ZodUnion<readonly [import("zod").ZodNull, import("zod").ZodEnum<{
+                    above: "above";
+                    below: "below";
+                    at: "at";
+                }>]>;
+            }, import("zod/v4/core").$strict>;
+        }, import("zod/v4/core").$strict>>;
     }, import("zod/v4/core").$strict>;
 };
 export type DocumentSchemaName = keyof typeof DOCUMENT_SCHEMAS;

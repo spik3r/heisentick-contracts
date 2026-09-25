@@ -73,10 +73,10 @@ export declare const validationRunResultV2: z.ZodObject<{
             value: z.ZodUnion<readonly [z.ZodNumber, z.ZodNull]>;
             threshold: z.ZodNumber;
             comparator: z.ZodEnum<{
-                "at-least": "at-least";
                 above: "above";
-                "at-most": "at-most";
                 below: "below";
+                "at-least": "at-least";
+                "at-most": "at-most";
             }>;
         }, z.core.$strict>>>;
     }, z.core.$strict>;

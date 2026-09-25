@@ -32,6 +32,7 @@ const FIXTURE_DOCS: Record<string, DocumentSchemaName> = {
   'validation-run-result-failed.v1': 'heisentick/validation-run-result',
   'validation-request-message.v1': 'heisentick/validation-request-message',
   'validation-result-message.v1': 'heisentick/validation-result-message',
+  'session-feature-rows.v1': 'heisentick/session-feature-rows',
 };
 
 // The JSON Schema files themselves, compiled with Ajv, are the reference the
@@ -65,6 +66,7 @@ const ajvRefFor: Record<string, [string, string | null]> = {
   'validation-run-result-failed.v1': ['validation-run-result.v1.schema.json', null],
   'validation-request-message.v1': ['validation-queue-messages.v1.schema.json', '/$defs/validationRequestMessage'],
   'validation-result-message.v1': ['validation-queue-messages.v1.schema.json', '/$defs/validationResultMessage'],
+  'session-feature-rows.v1': ['session-feature-rows.v1.schema.json', null],
 };
 
 test('every fixture directory is covered and every document has both valid and invalid fixtures', () => {

@@ -1,5 +1,6 @@
 export * from './barBinaryLayoutV1.js';
 export * from './candleSnapshotManifestV1.js';
+export * from './sessionFeatureRowsV1.js';
 export * from './validationQueueMessagesV1.js';
 export * from './validationRunManifestV1.js';
 export * from './validationRunManifestV2.js';
@@ -9,6 +10,7 @@ export * from './validationRunResultV2.js';
 export declare const SCHEMA_FILES: {
     readonly barBinaryLayoutV1: "bar-binary-layout.v1.schema.json";
     readonly candleSnapshotManifestV1: "candle-snapshot-manifest.v1.schema.json";
+    readonly sessionFeatureRowsV1: "session-feature-rows.v1.schema.json";
     readonly validationQueueMessagesV1: "validation-queue-messages.v1.schema.json";
     readonly validationRunManifestV1: "validation-run-manifest.v1.schema.json";
     readonly validationRunManifestV2: "validation-run-manifest.v2.schema.json";

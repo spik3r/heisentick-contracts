@@ -111,6 +111,46 @@ const valid = {
     schema: 'heisentick/validation-result-message', version: 1, runId: UUID, attempt: 1, status: 'succeeded',
     envelopeKey: `runs/${UUID}/1/envelope.json`, envelopeSha256: SHA, executionArn: `arn:aws:states:ap-southeast-2:123456789012:execution:StrategyValidation:${UUID}-1`, finishedAt: T0 + 90_000_000,
   },
+  'session-feature-rows.v1': {
+    schema: 'heisentick/session-feature-rows', version: 1, instrument: 'XAUUSD', timeframe: '5m',
+    sessionConfig: {
+      asiaStartHourUtc: 0, asiaEndHourUtc: 7, londonStartHourUtc: 7,
+      valueAreaPercent: 70, sessionRows: 24, dayRows: 36, minAsiaBars: 60,
+    },
+    engine: { package: '@heisentick/engine', version: '1.0.0', gitSha: 'a1b2c3d4e5f60718293a4b5c6d7e8f90a1b2c3d' },
+    source: { dataFile: '5m.json', sha256: SHA },
+    generatedAt: T0 + 90_000_000,
+    rows: [
+      {
+        date: '2026-01-05', decisionTs: T0,
+        asia: { open: 2000.1, high: 2005.4, low: 1998.2, close: 2002.7, barCount: 84, poc: 2001.5, vah: 2003.8, val: 1999.6, delta: 12.4 },
+        londonOpen: 2002.9,
+        priorDay: { high: 2010.2, low: 1990.5, poc: 1999.4, vah: 2003.1, val: 1996.2 },
+        features: {
+          asiaPocZone: 'middle', asiaPocSide: 'nearMid', asiaCloseVsPoc: 'above',
+          londonOpenVsAsiaPoc: 'above', londonOpenVsAsiaValue: 'insideVA',
+          asiaDeltaSign: 'positive', asiaDirection: 'up', asiaVaWidth: 'normal',
+          priorDayPocZone: 'middle', priorDayCloseVsPoc: 'above',
+          londonOpenVsPriorDayPoc: 'above', londonOpenVsPriorDayValue: 'aboveVA',
+          asiaPocVsPriorDayPoc: 'above',
+        },
+      },
+      {
+        date: '2026-01-06', decisionTs: T0 + 86_400_000,
+        asia: { open: 2002.9, high: 2004.0, low: 2001.0, close: 2001.2, barCount: 61, poc: 2002.1, vah: 2003.5, val: 2001.4, delta: -3.1 },
+        londonOpen: 2001.3,
+        priorDay: null,
+        features: {
+          asiaPocZone: null, asiaPocSide: null, asiaCloseVsPoc: 'below',
+          londonOpenVsAsiaPoc: 'below', londonOpenVsAsiaValue: 'belowVA',
+          asiaDeltaSign: 'negative', asiaDirection: 'down', asiaVaWidth: 'narrow',
+          priorDayPocZone: null, priorDayCloseVsPoc: null,
+          londonOpenVsPriorDayPoc: null, londonOpenVsPriorDayValue: null,
+          asiaPocVsPriorDayPoc: null,
+        },
+      },
+    ],
+  },
 };
 
 const clone = (v) => JSON.parse(JSON.stringify(v));
@@ -176,6 +216,19 @@ const invalid = {
     'unknown-field': (d) => { d.headline = {}; },
     'bad-status': (d) => { d.status = 'done'; },
     'missing-envelope': (d) => { delete d.envelopeKey; },
+  },
+  'session-feature-rows.v1': {
+    'unknown-field': (d) => { d.outcomes = {}; },
+    'wrong-schema-version': (d) => { d.version = 2; },
+    'bad-instrument': (d) => { d.instrument = 'xauusd'; },
+    'hour-out-of-range': (d) => { d.sessionConfig.asiaEndHourUtc = 25; },
+    'wrong-engine-package': (d) => { d.engine.package = 'heisentick'; },
+    'sha-upper-case': (d) => { d.source.sha256 = SHA.toUpperCase(); },
+    'row-missing-bar-count': (d) => { delete d.rows[0].asia.barCount; },
+    'row-unknown-feature': (d) => { d.rows[0].features.asiaPocExtreme = 'balanced'; },
+    'row-bad-feature-value': (d) => { d.rows[0].features.asiaDirection = 'sideways'; },
+    'row-prior-day-missing-poc': (d) => { delete d.rows[0].priorDay.poc; },
+    'row-date-not-iso': (d) => { d.rows[0].date = '01/05/2026'; },
   },
 };
 
