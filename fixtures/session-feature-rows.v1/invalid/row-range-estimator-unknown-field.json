@@ -24,7 +24,7 @@
   "generatedAt": 1600090000000,
   "rows": [
     {
-      "date": "01/05/2026",
+      "date": "2026-01-05",
       "decisionTs": 1600000000000,
       "asia": {
         "open": 2000.1,
@@ -39,7 +39,8 @@
         "rangeEstimators": {
           "parkinsonBp": 41.2,
           "garmanKlassBp": 39.7,
-          "rogersSatchellBp": 40.5
+          "rogersSatchellBp": 40.5,
+          "closeToCloseBp": 40.1
         }
       },
       "londonOpen": 2002.9,

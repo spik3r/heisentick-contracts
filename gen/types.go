@@ -181,6 +181,14 @@ type SessionFeatureRow struct {
 	// relative to decisionTs. null when the prior day could not be computed (e.g. no
 	// prior-day bars available) - the row is otherwise still emitted.
 	PriorDay interface{} `json:"priorDay" yaml:"priorDay" mapstructure:"priorDay"`
+
+	// Optional (added in a v1 minor release): ATR(14) on the symbol's daily (1d)
+	// bars, as of the prior UTC day's close (engine/indicators.js computeATR, price
+	// units, not basis points). Absent on rows written before this field existed.
+	// null when the export had no 1d bar series, or none dated on the prior UTC day
+	// (for example a symbol whose stored 1d history starts later than its intraday
+	// history).
+	PriorDayAtr14 interface{} `json:"priorDayAtr14,omitempty" yaml:"priorDayAtr14,omitempty" mapstructure:"priorDayAtr14,omitempty"`
 }
 
 // Summary and volume-profile levels of the Asia window bars, all strictly before
@@ -208,11 +216,36 @@ type SessionFeatureRowAsia struct {
 	// Point of control price of the Asia-window volume profile.
 	Poc float64 `json:"poc" yaml:"poc" mapstructure:"poc"`
 
+	// Optional (added in a v1 minor release): realised-range volatility estimators
+	// over the Asia-window bars, in basis points (sqrt of summed per-bar variance *
+	// 10,000, the same bp conversion engine/research/rangeForecastStudy.js's
+	// scanRangeForecast() uses). Absent on rows written before this field existed; a
+	// field within, when the object is present, is null only when no Asia-window bar
+	// could support that estimator (e.g. a non-positive OHLC value).
+	RangeEstimators *SessionFeatureRowAsiaRangeEstimators `json:"rangeEstimators,omitempty" yaml:"rangeEstimators,omitempty" mapstructure:"rangeEstimators,omitempty"`
+
 	// Value-area high.
 	Vah float64 `json:"vah" yaml:"vah" mapstructure:"vah"`
 
 	// Value-area low.
 	Val float64 `json:"val" yaml:"val" mapstructure:"val"`
+}
+
+// Optional (added in a v1 minor release): realised-range volatility estimators
+// over the Asia-window bars, in basis points (sqrt of summed per-bar variance *
+// 10,000, the same bp conversion engine/research/rangeForecastStudy.js's
+// scanRangeForecast() uses). Absent on rows written before this field existed; a
+// field within, when the object is present, is null only when no Asia-window bar
+// could support that estimator (e.g. a non-positive OHLC value).
+type SessionFeatureRowAsiaRangeEstimators struct {
+	// Garman-Klass (1980) OHLC estimator, basis points.
+	GarmanKlassBp interface{} `json:"garmanKlassBp" yaml:"garmanKlassBp" mapstructure:"garmanKlassBp"`
+
+	// Parkinson (1980) high-low range estimator, basis points.
+	ParkinsonBp interface{} `json:"parkinsonBp" yaml:"parkinsonBp" mapstructure:"parkinsonBp"`
+
+	// Rogers-Satchell (1991) drift-independent OHLC estimator, basis points.
+	RogersSatchellBp interface{} `json:"rogersSatchellBp" yaml:"rogersSatchellBp" mapstructure:"rogersSatchellBp"`
 }
 
 // Categorical buckets, named exactly as scripts/research/vpSessionCorrelation.mjs
@@ -342,6 +375,10 @@ const SessionFeatureRowFeaturesPriorDayPocZone_1_Middle SessionFeatureRowFeature
 const SessionFeatureRowFeaturesPriorDayPocZone_1_Top SessionFeatureRowFeaturesPriorDayPocZone_1 = "top"
 
 type SessionFeatureRowPriorDay_1 struct {
+	// Optional (added in a v1 minor release): the prior UTC day's own close price
+	// (last bar of that day). Absent on rows written before this field existed.
+	Close *float64 `json:"close,omitempty" yaml:"close,omitempty" mapstructure:"close,omitempty"`
+
 	// High corresponds to the JSON schema field "high".
 	High float64 `json:"high" yaml:"high" mapstructure:"high"`
 
@@ -434,6 +471,14 @@ type SessionFeatureRowsV1RowsElem struct {
 	// relative to decisionTs. null when the prior day could not be computed (e.g. no
 	// prior-day bars available) - the row is otherwise still emitted.
 	PriorDay interface{} `json:"priorDay" yaml:"priorDay" mapstructure:"priorDay"`
+
+	// Optional (added in a v1 minor release): ATR(14) on the symbol's daily (1d)
+	// bars, as of the prior UTC day's close (engine/indicators.js computeATR, price
+	// units, not basis points). Absent on rows written before this field existed.
+	// null when the export had no 1d bar series, or none dated on the prior UTC day
+	// (for example a symbol whose stored 1d history starts later than its intraday
+	// history).
+	PriorDayAtr14 interface{} `json:"priorDayAtr14,omitempty" yaml:"priorDayAtr14,omitempty" mapstructure:"priorDayAtr14,omitempty"`
 }
 
 // Summary and volume-profile levels of the Asia window bars, all strictly before
@@ -461,11 +506,36 @@ type SessionFeatureRowsV1RowsElemAsia struct {
 	// Point of control price of the Asia-window volume profile.
 	Poc float64 `json:"poc" yaml:"poc" mapstructure:"poc"`
 
+	// Optional (added in a v1 minor release): realised-range volatility estimators
+	// over the Asia-window bars, in basis points (sqrt of summed per-bar variance *
+	// 10,000, the same bp conversion engine/research/rangeForecastStudy.js's
+	// scanRangeForecast() uses). Absent on rows written before this field existed; a
+	// field within, when the object is present, is null only when no Asia-window bar
+	// could support that estimator (e.g. a non-positive OHLC value).
+	RangeEstimators *SessionFeatureRowsV1RowsElemAsiaRangeEstimators `json:"rangeEstimators,omitempty" yaml:"rangeEstimators,omitempty" mapstructure:"rangeEstimators,omitempty"`
+
 	// Value-area high.
 	Vah float64 `json:"vah" yaml:"vah" mapstructure:"vah"`
 
 	// Value-area low.
 	Val float64 `json:"val" yaml:"val" mapstructure:"val"`
+}
+
+// Optional (added in a v1 minor release): realised-range volatility estimators
+// over the Asia-window bars, in basis points (sqrt of summed per-bar variance *
+// 10,000, the same bp conversion engine/research/rangeForecastStudy.js's
+// scanRangeForecast() uses). Absent on rows written before this field existed; a
+// field within, when the object is present, is null only when no Asia-window bar
+// could support that estimator (e.g. a non-positive OHLC value).
+type SessionFeatureRowsV1RowsElemAsiaRangeEstimators struct {
+	// Garman-Klass (1980) OHLC estimator, basis points.
+	GarmanKlassBp interface{} `json:"garmanKlassBp" yaml:"garmanKlassBp" mapstructure:"garmanKlassBp"`
+
+	// Parkinson (1980) high-low range estimator, basis points.
+	ParkinsonBp interface{} `json:"parkinsonBp" yaml:"parkinsonBp" mapstructure:"parkinsonBp"`
+
+	// Rogers-Satchell (1991) drift-independent OHLC estimator, basis points.
+	RogersSatchellBp interface{} `json:"rogersSatchellBp" yaml:"rogersSatchellBp" mapstructure:"rogersSatchellBp"`
 }
 
 // Categorical buckets, named exactly as scripts/research/vpSessionCorrelation.mjs
@@ -595,6 +665,10 @@ const SessionFeatureRowsV1RowsElemFeaturesPriorDayPocZone_1_Middle SessionFeatur
 const SessionFeatureRowsV1RowsElemFeaturesPriorDayPocZone_1_Top SessionFeatureRowsV1RowsElemFeaturesPriorDayPocZone_1 = "top"
 
 type SessionFeatureRowsV1RowsElemPriorDay_1 struct {
+	// Optional (added in a v1 minor release): the prior UTC day's own close price
+	// (last bar of that day). Absent on rows written before this field existed.
+	Close *float64 `json:"close,omitempty" yaml:"close,omitempty" mapstructure:"close,omitempty"`
+
 	// High corresponds to the JSON schema field "high".
 	High float64 `json:"high" yaml:"high" mapstructure:"high"`
 

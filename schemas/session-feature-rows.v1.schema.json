@@ -72,10 +72,25 @@
             "poc": { "type": "number", "description": "Point of control price of the Asia-window volume profile." },
             "vah": { "type": "number", "description": "Value-area high." },
             "val": { "type": "number", "description": "Value-area low." },
-            "delta": { "type": "number", "description": "Up-volume minus down-volume across the Asia window (engine/volumeProfile.js upVolume - downVolume)." }
+            "delta": { "type": "number", "description": "Up-volume minus down-volume across the Asia window (engine/volumeProfile.js upVolume - downVolume)." },
+            "rangeEstimators": {
+              "description": "Optional (added in a v1 minor release): realised-range volatility estimators over the Asia-window bars, in basis points (sqrt of summed per-bar variance * 10,000, the same bp conversion engine/research/rangeForecastStudy.js's scanRangeForecast() uses). Absent on rows written before this field existed; a field within, when the object is present, is null only when no Asia-window bar could support that estimator (e.g. a non-positive OHLC value).",
+              "type": "object",
+              "additionalProperties": false,
+              "required": ["parkinsonBp", "garmanKlassBp", "rogersSatchellBp"],
+              "properties": {
+                "parkinsonBp": { "anyOf": [{ "type": "null" }, { "type": "number" }], "description": "Parkinson (1980) high-low range estimator, basis points." },
+                "garmanKlassBp": { "anyOf": [{ "type": "null" }, { "type": "number" }], "description": "Garman-Klass (1980) OHLC estimator, basis points." },
+                "rogersSatchellBp": { "anyOf": [{ "type": "null" }, { "type": "number" }], "description": "Rogers-Satchell (1991) drift-independent OHLC estimator, basis points." }
+              }
+            }
           }
         },
         "londonOpen": { "type": "number", "description": "Open price of the first bar at or after decisionTs. The decision reference price; not a look-ahead field." },
+        "priorDayAtr14": {
+          "anyOf": [{ "type": "null" }, { "type": "number" }],
+          "description": "Optional (added in a v1 minor release): ATR(14) on the symbol's daily (1d) bars, as of the prior UTC day's close (engine/indicators.js computeATR, price units, not basis points). Absent on rows written before this field existed. null when the export had no 1d bar series, or none dated on the prior UTC day (for example a symbol whose stored 1d history starts later than its intraday history)."
+        },
         "priorDay": {
           "description": "Prior UTC day's high/low and volume-profile levels, all fully in the past relative to decisionTs. null when the prior day could not be computed (e.g. no prior-day bars available) - the row is otherwise still emitted.",
           "anyOf": [
@@ -87,6 +102,7 @@
               "properties": {
                 "high": { "type": "number" },
                 "low": { "type": "number" },
+                "close": { "type": "number", "description": "Optional (added in a v1 minor release): the prior UTC day's own close price (last bar of that day). Absent on rows written before this field existed." },
                 "poc": { "type": "number" },
                 "vah": { "type": "number" },
                 "val": { "type": "number" }

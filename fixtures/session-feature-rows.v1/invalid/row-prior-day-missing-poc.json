@@ -35,12 +35,19 @@
         "poc": 2001.5,
         "vah": 2003.8,
         "val": 1999.6,
-        "delta": 12.4
+        "delta": 12.4,
+        "rangeEstimators": {
+          "parkinsonBp": 41.2,
+          "garmanKlassBp": 39.7,
+          "rogersSatchellBp": 40.5
+        }
       },
       "londonOpen": 2002.9,
+      "priorDayAtr14": 18.6,
       "priorDay": {
         "high": 2010.2,
         "low": 1990.5,
+        "close": 2003.4,
         "vah": 2003.1,
         "val": 1996.2
       },
