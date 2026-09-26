@@ -33,6 +33,7 @@ const FIXTURE_DOCS: Record<string, DocumentSchemaName> = {
   'validation-request-message.v1': 'heisentick/validation-request-message',
   'validation-result-message.v1': 'heisentick/validation-result-message',
   'session-feature-rows.v1': 'heisentick/session-feature-rows',
+  'trade-export.v1': 'heisentick/trade-export',
 };
 
 // The JSON Schema files themselves, compiled with Ajv, are the reference the
@@ -67,6 +68,7 @@ const ajvRefFor: Record<string, [string, string | null]> = {
   'validation-request-message.v1': ['validation-queue-messages.v1.schema.json', '/$defs/validationRequestMessage'],
   'validation-result-message.v1': ['validation-queue-messages.v1.schema.json', '/$defs/validationResultMessage'],
   'session-feature-rows.v1': ['session-feature-rows.v1.schema.json', null],
+  'trade-export.v1': ['trade-export.v1.schema.json', null],
 };
 
 test('every fixture directory is covered and every document has both valid and invalid fixtures', () => {

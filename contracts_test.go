@@ -22,6 +22,7 @@ var fixtureDocs = map[string]string{
 	"validation-request-message.v1":   "heisentick/validation-request-message",
 	"validation-result-message.v1":    "heisentick/validation-result-message",
 	"session-feature-rows.v1":         "heisentick/session-feature-rows",
+	"trade-export.v1":                 "heisentick/trade-export",
 }
 
 func readFixtures(t *testing.T, dir, kind string) map[string][]byte {

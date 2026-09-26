@@ -24,6 +24,7 @@ corresponding task there. This repository keeps its code, tests and runbooks.
 | `heisentick/validation-result-message` | `validation-queue-messages.v1` | Assemble Lambda | API results consumer |
 | `heisentick/validation-run-result` | `validation-run-result.v1` | Assemble Lambda | API, Lab UI |
 | `heisentick/session-feature-rows` | `session-feature-rows.v1` | heisentick research exports (e.g. `vpSessionCorrelation.mjs --rows-out`) | offline research repos, e.g. `heisentick-ml` |
+| `heisentick/trade-export` | `trade-export.v1` | `heisentick-strat` CLI (`report --json-only --include-trades --trade-export=1`) | offline research repos, e.g. `heisentick-ml` (meta-labeling) |
 
 The `.bin` layout is fixed by the schema's constants: little-endian, 16-byte
 header (magic `0x31425442`, version 1, count, colCount), then `colCount`

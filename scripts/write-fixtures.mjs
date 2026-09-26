@@ -161,6 +161,40 @@ const valid = {
       },
     ],
   },
+  'trade-export.v1': {
+    schema: 'heisentick/trade-export', version: 1,
+    strategy: { id: 'dslDualEmaResumptionXauusdFourHour', sourceCommit: SHA, stratDigest: 'v0.9.0' },
+    engine: { repo: 'heisentick-strat', release: 'v0.9.0' },
+    dataSha256: [{ file: 'XAUUSD/4h.bin', sha256: SHA2 }],
+    runConfig: { costMode: 'realistic', slippage: 0.06, slippageBps: 0, riskUsd: 200 },
+    routes: [{ symbol: 'XAUUSD', tf: '4h' }],
+    generatedAt: T0 + 90_000_000,
+    trades: [
+      {
+        // Full shape, including every nullable excursion/R field populated.
+        signalId: '0123456789abcdef0123456789abcdef', symbol: 'XAUUSD', tf: '4h', side: 'long',
+        entryTs: T0, entryPrice: 2000.5, exitTs: T0 + 14_400_000, exitPrice: 2010.2,
+        initialSl: 1990.1, initialTp: 2020.9,
+        rNetGross: 0.94, rNetAfterCosts: 0.88,
+        exitReason: 'tp', exitRule: null,
+        mfeR: 1.2, maeR: -0.3, timeToMfeBars: 4,
+        postExitMfeR: 0.1, postExitMaeR: -0.2,
+        costModelId: 'realistic-v1',
+      },
+      {
+        // No stop/target/excursion data - proves every nullable field
+        // validates as null (e.g. a "rule" exit with zero initial risk).
+        signalId: '1123456789abcdef0123456789abcdef', symbol: 'XAUUSD', tf: '4h', side: 'short',
+        entryTs: T0 + 28_800_000, entryPrice: 2005.0, exitTs: T0 + 43_200_000, exitPrice: 2003.5,
+        initialSl: null, initialTp: null,
+        rNetGross: null, rNetAfterCosts: null,
+        exitReason: 'rule', exitRule: 'sma-bearish-cross',
+        mfeR: null, maeR: null, timeToMfeBars: null,
+        postExitMfeR: null, postExitMaeR: null,
+        costModelId: 'realistic-v1',
+      },
+    ],
+  },
 };
 
 const clone = (v) => JSON.parse(JSON.stringify(v));
@@ -244,6 +278,20 @@ const invalid = {
     'row-range-estimator-unknown-field': (d) => { d.rows[0].asia.rangeEstimators.closeToCloseBp = 40.1; },
     'row-prior-day-atr-wrong-type': (d) => { d.rows[0].priorDayAtr14 = '18.6'; },
     'row-prior-day-close-wrong-type': (d) => { d.rows[0].priorDay.close = '2003.4'; },
+  },
+  'trade-export.v1': {
+    'unknown-field': (d) => { d.notes = 'x'; },
+    'wrong-schema-version': (d) => { d.version = 2; },
+    'bad-engine-repo': (d) => { d.engine.repo = 'heisentick'; },
+    'sha-upper-case': (d) => { d.strategy.sourceCommit = SHA.toUpperCase(); },
+    'empty-data-sha256': (d) => { d.dataSha256 = []; },
+    'bad-cost-mode': (d) => { d.runConfig.costMode = 'zero'; },
+    'trade-bad-signal-id': (d) => { d.trades[0].signalId = 'not-hex'; },
+    'trade-bad-side': (d) => { d.trades[0].side = 'flat'; },
+    'trade-bad-exit-reason': (d) => { d.trades[0].exitReason = 'stop'; },
+    'trade-missing-mfe': (d) => { delete d.trades[0].mfeR; },
+    'trade-unknown-field': (d) => { d.trades[0].slippagePoints = 0.1; },
+    'trade-string-timestamp': (d) => { d.trades[0].entryTs = '2020-09-13T12:26:40Z'; },
   },
 };
 
