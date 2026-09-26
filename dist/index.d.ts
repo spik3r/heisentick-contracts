@@ -925,6 +925,86 @@ export declare const DOCUMENT_SCHEMAS: {
             }, import("zod/v4/core").$strict>;
         }, import("zod/v4/core").$strict>>;
     }, import("zod/v4/core").$strict>;
+    readonly 'heisentick/trade-export': import("zod").ZodObject<{
+        schema: import("zod").ZodLiteral<"heisentick/trade-export">;
+        version: import("zod").ZodLiteral<1>;
+        strategy: import("zod").ZodObject<{
+            id: import("zod").ZodString;
+            sourceCommit: import("zod").ZodString;
+            stratDigest: import("zod").ZodOptional<import("zod").ZodString>;
+        }, import("zod/v4/core").$strict>;
+        engine: import("zod").ZodObject<{
+            repo: import("zod").ZodLiteral<"heisentick-strat">;
+            release: import("zod").ZodString;
+        }, import("zod/v4/core").$strict>;
+        dataSha256: import("zod").ZodArray<import("zod").ZodObject<{
+            file: import("zod").ZodString;
+            sha256: import("zod").ZodString;
+        }, import("zod/v4/core").$strict>>;
+        runConfig: import("zod").ZodObject<{
+            costMode: import("zod").ZodEnum<{
+                raw: "raw";
+                realistic: "realistic";
+                harsh: "harsh";
+            }>;
+            slippage: import("zod").ZodNumber;
+            slippageBps: import("zod").ZodOptional<import("zod").ZodNumber>;
+            riskUsd: import("zod").ZodOptional<import("zod").ZodNumber>;
+        }, import("zod/v4/core").$strict>;
+        routes: import("zod").ZodArray<import("zod").ZodObject<{
+            symbol: import("zod").ZodString;
+            tf: import("zod").ZodEnum<{
+                "1m": "1m";
+                "5m": "5m";
+                "15m": "15m";
+                "30m": "30m";
+                "1h": "1h";
+                "4h": "4h";
+                "1d": "1d";
+            }>;
+        }, import("zod/v4/core").$strict>>;
+        generatedAt: import("zod").ZodNumber;
+        trades: import("zod").ZodArray<import("zod").ZodObject<{
+            signalId: import("zod").ZodString;
+            symbol: import("zod").ZodString;
+            tf: import("zod").ZodEnum<{
+                "1m": "1m";
+                "5m": "5m";
+                "15m": "15m";
+                "30m": "30m";
+                "1h": "1h";
+                "4h": "4h";
+                "1d": "1d";
+            }>;
+            side: import("zod").ZodEnum<{
+                long: "long";
+                short: "short";
+            }>;
+            entryTs: import("zod").ZodNumber;
+            entryPrice: import("zod").ZodNumber;
+            exitTs: import("zod").ZodNumber;
+            exitPrice: import("zod").ZodNumber;
+            initialSl: import("zod").ZodUnion<readonly [import("zod").ZodNumber, import("zod").ZodNull]>;
+            initialTp: import("zod").ZodUnion<readonly [import("zod").ZodNumber, import("zod").ZodNull]>;
+            rNetGross: import("zod").ZodUnion<readonly [import("zod").ZodNumber, import("zod").ZodNull]>;
+            rNetAfterCosts: import("zod").ZodUnion<readonly [import("zod").ZodNumber, import("zod").ZodNull]>;
+            exitReason: import("zod").ZodEnum<{
+                rule: "rule";
+                sl: "sl";
+                tp: "tp";
+                time: "time";
+                partial: "partial";
+                "end-of-test": "end-of-test";
+            }>;
+            exitRule: import("zod").ZodOptional<import("zod").ZodUnion<readonly [import("zod").ZodString, import("zod").ZodNull]>>;
+            mfeR: import("zod").ZodUnion<readonly [import("zod").ZodNumber, import("zod").ZodNull]>;
+            maeR: import("zod").ZodUnion<readonly [import("zod").ZodNumber, import("zod").ZodNull]>;
+            timeToMfeBars: import("zod").ZodUnion<readonly [import("zod").ZodNumber, import("zod").ZodNull]>;
+            postExitMfeR: import("zod").ZodUnion<readonly [import("zod").ZodNumber, import("zod").ZodNull]>;
+            postExitMaeR: import("zod").ZodUnion<readonly [import("zod").ZodNumber, import("zod").ZodNull]>;
+            costModelId: import("zod").ZodString;
+        }, import("zod/v4/core").$strict>>;
+    }, import("zod/v4/core").$strict>;
 };
 export type DocumentSchemaName = keyof typeof DOCUMENT_SCHEMAS;
 export declare class ContractError extends Error {

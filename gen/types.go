@@ -733,6 +733,313 @@ type SideOfMid interface{}
 
 type SignedBucket interface{}
 
+type TradeExportTrade struct {
+	// e.g. "realistic-v1"; names the cost mode the trades were produced under.
+	CostModelID string `json:"costModelId" yaml:"costModelId" mapstructure:"costModelId"`
+
+	// EntryPrice corresponds to the JSON schema field "entryPrice".
+	EntryPrice float64 `json:"entryPrice" yaml:"entryPrice" mapstructure:"entryPrice"`
+
+	// Milliseconds since the Unix epoch, UTC. Every timestamp in every contract uses
+	// this unit.
+	EntryTs int `json:"entryTs" yaml:"entryTs" mapstructure:"entryTs"`
+
+	// ExitPrice corresponds to the JSON schema field "exitPrice".
+	ExitPrice float64 `json:"exitPrice" yaml:"exitPrice" mapstructure:"exitPrice"`
+
+	// ExitReason corresponds to the JSON schema field "exitReason".
+	ExitReason TradeExportTradeExitReason `json:"exitReason" yaml:"exitReason" mapstructure:"exitReason"`
+
+	// The strategy-rule identity behind a rule exit (e.g. "sma-bearish-cross"); null
+	// for every other exitReason.
+	ExitRule interface{} `json:"exitRule,omitempty" yaml:"exitRule,omitempty" mapstructure:"exitRule,omitempty"`
+
+	// Milliseconds since the Unix epoch, UTC. Every timestamp in every contract uses
+	// this unit.
+	ExitTs int `json:"exitTs" yaml:"exitTs" mapstructure:"exitTs"`
+
+	// null when the trade had no stop (NoStop).
+	InitialSl interface{} `json:"initialSl" yaml:"initialSl" mapstructure:"initialSl"`
+
+	// null when the trade had no target (NoTarget).
+	InitialTp interface{} `json:"initialTp" yaml:"initialTp" mapstructure:"initialTp"`
+
+	// A derived statistic. null means undefined for a stated reason (for example no
+	// trades), never 'unknown'.
+	MaeR interface{} `json:"maeR" yaml:"maeR" mapstructure:"maeR"`
+
+	// Maximum favourable excursion in R; null when the engine could not compute it
+	// (e.g. zero initial risk).
+	MfeR interface{} `json:"mfeR" yaml:"mfeR" mapstructure:"mfeR"`
+
+	// A derived statistic. null means undefined for a stated reason (for example no
+	// trades), never 'unknown'.
+	PostExitMaeR interface{} `json:"postExitMaeR" yaml:"postExitMaeR" mapstructure:"postExitMaeR"`
+
+	// A derived statistic. null means undefined for a stated reason (for example no
+	// trades), never 'unknown'.
+	PostExitMfeR interface{} `json:"postExitMfeR" yaml:"postExitMfeR" mapstructure:"postExitMfeR"`
+
+	// Realized PnL / (initial risk distance * size), after slippage and commission;
+	// null when initial risk distance is zero or unknown.
+	RNetAfterCosts interface{} `json:"rNetAfterCosts" yaml:"rNetAfterCosts" mapstructure:"rNetAfterCosts"`
+
+	// Price move / initial risk distance, before commission; null when initial risk
+	// distance is zero or unknown.
+	RNetGross interface{} `json:"rNetGross" yaml:"rNetGross" mapstructure:"rNetGross"`
+
+	// Side corresponds to the JSON schema field "side".
+	Side TradeExportTradeSide `json:"side" yaml:"side" mapstructure:"side"`
+
+	// sha256(strategyId|strategyVersion(=strategy.sourceCommit)|symbol|tf|signalBarTs|side),
+	// truncated to the first 32 hex characters (128 bits). Identifies the closed
+	// decision bar that produced the entry, stable across independent runs of the
+	// same source/data and changed by a change to any input.
+	SignalID string `json:"signalId" yaml:"signalId" mapstructure:"signalId"`
+
+	// Instrument code as the app registers it, upper case.
+	Symbol string `json:"symbol" yaml:"symbol" mapstructure:"symbol"`
+
+	// Tf corresponds to the JSON schema field "tf".
+	Tf TradeExportTradeTf `json:"tf" yaml:"tf" mapstructure:"tf"`
+
+	// TimeToMfeBars corresponds to the JSON schema field "timeToMfeBars".
+	TimeToMfeBars interface{} `json:"timeToMfeBars" yaml:"timeToMfeBars" mapstructure:"timeToMfeBars"`
+}
+
+type TradeExportTradeExitReason string
+
+const TradeExportTradeExitReasonEndOfTest TradeExportTradeExitReason = "end-of-test"
+const TradeExportTradeExitReasonPartial TradeExportTradeExitReason = "partial"
+const TradeExportTradeExitReasonRule TradeExportTradeExitReason = "rule"
+const TradeExportTradeExitReasonSl TradeExportTradeExitReason = "sl"
+const TradeExportTradeExitReasonTime TradeExportTradeExitReason = "time"
+const TradeExportTradeExitReasonTp TradeExportTradeExitReason = "tp"
+
+type TradeExportTradeSide string
+
+const TradeExportTradeSideLong TradeExportTradeSide = "long"
+const TradeExportTradeSideShort TradeExportTradeSide = "short"
+
+type TradeExportTradeTf string
+
+const TradeExportTradeTfA15M TradeExportTradeTf = "15m"
+const TradeExportTradeTfA1D TradeExportTradeTf = "1d"
+const TradeExportTradeTfA1H TradeExportTradeTf = "1h"
+const TradeExportTradeTfA1M TradeExportTradeTf = "1m"
+const TradeExportTradeTfA30M TradeExportTradeTf = "30m"
+const TradeExportTradeTfA4H TradeExportTradeTf = "4h"
+const TradeExportTradeTfA5M TradeExportTradeTf = "5m"
+
+// Per-trade export produced by heisentick-strat's Go engine (`report --json-only
+// --include-trades --trade-export=1`), formalising the existing report.Trade /
+// btgo-report-trades-v1 shape (and heisentick-strategy-validation's
+// heisentick/trade-list persistence of it) into a versioned contract, plus the
+// strategy/engine/data provenance envelope and the stable signalId that shape was
+// missing. The Go engine (heisentick-strat) is the sole producer: it is the
+// deterministic, canonical execution for a DSL strategy (see heisentick-backlog
+// plan 2026-09-26-meta-labeling-existing-strategies.md §2.2), and this document is
+// the input to offline meta-labeling research (heisentick-ml). Trades from more
+// than one route (symbol/timeframe) may be combined into a single export; every
+// trade carries its own symbol/tf so a combined export remains unambiguous, and
+// `routes` lists every distinct route contributing trades.
+type TradeExportV1 struct {
+	// DataSha256 corresponds to the JSON schema field "dataSha256".
+	DataSha256 []TradeExportV1DataSha256Elem `json:"dataSha256" yaml:"dataSha256" mapstructure:"dataSha256"`
+
+	// Engine corresponds to the JSON schema field "engine".
+	Engine TradeExportV1Engine `json:"engine" yaml:"engine" mapstructure:"engine"`
+
+	// Milliseconds since the Unix epoch, UTC. Every timestamp in every contract uses
+	// this unit.
+	GeneratedAt int `json:"generatedAt" yaml:"generatedAt" mapstructure:"generatedAt"`
+
+	// Routes corresponds to the JSON schema field "routes".
+	Routes []TradeExportV1RoutesElem `json:"routes" yaml:"routes" mapstructure:"routes"`
+
+	// RunConfig corresponds to the JSON schema field "runConfig".
+	RunConfig TradeExportV1RunConfig `json:"runConfig" yaml:"runConfig" mapstructure:"runConfig"`
+
+	// Schema corresponds to the JSON schema field "schema".
+	Schema interface{} `json:"schema" yaml:"schema" mapstructure:"schema"`
+
+	// Strategy corresponds to the JSON schema field "strategy".
+	Strategy TradeExportV1Strategy `json:"strategy" yaml:"strategy" mapstructure:"strategy"`
+
+	// Trades corresponds to the JSON schema field "trades".
+	Trades []TradeExportV1TradesElem `json:"trades" yaml:"trades" mapstructure:"trades"`
+
+	// Version corresponds to the JSON schema field "version".
+	Version interface{} `json:"version" yaml:"version" mapstructure:"version"`
+}
+
+type TradeExportV1DataSha256Elem struct {
+	// Path or filename of the bar data consumed (e.g. "XAUUSD/4h.bin"), as reported
+	// by the loader.
+	File string `json:"file" yaml:"file" mapstructure:"file"`
+
+	// Sha256 corresponds to the JSON schema field "sha256".
+	Sha256 string `json:"sha256" yaml:"sha256" mapstructure:"sha256"`
+}
+
+type TradeExportV1Engine struct {
+	// Tagged release (vX.Y.Z) or commit the export ran with.
+	Release string `json:"release" yaml:"release" mapstructure:"release"`
+
+	// Repo corresponds to the JSON schema field "repo".
+	Repo interface{} `json:"repo" yaml:"repo" mapstructure:"repo"`
+}
+
+type TradeExportV1RoutesElem struct {
+	// Instrument code as the app registers it, upper case.
+	Symbol string `json:"symbol" yaml:"symbol" mapstructure:"symbol"`
+
+	// Tf corresponds to the JSON schema field "tf".
+	Tf TradeExportV1RoutesElemTf `json:"tf" yaml:"tf" mapstructure:"tf"`
+}
+
+type TradeExportV1RoutesElemTf string
+
+const TradeExportV1RoutesElemTfA15M TradeExportV1RoutesElemTf = "15m"
+const TradeExportV1RoutesElemTfA1D TradeExportV1RoutesElemTf = "1d"
+const TradeExportV1RoutesElemTfA1H TradeExportV1RoutesElemTf = "1h"
+const TradeExportV1RoutesElemTfA1M TradeExportV1RoutesElemTf = "1m"
+const TradeExportV1RoutesElemTfA30M TradeExportV1RoutesElemTf = "30m"
+const TradeExportV1RoutesElemTfA4H TradeExportV1RoutesElemTf = "4h"
+const TradeExportV1RoutesElemTfA5M TradeExportV1RoutesElemTf = "5m"
+
+type TradeExportV1RunConfig struct {
+	// CostMode corresponds to the JSON schema field "costMode".
+	CostMode TradeExportV1RunConfigCostMode `json:"costMode" yaml:"costMode" mapstructure:"costMode"`
+
+	// RiskUsd corresponds to the JSON schema field "riskUsd".
+	RiskUsd *float64 `json:"riskUsd,omitempty" yaml:"riskUsd,omitempty" mapstructure:"riskUsd,omitempty"`
+
+	// Slippage corresponds to the JSON schema field "slippage".
+	Slippage float64 `json:"slippage" yaml:"slippage" mapstructure:"slippage"`
+
+	// SlippageBps corresponds to the JSON schema field "slippageBps".
+	SlippageBps *float64 `json:"slippageBps,omitempty" yaml:"slippageBps,omitempty" mapstructure:"slippageBps,omitempty"`
+}
+
+type TradeExportV1RunConfigCostMode string
+
+const TradeExportV1RunConfigCostModeHarsh TradeExportV1RunConfigCostMode = "harsh"
+const TradeExportV1RunConfigCostModeRaw TradeExportV1RunConfigCostMode = "raw"
+const TradeExportV1RunConfigCostModeRealistic TradeExportV1RunConfigCostMode = "realistic"
+
+type TradeExportV1Strategy struct {
+	// Strategy id, e.g. dslDualEmaResumptionXauusdFourHour.
+	ID string `json:"id" yaml:"id" mapstructure:"id"`
+
+	// sha256 of the .strat source file's bytes the trades were produced from (the
+	// module-byte-pinning convention already used by forward approvals). Doubles as
+	// the signalId's strategy-version component.
+	SourceCommit string `json:"sourceCommit" yaml:"sourceCommit" mapstructure:"sourceCommit"`
+
+	// heisentick-strat build/release identity the trades were produced with, when
+	// distinct from engine.release.
+	StratDigest *string `json:"stratDigest,omitempty" yaml:"stratDigest,omitempty" mapstructure:"stratDigest,omitempty"`
+}
+
+type TradeExportV1TradesElem struct {
+	// e.g. "realistic-v1"; names the cost mode the trades were produced under.
+	CostModelID string `json:"costModelId" yaml:"costModelId" mapstructure:"costModelId"`
+
+	// EntryPrice corresponds to the JSON schema field "entryPrice".
+	EntryPrice float64 `json:"entryPrice" yaml:"entryPrice" mapstructure:"entryPrice"`
+
+	// Milliseconds since the Unix epoch, UTC. Every timestamp in every contract uses
+	// this unit.
+	EntryTs int `json:"entryTs" yaml:"entryTs" mapstructure:"entryTs"`
+
+	// ExitPrice corresponds to the JSON schema field "exitPrice".
+	ExitPrice float64 `json:"exitPrice" yaml:"exitPrice" mapstructure:"exitPrice"`
+
+	// ExitReason corresponds to the JSON schema field "exitReason".
+	ExitReason TradeExportV1TradesElemExitReason `json:"exitReason" yaml:"exitReason" mapstructure:"exitReason"`
+
+	// The strategy-rule identity behind a rule exit (e.g. "sma-bearish-cross"); null
+	// for every other exitReason.
+	ExitRule interface{} `json:"exitRule,omitempty" yaml:"exitRule,omitempty" mapstructure:"exitRule,omitempty"`
+
+	// Milliseconds since the Unix epoch, UTC. Every timestamp in every contract uses
+	// this unit.
+	ExitTs int `json:"exitTs" yaml:"exitTs" mapstructure:"exitTs"`
+
+	// null when the trade had no stop (NoStop).
+	InitialSl interface{} `json:"initialSl" yaml:"initialSl" mapstructure:"initialSl"`
+
+	// null when the trade had no target (NoTarget).
+	InitialTp interface{} `json:"initialTp" yaml:"initialTp" mapstructure:"initialTp"`
+
+	// A derived statistic. null means undefined for a stated reason (for example no
+	// trades), never 'unknown'.
+	MaeR interface{} `json:"maeR" yaml:"maeR" mapstructure:"maeR"`
+
+	// Maximum favourable excursion in R; null when the engine could not compute it
+	// (e.g. zero initial risk).
+	MfeR interface{} `json:"mfeR" yaml:"mfeR" mapstructure:"mfeR"`
+
+	// A derived statistic. null means undefined for a stated reason (for example no
+	// trades), never 'unknown'.
+	PostExitMaeR interface{} `json:"postExitMaeR" yaml:"postExitMaeR" mapstructure:"postExitMaeR"`
+
+	// A derived statistic. null means undefined for a stated reason (for example no
+	// trades), never 'unknown'.
+	PostExitMfeR interface{} `json:"postExitMfeR" yaml:"postExitMfeR" mapstructure:"postExitMfeR"`
+
+	// Realized PnL / (initial risk distance * size), after slippage and commission;
+	// null when initial risk distance is zero or unknown.
+	RNetAfterCosts interface{} `json:"rNetAfterCosts" yaml:"rNetAfterCosts" mapstructure:"rNetAfterCosts"`
+
+	// Price move / initial risk distance, before commission; null when initial risk
+	// distance is zero or unknown.
+	RNetGross interface{} `json:"rNetGross" yaml:"rNetGross" mapstructure:"rNetGross"`
+
+	// Side corresponds to the JSON schema field "side".
+	Side TradeExportV1TradesElemSide `json:"side" yaml:"side" mapstructure:"side"`
+
+	// sha256(strategyId|strategyVersion(=strategy.sourceCommit)|symbol|tf|signalBarTs|side),
+	// truncated to the first 32 hex characters (128 bits). Identifies the closed
+	// decision bar that produced the entry, stable across independent runs of the
+	// same source/data and changed by a change to any input.
+	SignalID string `json:"signalId" yaml:"signalId" mapstructure:"signalId"`
+
+	// Instrument code as the app registers it, upper case.
+	Symbol string `json:"symbol" yaml:"symbol" mapstructure:"symbol"`
+
+	// Tf corresponds to the JSON schema field "tf".
+	Tf TradeExportV1TradesElemTf `json:"tf" yaml:"tf" mapstructure:"tf"`
+
+	// TimeToMfeBars corresponds to the JSON schema field "timeToMfeBars".
+	TimeToMfeBars interface{} `json:"timeToMfeBars" yaml:"timeToMfeBars" mapstructure:"timeToMfeBars"`
+}
+
+type TradeExportV1TradesElemExitReason string
+
+const TradeExportV1TradesElemExitReasonEndOfTest TradeExportV1TradesElemExitReason = "end-of-test"
+const TradeExportV1TradesElemExitReasonPartial TradeExportV1TradesElemExitReason = "partial"
+const TradeExportV1TradesElemExitReasonRule TradeExportV1TradesElemExitReason = "rule"
+const TradeExportV1TradesElemExitReasonSl TradeExportV1TradesElemExitReason = "sl"
+const TradeExportV1TradesElemExitReasonTime TradeExportV1TradesElemExitReason = "time"
+const TradeExportV1TradesElemExitReasonTp TradeExportV1TradesElemExitReason = "tp"
+
+type TradeExportV1TradesElemSide string
+
+const TradeExportV1TradesElemSideLong TradeExportV1TradesElemSide = "long"
+const TradeExportV1TradesElemSideShort TradeExportV1TradesElemSide = "short"
+
+type TradeExportV1TradesElemTf string
+
+const TradeExportV1TradesElemTfA15M TradeExportV1TradesElemTf = "15m"
+const TradeExportV1TradesElemTfA1D TradeExportV1TradesElemTf = "1d"
+const TradeExportV1TradesElemTfA1H TradeExportV1TradesElemTf = "1h"
+const TradeExportV1TradesElemTfA1M TradeExportV1TradesElemTf = "1m"
+const TradeExportV1TradesElemTfA30M TradeExportV1TradesElemTf = "30m"
+const TradeExportV1TradesElemTfA4H TradeExportV1TradesElemTf = "4h"
+const TradeExportV1TradesElemTfA5M TradeExportV1TradesElemTf = "5m"
+
 type ValidationRequestMessage struct {
 	// Attempt corresponds to the JSON schema field "attempt".
 	Attempt int `json:"attempt" yaml:"attempt" mapstructure:"attempt"`

@@ -2,6 +2,7 @@
 export * from './barBinaryLayoutV1.js';
 export * from './candleSnapshotManifestV1.js';
 export * from './sessionFeatureRowsV1.js';
+export * from './tradeExportV1.js';
 export * from './validationQueueMessagesV1.js';
 export * from './validationRunManifestV1.js';
 export * from './validationRunManifestV2.js';
@@ -12,6 +13,7 @@ export const SCHEMA_FILES = {
     "barBinaryLayoutV1": "bar-binary-layout.v1.schema.json",
     "candleSnapshotManifestV1": "candle-snapshot-manifest.v1.schema.json",
     "sessionFeatureRowsV1": "session-feature-rows.v1.schema.json",
+    "tradeExportV1": "trade-export.v1.schema.json",
     "validationQueueMessagesV1": "validation-queue-messages.v1.schema.json",
     "validationRunManifestV1": "validation-run-manifest.v1.schema.json",
     "validationRunManifestV2": "validation-run-manifest.v2.schema.json",

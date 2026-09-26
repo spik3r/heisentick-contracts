@@ -1,0 +1,78 @@
+{
+  "schema": "heisentick/trade-export",
+  "version": 1,
+  "strategy": {
+    "id": "dslDualEmaResumptionXauusdFourHour",
+    "sourceCommit": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+    "stratDigest": "v0.9.0"
+  },
+  "engine": {
+    "repo": "heisentick-strat",
+    "release": "v0.9.0"
+  },
+  "dataSha256": [
+    {
+      "file": "XAUUSD/4h.bin",
+      "sha256": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"
+    }
+  ],
+  "runConfig": {
+    "costMode": "zero",
+    "slippage": 0.06,
+    "slippageBps": 0,
+    "riskUsd": 200
+  },
+  "routes": [
+    {
+      "symbol": "XAUUSD",
+      "tf": "4h"
+    }
+  ],
+  "generatedAt": 1600090000000,
+  "trades": [
+    {
+      "signalId": "0123456789abcdef0123456789abcdef",
+      "symbol": "XAUUSD",
+      "tf": "4h",
+      "side": "long",
+      "entryTs": 1600000000000,
+      "entryPrice": 2000.5,
+      "exitTs": 1600014400000,
+      "exitPrice": 2010.2,
+      "initialSl": 1990.1,
+      "initialTp": 2020.9,
+      "rNetGross": 0.94,
+      "rNetAfterCosts": 0.88,
+      "exitReason": "tp",
+      "exitRule": null,
+      "mfeR": 1.2,
+      "maeR": -0.3,
+      "timeToMfeBars": 4,
+      "postExitMfeR": 0.1,
+      "postExitMaeR": -0.2,
+      "costModelId": "realistic-v1"
+    },
+    {
+      "signalId": "1123456789abcdef0123456789abcdef",
+      "symbol": "XAUUSD",
+      "tf": "4h",
+      "side": "short",
+      "entryTs": 1600028800000,
+      "entryPrice": 2005,
+      "exitTs": 1600043200000,
+      "exitPrice": 2003.5,
+      "initialSl": null,
+      "initialTp": null,
+      "rNetGross": null,
+      "rNetAfterCosts": null,
+      "exitReason": "rule",
+      "exitRule": "sma-bearish-cross",
+      "mfeR": null,
+      "maeR": null,
+      "timeToMfeBars": null,
+      "postExitMfeR": null,
+      "postExitMaeR": null,
+      "costModelId": "realistic-v1"
+    }
+  ]
+}
