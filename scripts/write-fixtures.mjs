@@ -304,6 +304,13 @@ const canonical = [
   { name: 'strings', input: { s: 'a"b\\c\n\té😀/<>&\u2028' }, canonical: '{"s":"a\\"b\\\\c\\n\\t\\u0001é😀/<>&\u2028"}' },
   { name: 'unicode-keys', input: { 'é': 1, 'e': 2, '😀': 3, 'Z': 4 }, canonical: '{"Z":4,"e":2,"é":1,"😀":3}' },
   { name: 'empty', input: {}, canonical: '{}' },
+  {
+    name: 'raw-text-boundary',
+    input: { b: 1, a: 2 },
+    canonical: '{"a":2,"b":1}',
+    rawText: ' \n { "b": 1, "a": 2 } \t ',
+    rejectRaw: ['{} {"x":1}', '{} true', '{} trailing'],
+  },
 ];
 
 rmSync(OUT, { recursive: true, force: true });

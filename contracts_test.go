@@ -129,6 +129,8 @@ func TestCanonicalCasesMatchTypeScript(t *testing.T) {
 		Input     json.RawMessage `json:"input"`
 		Canonical string          `json:"canonical"`
 		SHA256    string          `json:"sha256"`
+		RawText   string          `json:"rawText"`
+		RejectRaw []string        `json:"rejectRaw"`
 	}
 	if err := json.Unmarshal(raw, &cases); err != nil {
 		t.Fatal(err)
@@ -144,6 +146,19 @@ func TestCanonicalCasesMatchTypeScript(t *testing.T) {
 		}
 		if got != c.Canonical {
 			t.Errorf("%s:\n got %s\nwant %s", c.Name, got, c.Canonical)
+		}
+		if c.RawText != "" {
+			rawGot, err := CanonicalJSONBytes([]byte(c.RawText))
+			if err != nil {
+				t.Errorf("%s raw text: %v", c.Name, err)
+			} else if rawGot != c.Canonical {
+				t.Errorf("%s raw text:\n got %s\nwant %s", c.Name, rawGot, c.Canonical)
+			}
+		}
+		for _, raw := range c.RejectRaw {
+			if _, err := CanonicalJSONBytes([]byte(raw)); err == nil {
+				t.Errorf("%s: expected raw text %q to be rejected", c.Name, raw)
+			}
 		}
 		if c.SHA256 == "" {
 			t.Errorf("%s: fixture not sealed (run scripts/seal-fixtures.mjs)", c.Name)

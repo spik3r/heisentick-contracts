@@ -9,6 +9,7 @@ import {
   DOCUMENT_SCHEMAS,
   ContractError,
   canonicalJson,
+  canonicalJsonText,
   inputFingerprint,
   parseAnyDocument,
   parseDocument,
@@ -231,10 +232,19 @@ test('validation v2 permits an explicit unavailable Report identity only for a f
   }));
 });
 
-test('canonical JSON matches the committed cases and rejects non-finite numbers and undefined', () => {
-  const cases = readJson(join(FIXTURES, 'canonical', 'cases.json')) as { name: string; input: unknown; canonical: string; sha256?: string }[];
+test('canonical JSON matches committed cases and raw-text boundaries', () => {
+  const cases = readJson(join(FIXTURES, 'canonical', 'cases.json')) as {
+    name: string;
+    input: unknown;
+    canonical: string;
+    sha256?: string;
+    rawText?: string;
+    rejectRaw?: string[];
+  }[];
   for (const c of cases) {
     assert.equal(canonicalJson(c.input), c.canonical, c.name);
+    if (c.rawText !== undefined) assert.equal(canonicalJsonText(c.rawText), c.canonical, `${c.name} raw text`);
+    for (const raw of c.rejectRaw ?? []) assert.throws(() => canonicalJsonText(raw), SyntaxError, `${c.name} rejects ${raw}`);
     if (c.sha256) assert.equal(sha256Hex(c.canonical), c.sha256, `${c.name} sha256`);
   }
   assert.throws(() => canonicalJson({ a: Number.NaN }), /non-finite number at \.a/);

@@ -68,5 +68,20 @@
     "input": {},
     "canonical": "{}",
     "sha256": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a"
+  },
+  {
+    "name": "raw-text-boundary",
+    "input": {
+      "b": 1,
+      "a": 2
+    },
+    "canonical": "{\"a\":2,\"b\":1}",
+    "rawText": " \n { \"b\": 1, \"a\": 2 } \t ",
+    "rejectRaw": [
+      "{} {\"x\":1}",
+      "{} true",
+      "{} trailing"
+    ],
+    "sha256": "d3626ac30a87e6f7a6428233b3c68299976865fa5508e4267c5415c76af7a772"
   }
 ]
