@@ -1,6 +1,6 @@
 import * as gen from './gen/index.js';
 export * from './gen/index.js';
-export { canonicalJson, inputFingerprint, sha256Hex, CanonicalJsonError, MANIFEST_IDENTITY_FIELDS } from './canonical.js';
+export { canonicalJson, canonicalJsonText, inputFingerprint, sha256Hex, CanonicalJsonError, MANIFEST_IDENTITY_FIELDS } from './canonical.js';
 // Document schemas by the `schema` field value each document carries, so a
 // boundary can dispatch on the wire without knowing the TypeScript name.
 export const DOCUMENT_SCHEMAS = {

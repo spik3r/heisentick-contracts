@@ -68,6 +68,12 @@ export function canonicalJson(value: unknown): string {
   return out.join('');
 }
 
+// canonicalJsonText parses exactly one raw JSON value before canonicalizing it.
+// JSON.parse rejects any non-whitespace content after that value.
+export function canonicalJsonText(raw: string): string {
+  return canonicalJson(JSON.parse(raw) as unknown);
+}
+
 export function sha256Hex(text: string): string {
   return createHash('sha256').update(text, 'utf8').digest('hex');
 }

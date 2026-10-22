@@ -1,5 +1,5 @@
 export * from './gen/index.js';
-export { canonicalJson, inputFingerprint, sha256Hex, CanonicalJsonError, MANIFEST_IDENTITY_FIELDS } from './canonical.js';
+export { canonicalJson, canonicalJsonText, inputFingerprint, sha256Hex, CanonicalJsonError, MANIFEST_IDENTITY_FIELDS } from './canonical.js';
 export type { JsonValue } from './canonical.js';
 export declare const DOCUMENT_SCHEMAS: {
     readonly 'heisentick/bar-binary-layout': import("zod").ZodObject<{

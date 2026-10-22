@@ -10,6 +10,7 @@ import (
 	"encoding/hex"
 	"encoding/json"
 	"fmt"
+	"io"
 	"math"
 	"sort"
 	"strconv"
@@ -42,6 +43,13 @@ func CanonicalJSONBytes(raw []byte) (string, error) {
 	var value any
 	if err := dec.Decode(&value); err != nil {
 		return "", fmt.Errorf("canonical json: %w", err)
+	}
+	var trailing any
+	if err := dec.Decode(&trailing); err != io.EOF {
+		if err == nil {
+			return "", fmt.Errorf("canonical json: trailing data contains another JSON value")
+		}
+		return "", fmt.Errorf("canonical json: trailing data: %w", err)
 	}
 	return CanonicalJSON(value)
 }

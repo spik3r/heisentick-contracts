@@ -21,8 +21,18 @@ are tested against; add a case there before changing either implementation.
 5. `true`, `false`, `null` literally. In TypeScript an `undefined` value is an
    error rather than being dropped, so a document with a missing field cannot
    hash the same as one where the field is present.
-6. Input is a decoded JSON value: integers beyond 2^53 lose precision on both
+6. `canonicalJson` and `CanonicalJSON` take an already decoded JSON value.
+   Integers beyond 2^53 lose precision on both
    sides identically because both parse to a 64-bit float first.
+
+## Raw JSON text
+
+Use TypeScript `canonicalJsonText` or Go `CanonicalJSONBytes` when the input is
+raw JSON text. Each parses exactly one JSON value, allows surrounding
+whitespace, and rejects a second value or any other trailing non-whitespace
+content. This prevents either implementation from canonicalizing only a valid
+prefix of a larger input. The shared raw-text cases live in
+`fixtures/canonical/cases.json` and are checked by both language test suites.
 
 ## Fingerprint
 

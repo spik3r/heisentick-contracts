@@ -6,6 +6,7 @@ export declare class CanonicalJsonError extends Error {
     constructor(message: string, path: string);
 }
 export declare function canonicalJson(value: unknown): string;
+export declare function canonicalJsonText(raw: string): string;
 export declare function sha256Hex(text: string): string;
 export declare const MANIFEST_IDENTITY_FIELDS: readonly ["runId", "requestKey", "requestedBy", "submittedAt", "inputFingerprint"];
 export declare function inputFingerprint(manifest: Record<string, unknown>): string;
