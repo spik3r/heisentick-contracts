@@ -1,0 +1,277 @@
+{
+  "formatVersion": 1,
+  "cases": [
+    {
+      "name": "empty",
+      "bodyHex": "",
+      "byteLength": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "maxBytes": 0,
+      "wantError": null
+    },
+    {
+      "name": "abc",
+      "bodyHex": "616263",
+      "byteLength": 3,
+      "sha256": "ba7816bf8f01cfea414140de5dae2223b00361a396177a9cb410ff61f20015ad",
+      "maxBytes": 3,
+      "wantError": null
+    },
+    {
+      "name": "compact-json",
+      "bodyHex": "7b2276616c7565223a317d",
+      "byteLength": 11,
+      "sha256": "48208f9428d64634bd8e28ff345bf0eab60d53c18fa2fbdb0b9bc1e84df2b5f6",
+      "maxBytes": 11,
+      "wantError": null
+    },
+    {
+      "name": "whitespace-json",
+      "bodyHex": "207b202276616c756522203a2031207d0a",
+      "byteLength": 17,
+      "sha256": "be4fb46efd39be9055734c6772890b1a43fce3e1fa07bbd897451014d0737f6d",
+      "maxBytes": 17,
+      "wantError": null
+    },
+    {
+      "name": "multibyte-json",
+      "bodyHex": "7b226c6162656c223a22c3a9f09f9880227d",
+      "byteLength": 18,
+      "sha256": "8a6f957c45aa8e7295fa87d0af0ce5c7d872e92ab08c8c83444e03581c1544c1",
+      "maxBytes": 18,
+      "wantError": null
+    },
+    {
+      "name": "escaped-unicode-json",
+      "bodyHex": "7b226c6162656c223a225c75303065395c75643833645c7564653030227d",
+      "byteLength": 30,
+      "sha256": "ea883b8d24c9573a1285549bf8e722d0fa43c2938302f863da2c195309b81325",
+      "maxBytes": 30,
+      "wantError": null
+    },
+    {
+      "name": "arbitrary-bytes-not-json",
+      "bodyHex": "ff0080",
+      "byteLength": 3,
+      "sha256": "ef192b7af54e943f206ab27075ec1805384c972c9959fc5820f1fa7d5268fcef",
+      "maxBytes": 3,
+      "wantError": null
+    },
+    {
+      "name": "empty-at-largest-exact-limit",
+      "bodyHex": "",
+      "byteLength": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "maxBytes": 9007199254740991,
+      "wantError": null
+    },
+    {
+      "name": "same-length-corruption",
+      "bodyHex": "7b2276616c7565223a327d",
+      "byteLength": 11,
+      "sha256": "48208f9428d64634bd8e28ff345bf0eab60d53c18fa2fbdb0b9bc1e84df2b5f6",
+      "maxBytes": 11,
+      "wantError": "sha256-mismatch"
+    },
+    {
+      "name": "truncated",
+      "bodyHex": "7b2276616c7565223a31",
+      "byteLength": 11,
+      "sha256": "48208f9428d64634bd8e28ff345bf0eab60d53c18fa2fbdb0b9bc1e84df2b5f6",
+      "maxBytes": 11,
+      "wantError": "byte-length-mismatch"
+    },
+    {
+      "name": "appended-byte",
+      "bodyHex": "7b2276616c7565223a317d0a",
+      "byteLength": 11,
+      "sha256": "48208f9428d64634bd8e28ff345bf0eab60d53c18fa2fbdb0b9bc1e84df2b5f6",
+      "maxBytes": 100,
+      "wantError": "byte-length-mismatch"
+    },
+    {
+      "name": "utf16-character-count",
+      "bodyHex": "7b226c6162656c223a22c3a9f09f9880227d",
+      "byteLength": 15,
+      "sha256": "8a6f957c45aa8e7295fa87d0af0ce5c7d872e92ab08c8c83444e03581c1544c1",
+      "maxBytes": 18,
+      "wantError": "byte-length-mismatch"
+    },
+    {
+      "name": "digest-all-zero",
+      "bodyHex": "616263",
+      "byteLength": 3,
+      "sha256": "0000000000000000000000000000000000000000000000000000000000000000",
+      "maxBytes": 3,
+      "wantError": "sha256-mismatch"
+    },
+    {
+      "name": "digest-uppercase",
+      "bodyHex": "616263",
+      "byteLength": 3,
+      "sha256": "BA7816BF8F01CFEA414140DE5DAE2223B00361A396177A9CB410FF61F20015AD",
+      "maxBytes": 3,
+      "wantError": "invalid-sha256"
+    },
+    {
+      "name": "digest-empty",
+      "bodyHex": "616263",
+      "byteLength": 3,
+      "sha256": "",
+      "maxBytes": 3,
+      "wantError": "invalid-sha256"
+    },
+    {
+      "name": "digest-short",
+      "bodyHex": "616263",
+      "byteLength": 3,
+      "sha256": "a7816bf8f01cfea414140de5dae2223b00361a396177a9cb410ff61f20015ad",
+      "maxBytes": 3,
+      "wantError": "invalid-sha256"
+    },
+    {
+      "name": "digest-long",
+      "bodyHex": "616263",
+      "byteLength": 3,
+      "sha256": "ba7816bf8f01cfea414140de5dae2223b00361a396177a9cb410ff61f20015ad0",
+      "maxBytes": 3,
+      "wantError": "invalid-sha256"
+    },
+    {
+      "name": "digest-nonhex",
+      "bodyHex": "616263",
+      "byteLength": 3,
+      "sha256": "ga7816bf8f01cfea414140de5dae2223b00361a396177a9cb410ff61f20015ad",
+      "maxBytes": 3,
+      "wantError": "invalid-sha256"
+    },
+    {
+      "name": "digest-newline",
+      "bodyHex": "616263",
+      "byteLength": 3,
+      "sha256": "ba7816bf8f01cfea414140de5dae2223b00361a396177a9cb410ff61f20015ad\n",
+      "maxBytes": 3,
+      "wantError": "invalid-sha256"
+    },
+    {
+      "name": "digest-space",
+      "bodyHex": "616263",
+      "byteLength": 3,
+      "sha256": " a7816bf8f01cfea414140de5dae2223b00361a396177a9cb410ff61f20015ad",
+      "maxBytes": 3,
+      "wantError": "invalid-sha256"
+    },
+    {
+      "name": "negative-byte-length",
+      "bodyHex": "616263",
+      "byteLength": -1,
+      "sha256": "ba7816bf8f01cfea414140de5dae2223b00361a396177a9cb410ff61f20015ad",
+      "maxBytes": 3,
+      "wantError": "invalid-byte-length"
+    },
+    {
+      "name": "unsafe-byte-length",
+      "bodyHex": "616263",
+      "byteLength": 9007199254740992,
+      "sha256": "ba7816bf8f01cfea414140de5dae2223b00361a396177a9cb410ff61f20015ad",
+      "maxBytes": 3,
+      "wantError": "invalid-byte-length"
+    },
+    {
+      "name": "negative-limit",
+      "bodyHex": "616263",
+      "byteLength": 3,
+      "sha256": "ba7816bf8f01cfea414140de5dae2223b00361a396177a9cb410ff61f20015ad",
+      "maxBytes": -1,
+      "wantError": "invalid-limit"
+    },
+    {
+      "name": "unsafe-limit",
+      "bodyHex": "616263",
+      "byteLength": 3,
+      "sha256": "ba7816bf8f01cfea414140de5dae2223b00361a396177a9cb410ff61f20015ad",
+      "maxBytes": 9007199254740992,
+      "wantError": "invalid-limit"
+    },
+    {
+      "name": "zero-limit-nonempty",
+      "bodyHex": "616263",
+      "byteLength": 3,
+      "sha256": "ba7816bf8f01cfea414140de5dae2223b00361a396177a9cb410ff61f20015ad",
+      "maxBytes": 0,
+      "wantError": "limit-exceeded"
+    },
+    {
+      "name": "declared-length-over-limit",
+      "bodyHex": "616263",
+      "byteLength": 4,
+      "sha256": "ba7816bf8f01cfea414140de5dae2223b00361a396177a9cb410ff61f20015ad",
+      "maxBytes": 3,
+      "wantError": "limit-exceeded"
+    },
+    {
+      "name": "actual-length-over-limit",
+      "bodyHex": "616263",
+      "byteLength": 2,
+      "sha256": "ba7816bf8f01cfea414140de5dae2223b00361a396177a9cb410ff61f20015ad",
+      "maxBytes": 2,
+      "wantError": "limit-exceeded"
+    },
+    {
+      "name": "empty-wrong-digest",
+      "bodyHex": "",
+      "byteLength": 0,
+      "sha256": "ba7816bf8f01cfea414140de5dae2223b00361a396177a9cb410ff61f20015ad",
+      "maxBytes": 0,
+      "wantError": "sha256-mismatch"
+    },
+    {
+      "name": "largest-declared-length-no-allocation",
+      "bodyHex": "",
+      "byteLength": 9007199254740991,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "maxBytes": 9007199254740991,
+      "wantError": "byte-length-mismatch"
+    },
+    {
+      "name": "precedence-invalid-limit",
+      "bodyHex": "616263",
+      "byteLength": -1,
+      "sha256": "wrong",
+      "maxBytes": -1,
+      "wantError": "invalid-limit"
+    },
+    {
+      "name": "precedence-invalid-length",
+      "bodyHex": "616263",
+      "byteLength": -1,
+      "sha256": "wrong",
+      "maxBytes": 3,
+      "wantError": "invalid-byte-length"
+    },
+    {
+      "name": "precedence-invalid-digest",
+      "bodyHex": "616263",
+      "byteLength": 3,
+      "sha256": "wrong",
+      "maxBytes": 0,
+      "wantError": "invalid-sha256"
+    },
+    {
+      "name": "precedence-limit-before-length",
+      "bodyHex": "616263",
+      "byteLength": 0,
+      "sha256": "ba7816bf8f01cfea414140de5dae2223b00361a396177a9cb410ff61f20015ad",
+      "maxBytes": 0,
+      "wantError": "limit-exceeded"
+    },
+    {
+      "name": "precedence-length-before-digest",
+      "bodyHex": "616263",
+      "byteLength": 2,
+      "sha256": "0000000000000000000000000000000000000000000000000000000000000000",
+      "maxBytes": 3,
+      "wantError": "byte-length-mismatch"
+    }
+  ]
+}
