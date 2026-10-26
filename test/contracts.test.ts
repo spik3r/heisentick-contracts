@@ -105,8 +105,10 @@ test('zod and JSON Schema agree: valid fixtures pass both, invalid fixtures fail
 test('unknown fields are rejected on every document', () => {
   for (const [name, schema] of Object.entries(DOCUMENT_SCHEMAS)) {
     const dir = Object.entries(FIXTURE_DOCS).find(([, n]) => n === name)?.[0];
-    assert.ok(dir, `fixture dir for ${name}`);
-    const value = readJson(join(FIXTURES, dir, 'valid', 'example.json')) as Record<string, unknown>;
+    const staging = readJson(join(ROOT, 'test/fixtures/staging-manifests.json')) as { cases: { manifest: Record<string, unknown> }[] };
+    const value = dir ? readJson(join(FIXTURES, dir, 'valid', 'example.json')) as Record<string, unknown>
+      : staging.cases.find((entry) => entry.manifest.schema === name)?.manifest;
+    assert.ok(value, `fixture for ${name}`);
     assert.equal(schema.safeParse({ ...value, unexpectedField: 1 }).success, false, name);
   }
 });

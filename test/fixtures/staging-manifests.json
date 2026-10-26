@@ -1,0 +1,1636 @@
+{
+  "cases": [
+    {
+      "name": "download-rows",
+      "bodyHex": "7b2262617273223a5b5b313733353638393630303030302c312c322c302c312c305d5d7d",
+      "manifest": {
+        "schema": "heisentick/download-job-manifest",
+        "version": 2,
+        "jobId": "invented-job",
+        "requested": {
+          "from": "2025-01-01",
+          "to": "2025-01-02"
+        },
+        "from": "2025-01-01",
+        "to": "2025-01-01",
+        "count": 1,
+        "complete": true,
+        "error": null,
+        "files": [
+          "staging/invented-job/XAUUSD/5m.json"
+        ],
+        "payload": {
+          "key": "staging/invented-job/XAUUSD/5m.json",
+          "byteLength": 36,
+          "sha256": "ad2fcf00fb796725bdcf3bd4fdee986ef9b1f2819ce795f938763db60ad948d3"
+        },
+        "producedAt": "2025-01-03T00:00:00Z",
+        "symbol": "XAUUSD",
+        "timeframe": "5m",
+        "source": "dukascopy",
+        "resumeFrom": null
+      }
+    },
+    {
+      "name": "download-empty",
+      "bodyHex": "7b2262617273223a5b5d7d",
+      "manifest": {
+        "schema": "heisentick/download-job-manifest",
+        "version": 2,
+        "jobId": "invented-job",
+        "requested": {
+          "from": "2025-01-01",
+          "to": "2025-01-02"
+        },
+        "from": null,
+        "to": null,
+        "count": 0,
+        "complete": true,
+        "error": null,
+        "files": [
+          "staging/invented-job/XAUUSD/5m.json"
+        ],
+        "payload": {
+          "key": "staging/invented-job/XAUUSD/5m.json",
+          "byteLength": 11,
+          "sha256": "4120f203e94c45b57f31fceb9fe1b4f2ef98dbcaf280d0326de436cd6ce23a59"
+        },
+        "producedAt": "2025-01-03T00:00:00Z",
+        "symbol": "XAUUSD",
+        "timeframe": "5m",
+        "source": "dukascopy",
+        "resumeFrom": null
+      }
+    },
+    {
+      "name": "cot-unicode",
+      "bodyHex": "7b22726f7773223a5b7b226964223a22696e76656e746564222c226c6162656c223a22c3a9f09f9880222c22636674635f636f6e74726163745f6d61726b65745f636f6465223a22303838363931222c227265706f72745f646174655f61735f797979795f6d6d5f6464223a22323032352d30312d30315430303a30303a30302e303030227d5d7d",
+      "manifest": {
+        "schema": "heisentick/cot-job-manifest",
+        "version": 2,
+        "jobId": "invented-job",
+        "requested": {
+          "from": "2025-01-01",
+          "to": "2025-01-02"
+        },
+        "from": "2025-01-01",
+        "to": "2025-01-01",
+        "count": 1,
+        "complete": true,
+        "error": null,
+        "files": [
+          "staging/invented-job/cot/gpe5-46if.json"
+        ],
+        "payload": {
+          "key": "staging/invented-job/cot/gpe5-46if.json",
+          "byteLength": 136,
+          "sha256": "1f94be0266dc950c425bd63af26c1dd34c8028ad1b8b8d36dce0eb8c77cc417b"
+        },
+        "producedAt": "2025-01-03T00:00:00Z",
+        "datasetId": "gpe5-46if",
+        "contractCodes": [
+          "088691"
+        ]
+      }
+    },
+    {
+      "name": "cot-empty",
+      "bodyHex": "7b22726f7773223a5b5d7d",
+      "manifest": {
+        "schema": "heisentick/cot-job-manifest",
+        "version": 2,
+        "jobId": "invented-job",
+        "requested": {
+          "from": "2025-01-01",
+          "to": "2025-01-02"
+        },
+        "from": null,
+        "to": null,
+        "count": 0,
+        "complete": true,
+        "error": null,
+        "files": [
+          "staging/invented-job/cot/gpe5-46if.json"
+        ],
+        "payload": {
+          "key": "staging/invented-job/cot/gpe5-46if.json",
+          "byteLength": 11,
+          "sha256": "1633902c6cbba5e7770dbed172df754a25078bb76efe1f23474edc87f1a47655"
+        },
+        "producedAt": "2025-01-03T00:00:00Z",
+        "datasetId": "gpe5-46if",
+        "contractCodes": [
+          "088691"
+        ]
+      }
+    }
+  ],
+  "invalidManifests": [
+    {
+      "name": "download-rows-unknown-version",
+      "manifest": {
+        "schema": "heisentick/download-job-manifest",
+        "version": 3,
+        "jobId": "invented-job",
+        "requested": {
+          "from": "2025-01-01",
+          "to": "2025-01-02"
+        },
+        "from": "2025-01-01",
+        "to": "2025-01-01",
+        "count": 1,
+        "complete": true,
+        "error": null,
+        "files": [
+          "staging/invented-job/XAUUSD/5m.json"
+        ],
+        "payload": {
+          "key": "staging/invented-job/XAUUSD/5m.json",
+          "byteLength": 36,
+          "sha256": "ad2fcf00fb796725bdcf3bd4fdee986ef9b1f2819ce795f938763db60ad948d3"
+        },
+        "producedAt": "2025-01-03T00:00:00Z",
+        "symbol": "XAUUSD",
+        "timeframe": "5m",
+        "source": "dukascopy",
+        "resumeFrom": null
+      }
+    },
+    {
+      "name": "download-rows-wrong-job-key",
+      "manifest": {
+        "schema": "heisentick/download-job-manifest",
+        "version": 2,
+        "jobId": "other",
+        "requested": {
+          "from": "2025-01-01",
+          "to": "2025-01-02"
+        },
+        "from": "2025-01-01",
+        "to": "2025-01-01",
+        "count": 1,
+        "complete": true,
+        "error": null,
+        "files": [
+          "staging/invented-job/XAUUSD/5m.json"
+        ],
+        "payload": {
+          "key": "staging/invented-job/XAUUSD/5m.json",
+          "byteLength": 36,
+          "sha256": "ad2fcf00fb796725bdcf3bd4fdee986ef9b1f2819ce795f938763db60ad948d3"
+        },
+        "producedAt": "2025-01-03T00:00:00Z",
+        "symbol": "XAUUSD",
+        "timeframe": "5m",
+        "source": "dukascopy",
+        "resumeFrom": null
+      }
+    },
+    {
+      "name": "download-rows-wrong-route-key",
+      "manifest": {
+        "schema": "heisentick/download-job-manifest",
+        "version": 2,
+        "jobId": "invented-job",
+        "requested": {
+          "from": "2025-01-01",
+          "to": "2025-01-02"
+        },
+        "from": "2025-01-01",
+        "to": "2025-01-01",
+        "count": 1,
+        "complete": true,
+        "error": null,
+        "files": [
+          "staging/other/payload.json"
+        ],
+        "payload": {
+          "key": "staging/invented-job/XAUUSD/5m.json",
+          "byteLength": 36,
+          "sha256": "ad2fcf00fb796725bdcf3bd4fdee986ef9b1f2819ce795f938763db60ad948d3"
+        },
+        "producedAt": "2025-01-03T00:00:00Z",
+        "symbol": "XAUUSD",
+        "timeframe": "5m",
+        "source": "dukascopy",
+        "resumeFrom": null
+      }
+    },
+    {
+      "name": "download-rows-wrong-descriptor-key",
+      "manifest": {
+        "schema": "heisentick/download-job-manifest",
+        "version": 2,
+        "jobId": "invented-job",
+        "requested": {
+          "from": "2025-01-01",
+          "to": "2025-01-02"
+        },
+        "from": "2025-01-01",
+        "to": "2025-01-01",
+        "count": 1,
+        "complete": true,
+        "error": null,
+        "files": [
+          "staging/invented-job/XAUUSD/5m.json"
+        ],
+        "payload": {
+          "key": "staging/other/payload.json",
+          "byteLength": 36,
+          "sha256": "ad2fcf00fb796725bdcf3bd4fdee986ef9b1f2819ce795f938763db60ad948d3"
+        },
+        "producedAt": "2025-01-03T00:00:00Z",
+        "symbol": "XAUUSD",
+        "timeframe": "5m",
+        "source": "dukascopy",
+        "resumeFrom": null
+      }
+    },
+    {
+      "name": "download-rows-negative-length",
+      "manifest": {
+        "schema": "heisentick/download-job-manifest",
+        "version": 2,
+        "jobId": "invented-job",
+        "requested": {
+          "from": "2025-01-01",
+          "to": "2025-01-02"
+        },
+        "from": "2025-01-01",
+        "to": "2025-01-01",
+        "count": 1,
+        "complete": true,
+        "error": null,
+        "files": [
+          "staging/invented-job/XAUUSD/5m.json"
+        ],
+        "payload": {
+          "key": "staging/invented-job/XAUUSD/5m.json",
+          "byteLength": -1,
+          "sha256": "ad2fcf00fb796725bdcf3bd4fdee986ef9b1f2819ce795f938763db60ad948d3"
+        },
+        "producedAt": "2025-01-03T00:00:00Z",
+        "symbol": "XAUUSD",
+        "timeframe": "5m",
+        "source": "dukascopy",
+        "resumeFrom": null
+      }
+    },
+    {
+      "name": "download-rows-bad-digest",
+      "manifest": {
+        "schema": "heisentick/download-job-manifest",
+        "version": 2,
+        "jobId": "invented-job",
+        "requested": {
+          "from": "2025-01-01",
+          "to": "2025-01-02"
+        },
+        "from": "2025-01-01",
+        "to": "2025-01-01",
+        "count": 1,
+        "complete": true,
+        "error": null,
+        "files": [
+          "staging/invented-job/XAUUSD/5m.json"
+        ],
+        "payload": {
+          "key": "staging/invented-job/XAUUSD/5m.json",
+          "byteLength": 36,
+          "sha256": "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX"
+        },
+        "producedAt": "2025-01-03T00:00:00Z",
+        "symbol": "XAUUSD",
+        "timeframe": "5m",
+        "source": "dukascopy",
+        "resumeFrom": null
+      }
+    },
+    {
+      "name": "download-rows-unknown-field",
+      "manifest": {
+        "schema": "heisentick/download-job-manifest",
+        "version": 2,
+        "jobId": "invented-job",
+        "requested": {
+          "from": "2025-01-01",
+          "to": "2025-01-02"
+        },
+        "from": "2025-01-01",
+        "to": "2025-01-01",
+        "count": 1,
+        "complete": true,
+        "error": null,
+        "files": [
+          "staging/invented-job/XAUUSD/5m.json"
+        ],
+        "payload": {
+          "key": "staging/invented-job/XAUUSD/5m.json",
+          "byteLength": 36,
+          "sha256": "ad2fcf00fb796725bdcf3bd4fdee986ef9b1f2819ce795f938763db60ad948d3"
+        },
+        "producedAt": "2025-01-03T00:00:00Z",
+        "symbol": "XAUUSD",
+        "timeframe": "5m",
+        "source": "dukascopy",
+        "resumeFrom": null,
+        "extra": true
+      }
+    },
+    {
+      "name": "download-rows-inconsistent-empty-bounds",
+      "manifest": {
+        "schema": "heisentick/download-job-manifest",
+        "version": 2,
+        "jobId": "invented-job",
+        "requested": {
+          "from": "2025-01-01",
+          "to": "2025-01-02"
+        },
+        "from": "2025-01-01",
+        "to": "2025-01-01",
+        "count": 0,
+        "complete": true,
+        "error": null,
+        "files": [
+          "staging/invented-job/XAUUSD/5m.json"
+        ],
+        "payload": {
+          "key": "staging/invented-job/XAUUSD/5m.json",
+          "byteLength": 36,
+          "sha256": "ad2fcf00fb796725bdcf3bd4fdee986ef9b1f2819ce795f938763db60ad948d3"
+        },
+        "producedAt": "2025-01-03T00:00:00Z",
+        "symbol": "XAUUSD",
+        "timeframe": "5m",
+        "source": "dukascopy",
+        "resumeFrom": null
+      }
+    },
+    {
+      "name": "download-rows-complete-with-error",
+      "manifest": {
+        "schema": "heisentick/download-job-manifest",
+        "version": 2,
+        "jobId": "invented-job",
+        "requested": {
+          "from": "2025-01-01",
+          "to": "2025-01-02"
+        },
+        "from": "2025-01-01",
+        "to": "2025-01-01",
+        "count": 1,
+        "complete": true,
+        "error": "invented error",
+        "files": [
+          "staging/invented-job/XAUUSD/5m.json"
+        ],
+        "payload": {
+          "key": "staging/invented-job/XAUUSD/5m.json",
+          "byteLength": 36,
+          "sha256": "ad2fcf00fb796725bdcf3bd4fdee986ef9b1f2819ce795f938763db60ad948d3"
+        },
+        "producedAt": "2025-01-03T00:00:00Z",
+        "symbol": "XAUUSD",
+        "timeframe": "5m",
+        "source": "dukascopy",
+        "resumeFrom": null
+      }
+    },
+    {
+      "name": "download-empty-unknown-version",
+      "manifest": {
+        "schema": "heisentick/download-job-manifest",
+        "version": 3,
+        "jobId": "invented-job",
+        "requested": {
+          "from": "2025-01-01",
+          "to": "2025-01-02"
+        },
+        "from": null,
+        "to": null,
+        "count": 0,
+        "complete": true,
+        "error": null,
+        "files": [
+          "staging/invented-job/XAUUSD/5m.json"
+        ],
+        "payload": {
+          "key": "staging/invented-job/XAUUSD/5m.json",
+          "byteLength": 11,
+          "sha256": "4120f203e94c45b57f31fceb9fe1b4f2ef98dbcaf280d0326de436cd6ce23a59"
+        },
+        "producedAt": "2025-01-03T00:00:00Z",
+        "symbol": "XAUUSD",
+        "timeframe": "5m",
+        "source": "dukascopy",
+        "resumeFrom": null
+      }
+    },
+    {
+      "name": "download-empty-wrong-job-key",
+      "manifest": {
+        "schema": "heisentick/download-job-manifest",
+        "version": 2,
+        "jobId": "other",
+        "requested": {
+          "from": "2025-01-01",
+          "to": "2025-01-02"
+        },
+        "from": null,
+        "to": null,
+        "count": 0,
+        "complete": true,
+        "error": null,
+        "files": [
+          "staging/invented-job/XAUUSD/5m.json"
+        ],
+        "payload": {
+          "key": "staging/invented-job/XAUUSD/5m.json",
+          "byteLength": 11,
+          "sha256": "4120f203e94c45b57f31fceb9fe1b4f2ef98dbcaf280d0326de436cd6ce23a59"
+        },
+        "producedAt": "2025-01-03T00:00:00Z",
+        "symbol": "XAUUSD",
+        "timeframe": "5m",
+        "source": "dukascopy",
+        "resumeFrom": null
+      }
+    },
+    {
+      "name": "download-empty-wrong-route-key",
+      "manifest": {
+        "schema": "heisentick/download-job-manifest",
+        "version": 2,
+        "jobId": "invented-job",
+        "requested": {
+          "from": "2025-01-01",
+          "to": "2025-01-02"
+        },
+        "from": null,
+        "to": null,
+        "count": 0,
+        "complete": true,
+        "error": null,
+        "files": [
+          "staging/other/payload.json"
+        ],
+        "payload": {
+          "key": "staging/invented-job/XAUUSD/5m.json",
+          "byteLength": 11,
+          "sha256": "4120f203e94c45b57f31fceb9fe1b4f2ef98dbcaf280d0326de436cd6ce23a59"
+        },
+        "producedAt": "2025-01-03T00:00:00Z",
+        "symbol": "XAUUSD",
+        "timeframe": "5m",
+        "source": "dukascopy",
+        "resumeFrom": null
+      }
+    },
+    {
+      "name": "download-empty-wrong-descriptor-key",
+      "manifest": {
+        "schema": "heisentick/download-job-manifest",
+        "version": 2,
+        "jobId": "invented-job",
+        "requested": {
+          "from": "2025-01-01",
+          "to": "2025-01-02"
+        },
+        "from": null,
+        "to": null,
+        "count": 0,
+        "complete": true,
+        "error": null,
+        "files": [
+          "staging/invented-job/XAUUSD/5m.json"
+        ],
+        "payload": {
+          "key": "staging/other/payload.json",
+          "byteLength": 11,
+          "sha256": "4120f203e94c45b57f31fceb9fe1b4f2ef98dbcaf280d0326de436cd6ce23a59"
+        },
+        "producedAt": "2025-01-03T00:00:00Z",
+        "symbol": "XAUUSD",
+        "timeframe": "5m",
+        "source": "dukascopy",
+        "resumeFrom": null
+      }
+    },
+    {
+      "name": "download-empty-negative-length",
+      "manifest": {
+        "schema": "heisentick/download-job-manifest",
+        "version": 2,
+        "jobId": "invented-job",
+        "requested": {
+          "from": "2025-01-01",
+          "to": "2025-01-02"
+        },
+        "from": null,
+        "to": null,
+        "count": 0,
+        "complete": true,
+        "error": null,
+        "files": [
+          "staging/invented-job/XAUUSD/5m.json"
+        ],
+        "payload": {
+          "key": "staging/invented-job/XAUUSD/5m.json",
+          "byteLength": -1,
+          "sha256": "4120f203e94c45b57f31fceb9fe1b4f2ef98dbcaf280d0326de436cd6ce23a59"
+        },
+        "producedAt": "2025-01-03T00:00:00Z",
+        "symbol": "XAUUSD",
+        "timeframe": "5m",
+        "source": "dukascopy",
+        "resumeFrom": null
+      }
+    },
+    {
+      "name": "download-empty-bad-digest",
+      "manifest": {
+        "schema": "heisentick/download-job-manifest",
+        "version": 2,
+        "jobId": "invented-job",
+        "requested": {
+          "from": "2025-01-01",
+          "to": "2025-01-02"
+        },
+        "from": null,
+        "to": null,
+        "count": 0,
+        "complete": true,
+        "error": null,
+        "files": [
+          "staging/invented-job/XAUUSD/5m.json"
+        ],
+        "payload": {
+          "key": "staging/invented-job/XAUUSD/5m.json",
+          "byteLength": 11,
+          "sha256": "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX"
+        },
+        "producedAt": "2025-01-03T00:00:00Z",
+        "symbol": "XAUUSD",
+        "timeframe": "5m",
+        "source": "dukascopy",
+        "resumeFrom": null
+      }
+    },
+    {
+      "name": "download-empty-unknown-field",
+      "manifest": {
+        "schema": "heisentick/download-job-manifest",
+        "version": 2,
+        "jobId": "invented-job",
+        "requested": {
+          "from": "2025-01-01",
+          "to": "2025-01-02"
+        },
+        "from": null,
+        "to": null,
+        "count": 0,
+        "complete": true,
+        "error": null,
+        "files": [
+          "staging/invented-job/XAUUSD/5m.json"
+        ],
+        "payload": {
+          "key": "staging/invented-job/XAUUSD/5m.json",
+          "byteLength": 11,
+          "sha256": "4120f203e94c45b57f31fceb9fe1b4f2ef98dbcaf280d0326de436cd6ce23a59"
+        },
+        "producedAt": "2025-01-03T00:00:00Z",
+        "symbol": "XAUUSD",
+        "timeframe": "5m",
+        "source": "dukascopy",
+        "resumeFrom": null,
+        "extra": true
+      }
+    },
+    {
+      "name": "download-empty-inconsistent-empty-bounds",
+      "manifest": {
+        "schema": "heisentick/download-job-manifest",
+        "version": 2,
+        "jobId": "invented-job",
+        "requested": {
+          "from": "2025-01-01",
+          "to": "2025-01-02"
+        },
+        "from": null,
+        "to": null,
+        "count": 1,
+        "complete": true,
+        "error": null,
+        "files": [
+          "staging/invented-job/XAUUSD/5m.json"
+        ],
+        "payload": {
+          "key": "staging/invented-job/XAUUSD/5m.json",
+          "byteLength": 11,
+          "sha256": "4120f203e94c45b57f31fceb9fe1b4f2ef98dbcaf280d0326de436cd6ce23a59"
+        },
+        "producedAt": "2025-01-03T00:00:00Z",
+        "symbol": "XAUUSD",
+        "timeframe": "5m",
+        "source": "dukascopy",
+        "resumeFrom": null
+      }
+    },
+    {
+      "name": "download-empty-complete-with-error",
+      "manifest": {
+        "schema": "heisentick/download-job-manifest",
+        "version": 2,
+        "jobId": "invented-job",
+        "requested": {
+          "from": "2025-01-01",
+          "to": "2025-01-02"
+        },
+        "from": null,
+        "to": null,
+        "count": 0,
+        "complete": true,
+        "error": "invented error",
+        "files": [
+          "staging/invented-job/XAUUSD/5m.json"
+        ],
+        "payload": {
+          "key": "staging/invented-job/XAUUSD/5m.json",
+          "byteLength": 11,
+          "sha256": "4120f203e94c45b57f31fceb9fe1b4f2ef98dbcaf280d0326de436cd6ce23a59"
+        },
+        "producedAt": "2025-01-03T00:00:00Z",
+        "symbol": "XAUUSD",
+        "timeframe": "5m",
+        "source": "dukascopy",
+        "resumeFrom": null
+      }
+    },
+    {
+      "name": "cot-unicode-unknown-version",
+      "manifest": {
+        "schema": "heisentick/cot-job-manifest",
+        "version": 3,
+        "jobId": "invented-job",
+        "requested": {
+          "from": "2025-01-01",
+          "to": "2025-01-02"
+        },
+        "from": "2025-01-01",
+        "to": "2025-01-01",
+        "count": 1,
+        "complete": true,
+        "error": null,
+        "files": [
+          "staging/invented-job/cot/gpe5-46if.json"
+        ],
+        "payload": {
+          "key": "staging/invented-job/cot/gpe5-46if.json",
+          "byteLength": 136,
+          "sha256": "1f94be0266dc950c425bd63af26c1dd34c8028ad1b8b8d36dce0eb8c77cc417b"
+        },
+        "producedAt": "2025-01-03T00:00:00Z",
+        "datasetId": "gpe5-46if",
+        "contractCodes": [
+          "088691"
+        ]
+      }
+    },
+    {
+      "name": "cot-unicode-wrong-job-key",
+      "manifest": {
+        "schema": "heisentick/cot-job-manifest",
+        "version": 2,
+        "jobId": "other",
+        "requested": {
+          "from": "2025-01-01",
+          "to": "2025-01-02"
+        },
+        "from": "2025-01-01",
+        "to": "2025-01-01",
+        "count": 1,
+        "complete": true,
+        "error": null,
+        "files": [
+          "staging/invented-job/cot/gpe5-46if.json"
+        ],
+        "payload": {
+          "key": "staging/invented-job/cot/gpe5-46if.json",
+          "byteLength": 136,
+          "sha256": "1f94be0266dc950c425bd63af26c1dd34c8028ad1b8b8d36dce0eb8c77cc417b"
+        },
+        "producedAt": "2025-01-03T00:00:00Z",
+        "datasetId": "gpe5-46if",
+        "contractCodes": [
+          "088691"
+        ]
+      }
+    },
+    {
+      "name": "cot-unicode-wrong-route-key",
+      "manifest": {
+        "schema": "heisentick/cot-job-manifest",
+        "version": 2,
+        "jobId": "invented-job",
+        "requested": {
+          "from": "2025-01-01",
+          "to": "2025-01-02"
+        },
+        "from": "2025-01-01",
+        "to": "2025-01-01",
+        "count": 1,
+        "complete": true,
+        "error": null,
+        "files": [
+          "staging/other/payload.json"
+        ],
+        "payload": {
+          "key": "staging/invented-job/cot/gpe5-46if.json",
+          "byteLength": 136,
+          "sha256": "1f94be0266dc950c425bd63af26c1dd34c8028ad1b8b8d36dce0eb8c77cc417b"
+        },
+        "producedAt": "2025-01-03T00:00:00Z",
+        "datasetId": "gpe5-46if",
+        "contractCodes": [
+          "088691"
+        ]
+      }
+    },
+    {
+      "name": "cot-unicode-wrong-descriptor-key",
+      "manifest": {
+        "schema": "heisentick/cot-job-manifest",
+        "version": 2,
+        "jobId": "invented-job",
+        "requested": {
+          "from": "2025-01-01",
+          "to": "2025-01-02"
+        },
+        "from": "2025-01-01",
+        "to": "2025-01-01",
+        "count": 1,
+        "complete": true,
+        "error": null,
+        "files": [
+          "staging/invented-job/cot/gpe5-46if.json"
+        ],
+        "payload": {
+          "key": "staging/other/payload.json",
+          "byteLength": 136,
+          "sha256": "1f94be0266dc950c425bd63af26c1dd34c8028ad1b8b8d36dce0eb8c77cc417b"
+        },
+        "producedAt": "2025-01-03T00:00:00Z",
+        "datasetId": "gpe5-46if",
+        "contractCodes": [
+          "088691"
+        ]
+      }
+    },
+    {
+      "name": "cot-unicode-negative-length",
+      "manifest": {
+        "schema": "heisentick/cot-job-manifest",
+        "version": 2,
+        "jobId": "invented-job",
+        "requested": {
+          "from": "2025-01-01",
+          "to": "2025-01-02"
+        },
+        "from": "2025-01-01",
+        "to": "2025-01-01",
+        "count": 1,
+        "complete": true,
+        "error": null,
+        "files": [
+          "staging/invented-job/cot/gpe5-46if.json"
+        ],
+        "payload": {
+          "key": "staging/invented-job/cot/gpe5-46if.json",
+          "byteLength": -1,
+          "sha256": "1f94be0266dc950c425bd63af26c1dd34c8028ad1b8b8d36dce0eb8c77cc417b"
+        },
+        "producedAt": "2025-01-03T00:00:00Z",
+        "datasetId": "gpe5-46if",
+        "contractCodes": [
+          "088691"
+        ]
+      }
+    },
+    {
+      "name": "cot-unicode-bad-digest",
+      "manifest": {
+        "schema": "heisentick/cot-job-manifest",
+        "version": 2,
+        "jobId": "invented-job",
+        "requested": {
+          "from": "2025-01-01",
+          "to": "2025-01-02"
+        },
+        "from": "2025-01-01",
+        "to": "2025-01-01",
+        "count": 1,
+        "complete": true,
+        "error": null,
+        "files": [
+          "staging/invented-job/cot/gpe5-46if.json"
+        ],
+        "payload": {
+          "key": "staging/invented-job/cot/gpe5-46if.json",
+          "byteLength": 136,
+          "sha256": "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX"
+        },
+        "producedAt": "2025-01-03T00:00:00Z",
+        "datasetId": "gpe5-46if",
+        "contractCodes": [
+          "088691"
+        ]
+      }
+    },
+    {
+      "name": "cot-unicode-unknown-field",
+      "manifest": {
+        "schema": "heisentick/cot-job-manifest",
+        "version": 2,
+        "jobId": "invented-job",
+        "requested": {
+          "from": "2025-01-01",
+          "to": "2025-01-02"
+        },
+        "from": "2025-01-01",
+        "to": "2025-01-01",
+        "count": 1,
+        "complete": true,
+        "error": null,
+        "files": [
+          "staging/invented-job/cot/gpe5-46if.json"
+        ],
+        "payload": {
+          "key": "staging/invented-job/cot/gpe5-46if.json",
+          "byteLength": 136,
+          "sha256": "1f94be0266dc950c425bd63af26c1dd34c8028ad1b8b8d36dce0eb8c77cc417b"
+        },
+        "producedAt": "2025-01-03T00:00:00Z",
+        "datasetId": "gpe5-46if",
+        "contractCodes": [
+          "088691"
+        ],
+        "extra": true
+      }
+    },
+    {
+      "name": "cot-unicode-inconsistent-empty-bounds",
+      "manifest": {
+        "schema": "heisentick/cot-job-manifest",
+        "version": 2,
+        "jobId": "invented-job",
+        "requested": {
+          "from": "2025-01-01",
+          "to": "2025-01-02"
+        },
+        "from": "2025-01-01",
+        "to": "2025-01-01",
+        "count": 0,
+        "complete": true,
+        "error": null,
+        "files": [
+          "staging/invented-job/cot/gpe5-46if.json"
+        ],
+        "payload": {
+          "key": "staging/invented-job/cot/gpe5-46if.json",
+          "byteLength": 136,
+          "sha256": "1f94be0266dc950c425bd63af26c1dd34c8028ad1b8b8d36dce0eb8c77cc417b"
+        },
+        "producedAt": "2025-01-03T00:00:00Z",
+        "datasetId": "gpe5-46if",
+        "contractCodes": [
+          "088691"
+        ]
+      }
+    },
+    {
+      "name": "cot-unicode-complete-with-error",
+      "manifest": {
+        "schema": "heisentick/cot-job-manifest",
+        "version": 2,
+        "jobId": "invented-job",
+        "requested": {
+          "from": "2025-01-01",
+          "to": "2025-01-02"
+        },
+        "from": "2025-01-01",
+        "to": "2025-01-01",
+        "count": 1,
+        "complete": true,
+        "error": {
+          "code": "COT_FETCH_FAILED",
+          "message": "COT fetch or response validation failed",
+          "retryable": false
+        },
+        "files": [
+          "staging/invented-job/cot/gpe5-46if.json"
+        ],
+        "payload": {
+          "key": "staging/invented-job/cot/gpe5-46if.json",
+          "byteLength": 136,
+          "sha256": "1f94be0266dc950c425bd63af26c1dd34c8028ad1b8b8d36dce0eb8c77cc417b"
+        },
+        "producedAt": "2025-01-03T00:00:00Z",
+        "datasetId": "gpe5-46if",
+        "contractCodes": [
+          "088691"
+        ]
+      }
+    },
+    {
+      "name": "cot-empty-unknown-version",
+      "manifest": {
+        "schema": "heisentick/cot-job-manifest",
+        "version": 3,
+        "jobId": "invented-job",
+        "requested": {
+          "from": "2025-01-01",
+          "to": "2025-01-02"
+        },
+        "from": null,
+        "to": null,
+        "count": 0,
+        "complete": true,
+        "error": null,
+        "files": [
+          "staging/invented-job/cot/gpe5-46if.json"
+        ],
+        "payload": {
+          "key": "staging/invented-job/cot/gpe5-46if.json",
+          "byteLength": 11,
+          "sha256": "1633902c6cbba5e7770dbed172df754a25078bb76efe1f23474edc87f1a47655"
+        },
+        "producedAt": "2025-01-03T00:00:00Z",
+        "datasetId": "gpe5-46if",
+        "contractCodes": [
+          "088691"
+        ]
+      }
+    },
+    {
+      "name": "cot-empty-wrong-job-key",
+      "manifest": {
+        "schema": "heisentick/cot-job-manifest",
+        "version": 2,
+        "jobId": "other",
+        "requested": {
+          "from": "2025-01-01",
+          "to": "2025-01-02"
+        },
+        "from": null,
+        "to": null,
+        "count": 0,
+        "complete": true,
+        "error": null,
+        "files": [
+          "staging/invented-job/cot/gpe5-46if.json"
+        ],
+        "payload": {
+          "key": "staging/invented-job/cot/gpe5-46if.json",
+          "byteLength": 11,
+          "sha256": "1633902c6cbba5e7770dbed172df754a25078bb76efe1f23474edc87f1a47655"
+        },
+        "producedAt": "2025-01-03T00:00:00Z",
+        "datasetId": "gpe5-46if",
+        "contractCodes": [
+          "088691"
+        ]
+      }
+    },
+    {
+      "name": "cot-empty-wrong-route-key",
+      "manifest": {
+        "schema": "heisentick/cot-job-manifest",
+        "version": 2,
+        "jobId": "invented-job",
+        "requested": {
+          "from": "2025-01-01",
+          "to": "2025-01-02"
+        },
+        "from": null,
+        "to": null,
+        "count": 0,
+        "complete": true,
+        "error": null,
+        "files": [
+          "staging/other/payload.json"
+        ],
+        "payload": {
+          "key": "staging/invented-job/cot/gpe5-46if.json",
+          "byteLength": 11,
+          "sha256": "1633902c6cbba5e7770dbed172df754a25078bb76efe1f23474edc87f1a47655"
+        },
+        "producedAt": "2025-01-03T00:00:00Z",
+        "datasetId": "gpe5-46if",
+        "contractCodes": [
+          "088691"
+        ]
+      }
+    },
+    {
+      "name": "cot-empty-wrong-descriptor-key",
+      "manifest": {
+        "schema": "heisentick/cot-job-manifest",
+        "version": 2,
+        "jobId": "invented-job",
+        "requested": {
+          "from": "2025-01-01",
+          "to": "2025-01-02"
+        },
+        "from": null,
+        "to": null,
+        "count": 0,
+        "complete": true,
+        "error": null,
+        "files": [
+          "staging/invented-job/cot/gpe5-46if.json"
+        ],
+        "payload": {
+          "key": "staging/other/payload.json",
+          "byteLength": 11,
+          "sha256": "1633902c6cbba5e7770dbed172df754a25078bb76efe1f23474edc87f1a47655"
+        },
+        "producedAt": "2025-01-03T00:00:00Z",
+        "datasetId": "gpe5-46if",
+        "contractCodes": [
+          "088691"
+        ]
+      }
+    },
+    {
+      "name": "cot-empty-negative-length",
+      "manifest": {
+        "schema": "heisentick/cot-job-manifest",
+        "version": 2,
+        "jobId": "invented-job",
+        "requested": {
+          "from": "2025-01-01",
+          "to": "2025-01-02"
+        },
+        "from": null,
+        "to": null,
+        "count": 0,
+        "complete": true,
+        "error": null,
+        "files": [
+          "staging/invented-job/cot/gpe5-46if.json"
+        ],
+        "payload": {
+          "key": "staging/invented-job/cot/gpe5-46if.json",
+          "byteLength": -1,
+          "sha256": "1633902c6cbba5e7770dbed172df754a25078bb76efe1f23474edc87f1a47655"
+        },
+        "producedAt": "2025-01-03T00:00:00Z",
+        "datasetId": "gpe5-46if",
+        "contractCodes": [
+          "088691"
+        ]
+      }
+    },
+    {
+      "name": "cot-empty-bad-digest",
+      "manifest": {
+        "schema": "heisentick/cot-job-manifest",
+        "version": 2,
+        "jobId": "invented-job",
+        "requested": {
+          "from": "2025-01-01",
+          "to": "2025-01-02"
+        },
+        "from": null,
+        "to": null,
+        "count": 0,
+        "complete": true,
+        "error": null,
+        "files": [
+          "staging/invented-job/cot/gpe5-46if.json"
+        ],
+        "payload": {
+          "key": "staging/invented-job/cot/gpe5-46if.json",
+          "byteLength": 11,
+          "sha256": "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX"
+        },
+        "producedAt": "2025-01-03T00:00:00Z",
+        "datasetId": "gpe5-46if",
+        "contractCodes": [
+          "088691"
+        ]
+      }
+    },
+    {
+      "name": "cot-empty-unknown-field",
+      "manifest": {
+        "schema": "heisentick/cot-job-manifest",
+        "version": 2,
+        "jobId": "invented-job",
+        "requested": {
+          "from": "2025-01-01",
+          "to": "2025-01-02"
+        },
+        "from": null,
+        "to": null,
+        "count": 0,
+        "complete": true,
+        "error": null,
+        "files": [
+          "staging/invented-job/cot/gpe5-46if.json"
+        ],
+        "payload": {
+          "key": "staging/invented-job/cot/gpe5-46if.json",
+          "byteLength": 11,
+          "sha256": "1633902c6cbba5e7770dbed172df754a25078bb76efe1f23474edc87f1a47655"
+        },
+        "producedAt": "2025-01-03T00:00:00Z",
+        "datasetId": "gpe5-46if",
+        "contractCodes": [
+          "088691"
+        ],
+        "extra": true
+      }
+    },
+    {
+      "name": "cot-empty-inconsistent-empty-bounds",
+      "manifest": {
+        "schema": "heisentick/cot-job-manifest",
+        "version": 2,
+        "jobId": "invented-job",
+        "requested": {
+          "from": "2025-01-01",
+          "to": "2025-01-02"
+        },
+        "from": null,
+        "to": null,
+        "count": 1,
+        "complete": true,
+        "error": null,
+        "files": [
+          "staging/invented-job/cot/gpe5-46if.json"
+        ],
+        "payload": {
+          "key": "staging/invented-job/cot/gpe5-46if.json",
+          "byteLength": 11,
+          "sha256": "1633902c6cbba5e7770dbed172df754a25078bb76efe1f23474edc87f1a47655"
+        },
+        "producedAt": "2025-01-03T00:00:00Z",
+        "datasetId": "gpe5-46if",
+        "contractCodes": [
+          "088691"
+        ]
+      }
+    },
+    {
+      "name": "cot-empty-complete-with-error",
+      "manifest": {
+        "schema": "heisentick/cot-job-manifest",
+        "version": 2,
+        "jobId": "invented-job",
+        "requested": {
+          "from": "2025-01-01",
+          "to": "2025-01-02"
+        },
+        "from": null,
+        "to": null,
+        "count": 0,
+        "complete": true,
+        "error": {
+          "code": "COT_FETCH_FAILED",
+          "message": "COT fetch or response validation failed",
+          "retryable": false
+        },
+        "files": [
+          "staging/invented-job/cot/gpe5-46if.json"
+        ],
+        "payload": {
+          "key": "staging/invented-job/cot/gpe5-46if.json",
+          "byteLength": 11,
+          "sha256": "1633902c6cbba5e7770dbed172df754a25078bb76efe1f23474edc87f1a47655"
+        },
+        "producedAt": "2025-01-03T00:00:00Z",
+        "datasetId": "gpe5-46if",
+        "contractCodes": [
+          "088691"
+        ]
+      }
+    },
+    {
+      "name": "backwards-resume",
+      "manifest": {
+        "schema": "heisentick/download-job-manifest",
+        "version": 2,
+        "jobId": "invented-job",
+        "requested": {
+          "from": "2025-01-01",
+          "to": "2025-01-02"
+        },
+        "from": "2025-01-01",
+        "to": "2025-01-01",
+        "count": 1,
+        "complete": false,
+        "error": null,
+        "files": [
+          "staging/invented-job/XAUUSD/5m.json"
+        ],
+        "payload": {
+          "key": "staging/invented-job/XAUUSD/5m.json",
+          "byteLength": 36,
+          "sha256": "ad2fcf00fb796725bdcf3bd4fdee986ef9b1f2819ce795f938763db60ad948d3"
+        },
+        "producedAt": "2025-01-03T00:00:00Z",
+        "symbol": "XAUUSD",
+        "timeframe": "5m",
+        "source": "dukascopy",
+        "resumeFrom": "2024-12-31T00:00:00.000Z"
+      }
+    },
+    {
+      "name": "beyond-resume",
+      "manifest": {
+        "schema": "heisentick/download-job-manifest",
+        "version": 2,
+        "jobId": "invented-job",
+        "requested": {
+          "from": "2025-01-01",
+          "to": "2025-01-02"
+        },
+        "from": "2025-01-01",
+        "to": "2025-01-01",
+        "count": 1,
+        "complete": false,
+        "error": null,
+        "files": [
+          "staging/invented-job/XAUUSD/5m.json"
+        ],
+        "payload": {
+          "key": "staging/invented-job/XAUUSD/5m.json",
+          "byteLength": 36,
+          "sha256": "ad2fcf00fb796725bdcf3bd4fdee986ef9b1f2819ce795f938763db60ad948d3"
+        },
+        "producedAt": "2025-01-03T00:00:00Z",
+        "symbol": "XAUUSD",
+        "timeframe": "5m",
+        "source": "dukascopy",
+        "resumeFrom": "2025-01-03T00:00:00.000Z"
+      }
+    },
+    {
+      "name": "invalid-resume",
+      "manifest": {
+        "schema": "heisentick/download-job-manifest",
+        "version": 2,
+        "jobId": "invented-job",
+        "requested": {
+          "from": "2025-01-01",
+          "to": "2025-01-02"
+        },
+        "from": "2025-01-01",
+        "to": "2025-01-01",
+        "count": 1,
+        "complete": false,
+        "error": null,
+        "files": [
+          "staging/invented-job/XAUUSD/5m.json"
+        ],
+        "payload": {
+          "key": "staging/invented-job/XAUUSD/5m.json",
+          "byteLength": 36,
+          "sha256": "ad2fcf00fb796725bdcf3bd4fdee986ef9b1f2819ce795f938763db60ad948d3"
+        },
+        "producedAt": "2025-01-03T00:00:00Z",
+        "symbol": "XAUUSD",
+        "timeframe": "5m",
+        "source": "dukascopy",
+        "resumeFrom": "invalid"
+      }
+    },
+    {
+      "name": "english-date",
+      "manifest": {
+        "schema": "heisentick/download-job-manifest",
+        "version": 2,
+        "jobId": "invented-job",
+        "requested": {
+          "from": "2025-01-01",
+          "to": "2025-01-02"
+        },
+        "from": "2025-01-01",
+        "to": "2025-01-01",
+        "count": 1,
+        "complete": false,
+        "error": null,
+        "files": [
+          "staging/invented-job/XAUUSD/5m.json"
+        ],
+        "payload": {
+          "key": "staging/invented-job/XAUUSD/5m.json",
+          "byteLength": 36,
+          "sha256": "ad2fcf00fb796725bdcf3bd4fdee986ef9b1f2819ce795f938763db60ad948d3"
+        },
+        "producedAt": "2025-01-03T00:00:00Z",
+        "symbol": "XAUUSD",
+        "timeframe": "5m",
+        "source": "dukascopy",
+        "resumeFrom": "January 1, 2025"
+      }
+    },
+    {
+      "name": "invalid-calendar",
+      "manifest": {
+        "schema": "heisentick/download-job-manifest",
+        "version": 2,
+        "jobId": "invented-job",
+        "requested": {
+          "from": "2025-01-01",
+          "to": "2025-01-02"
+        },
+        "from": "2025-01-01",
+        "to": "2025-01-01",
+        "count": 1,
+        "complete": false,
+        "error": null,
+        "files": [
+          "staging/invented-job/XAUUSD/5m.json"
+        ],
+        "payload": {
+          "key": "staging/invented-job/XAUUSD/5m.json",
+          "byteLength": 36,
+          "sha256": "ad2fcf00fb796725bdcf3bd4fdee986ef9b1f2819ce795f938763db60ad948d3"
+        },
+        "producedAt": "2025-01-03T00:00:00Z",
+        "symbol": "XAUUSD",
+        "timeframe": "5m",
+        "source": "dukascopy",
+        "resumeFrom": "2025-02-30T00:00:00.000Z"
+      }
+    },
+    {
+      "name": "noncanonical-time",
+      "manifest": {
+        "schema": "heisentick/download-job-manifest",
+        "version": 2,
+        "jobId": "invented-job",
+        "requested": {
+          "from": "2025-01-01",
+          "to": "2025-01-02"
+        },
+        "from": "2025-01-01",
+        "to": "2025-01-01",
+        "count": 1,
+        "complete": false,
+        "error": null,
+        "files": [
+          "staging/invented-job/XAUUSD/5m.json"
+        ],
+        "payload": {
+          "key": "staging/invented-job/XAUUSD/5m.json",
+          "byteLength": 36,
+          "sha256": "ad2fcf00fb796725bdcf3bd4fdee986ef9b1f2819ce795f938763db60ad948d3"
+        },
+        "producedAt": "2025-01-03T00:00:00Z",
+        "symbol": "XAUUSD",
+        "timeframe": "5m",
+        "source": "dukascopy",
+        "resumeFrom": "2025-01-01T12:00:00Z"
+      }
+    },
+    {
+      "name": "complete-empty-error",
+      "manifest": {
+        "schema": "heisentick/download-job-manifest",
+        "version": 2,
+        "jobId": "invented-job",
+        "requested": {
+          "from": "2025-01-01",
+          "to": "2025-01-02"
+        },
+        "from": "2025-01-01",
+        "to": "2025-01-01",
+        "count": 1,
+        "complete": true,
+        "error": "",
+        "files": [
+          "staging/invented-job/XAUUSD/5m.json"
+        ],
+        "payload": {
+          "key": "staging/invented-job/XAUUSD/5m.json",
+          "byteLength": 36,
+          "sha256": "ad2fcf00fb796725bdcf3bd4fdee986ef9b1f2819ce795f938763db60ad948d3"
+        },
+        "producedAt": "2025-01-03T00:00:00Z",
+        "symbol": "XAUUSD",
+        "timeframe": "5m",
+        "source": "dukascopy",
+        "resumeFrom": null
+      }
+    },
+    {
+      "name": "complete-empty-resume",
+      "manifest": {
+        "schema": "heisentick/download-job-manifest",
+        "version": 2,
+        "jobId": "invented-job",
+        "requested": {
+          "from": "2025-01-01",
+          "to": "2025-01-02"
+        },
+        "from": "2025-01-01",
+        "to": "2025-01-01",
+        "count": 1,
+        "complete": true,
+        "error": null,
+        "files": [
+          "staging/invented-job/XAUUSD/5m.json"
+        ],
+        "payload": {
+          "key": "staging/invented-job/XAUUSD/5m.json",
+          "byteLength": 36,
+          "sha256": "ad2fcf00fb796725bdcf3bd4fdee986ef9b1f2819ce795f938763db60ad948d3"
+        },
+        "producedAt": "2025-01-03T00:00:00Z",
+        "symbol": "XAUUSD",
+        "timeframe": "5m",
+        "source": "dukascopy",
+        "resumeFrom": ""
+      }
+    },
+    {
+      "name": "complete-false-resume",
+      "manifest": {
+        "schema": "heisentick/download-job-manifest",
+        "version": 2,
+        "jobId": "invented-job",
+        "requested": {
+          "from": "2025-01-01",
+          "to": "2025-01-02"
+        },
+        "from": "2025-01-01",
+        "to": "2025-01-01",
+        "count": 1,
+        "complete": true,
+        "error": null,
+        "files": [
+          "staging/invented-job/XAUUSD/5m.json"
+        ],
+        "payload": {
+          "key": "staging/invented-job/XAUUSD/5m.json",
+          "byteLength": 36,
+          "sha256": "ad2fcf00fb796725bdcf3bd4fdee986ef9b1f2819ce795f938763db60ad948d3"
+        },
+        "producedAt": "2025-01-03T00:00:00Z",
+        "symbol": "XAUUSD",
+        "timeframe": "5m",
+        "source": "dukascopy",
+        "resumeFrom": false
+      }
+    },
+    {
+      "name": "complete-zero-resume",
+      "manifest": {
+        "schema": "heisentick/download-job-manifest",
+        "version": 2,
+        "jobId": "invented-job",
+        "requested": {
+          "from": "2025-01-01",
+          "to": "2025-01-02"
+        },
+        "from": "2025-01-01",
+        "to": "2025-01-01",
+        "count": 1,
+        "complete": true,
+        "error": null,
+        "files": [
+          "staging/invented-job/XAUUSD/5m.json"
+        ],
+        "payload": {
+          "key": "staging/invented-job/XAUUSD/5m.json",
+          "byteLength": 36,
+          "sha256": "ad2fcf00fb796725bdcf3bd4fdee986ef9b1f2819ce795f938763db60ad948d3"
+        },
+        "producedAt": "2025-01-03T00:00:00Z",
+        "symbol": "XAUUSD",
+        "timeframe": "5m",
+        "source": "dukascopy",
+        "resumeFrom": 0
+      }
+    },
+    {
+      "name": "lowercase-resume-time",
+      "manifest": {
+        "schema": "heisentick/download-job-manifest",
+        "version": 2,
+        "jobId": "invented-job",
+        "requested": {
+          "from": "2025-01-01",
+          "to": "2025-01-02"
+        },
+        "from": "2025-01-01",
+        "to": "2025-01-01",
+        "count": 1,
+        "complete": false,
+        "error": null,
+        "files": [
+          "staging/invented-job/XAUUSD/5m.json"
+        ],
+        "payload": {
+          "key": "staging/invented-job/XAUUSD/5m.json",
+          "byteLength": 36,
+          "sha256": "ad2fcf00fb796725bdcf3bd4fdee986ef9b1f2819ce795f938763db60ad948d3"
+        },
+        "producedAt": "2025-01-03T00:00:00Z",
+        "symbol": "XAUUSD",
+        "timeframe": "5m",
+        "source": "dukascopy",
+        "resumeFrom": "2025-01-01t12:00:00z"
+      }
+    }
+  ],
+  "states": [
+    {
+      "name": "download-rows-terminal",
+      "manifest": {
+        "schema": "heisentick/download-job-manifest",
+        "version": 2,
+        "jobId": "invented-job",
+        "requested": {
+          "from": "2025-01-01",
+          "to": "2025-01-02"
+        },
+        "from": null,
+        "to": null,
+        "count": 0,
+        "complete": false,
+        "error": "invented terminal failure",
+        "files": [],
+        "payload": null,
+        "producedAt": "2025-01-03T00:00:00Z",
+        "symbol": "XAUUSD",
+        "timeframe": "5m",
+        "source": "dukascopy",
+        "resumeFrom": null
+      }
+    },
+    {
+      "name": "cot-unicode-terminal",
+      "manifest": {
+        "schema": "heisentick/cot-job-manifest",
+        "version": 2,
+        "jobId": "invented-job",
+        "requested": {
+          "from": "2025-01-01",
+          "to": "2025-01-02"
+        },
+        "from": null,
+        "to": null,
+        "count": 0,
+        "complete": false,
+        "error": {
+          "code": "COT_FETCH_FAILED",
+          "message": "COT fetch or response validation failed",
+          "retryable": false
+        },
+        "files": [],
+        "payload": null,
+        "producedAt": "2025-01-03T00:00:00Z",
+        "datasetId": "gpe5-46if",
+        "contractCodes": [
+          "088691"
+        ]
+      }
+    },
+    {
+      "name": "candle-partial",
+      "manifest": {
+        "schema": "heisentick/download-job-manifest",
+        "version": 2,
+        "jobId": "invented-job",
+        "requested": {
+          "from": "2025-01-01",
+          "to": "2025-01-02"
+        },
+        "from": "2025-01-01",
+        "to": "2025-01-01",
+        "count": 1,
+        "complete": false,
+        "error": null,
+        "files": [
+          "staging/invented-job/XAUUSD/5m.json"
+        ],
+        "payload": {
+          "key": "staging/invented-job/XAUUSD/5m.json",
+          "byteLength": 36,
+          "sha256": "ad2fcf00fb796725bdcf3bd4fdee986ef9b1f2819ce795f938763db60ad948d3"
+        },
+        "producedAt": "2025-01-03T00:00:00Z",
+        "symbol": "XAUUSD",
+        "timeframe": "5m",
+        "source": "dukascopy",
+        "resumeFrom": "2025-01-01T12:00:00.000Z"
+      }
+    }
+  ]
+}

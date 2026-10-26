@@ -63,10 +63,10 @@ export declare const tradeExportV1: z.ZodObject<{
         rNetGross: z.ZodUnion<readonly [z.ZodNumber, z.ZodNull]>;
         rNetAfterCosts: z.ZodUnion<readonly [z.ZodNumber, z.ZodNull]>;
         exitReason: z.ZodEnum<{
+            time: "time";
             rule: "rule";
             sl: "sl";
             tp: "tp";
-            time: "time";
             partial: "partial";
             "end-of-test": "end-of-test";
         }>;

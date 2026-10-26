@@ -22,6 +22,8 @@ var schemaFS embed.FS
 // table maps them to the schema file (and JSON pointer, for the queue
 // messages that share one file).
 var documents = map[string]map[int]struct{ file, pointer string }{
+	"heisentick/download-job-manifest":      {2: {"download-job-manifest.v2.schema.json", ""}},
+	"heisentick/cot-job-manifest":           {2: {"cot-job-manifest.v2.schema.json", ""}},
 	"heisentick/bar-binary-layout":          {1: {"bar-binary-layout.v1.schema.json", ""}},
 	"heisentick/candle-snapshot-manifest":   {1: {"candle-snapshot-manifest.v1.schema.json", ""}},
 	"heisentick/validation-run-manifest":    {1: {"validation-run-manifest.v1.schema.json", ""}, 2: {"validation-run-manifest.v2.schema.json", ""}},
@@ -159,6 +161,9 @@ func Validate(name string, raw []byte) (any, error) {
 // ts/src/index.ts. The schema states the shapes, this states the
 // implications.
 func crossFieldIssues(name string, value any) []string {
+	if name == "heisentick/download-job-manifest" || name == "heisentick/cot-job-manifest" {
+		return stagingManifestIssues(value)
+	}
 	doc, _ := value.(map[string]any)
 	if doc == nil {
 		return nil
