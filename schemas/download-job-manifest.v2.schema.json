@@ -1,0 +1,144 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "download-job-manifest.v2.schema.json",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema",
+    "version",
+    "jobId",
+    "symbol",
+    "timeframe",
+    "source",
+    "requested",
+    "from",
+    "to",
+    "count",
+    "complete",
+    "resumeFrom",
+    "error",
+    "files",
+    "payload",
+    "producedAt"
+  ],
+  "properties": {
+    "schema": {
+      "const": "heisentick/download-job-manifest"
+    },
+    "version": {
+      "const": 2
+    },
+    "jobId": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9_-]{1,64}$"
+    },
+    "symbol": {
+      "type": "string",
+      "pattern": "^[A-Z0-9]{3,12}$"
+    },
+    "timeframe": {
+      "enum": [
+        "1m",
+        "5m",
+        "15m",
+        "30m",
+        "1h",
+        "4h",
+        "1d"
+      ]
+    },
+    "source": {
+      "const": "dukascopy"
+    },
+    "requested": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "from",
+        "to"
+      ],
+      "properties": {
+        "from": {
+          "type": "string"
+        },
+        "to": {
+          "type": "string"
+        }
+      }
+    },
+    "from": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+    },
+    "to": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+    },
+    "count": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 9007199254740991
+    },
+    "complete": {
+      "type": "boolean"
+    },
+    "resumeFrom": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "error": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "files": {
+      "type": "array",
+      "maxItems": 1,
+      "items": {
+        "type": "string"
+      }
+    },
+    "payload": {
+      "oneOf": [
+        {
+          "type": "null"
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "key",
+            "byteLength",
+            "sha256"
+          ],
+          "properties": {
+            "key": {
+              "type": "string"
+            },
+            "byteLength": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 9007199254740991
+            },
+            "sha256": {
+              "type": "string",
+              "pattern": "^[a-f0-9]{64}$"
+            }
+          }
+        }
+      ]
+    },
+    "producedAt": {
+      "type": "string"
+    }
+  }
+}

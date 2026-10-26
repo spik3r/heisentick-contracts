@@ -1,9 +1,13 @@
 import * as gen from './gen/index.js';
 export * from './gen/index.js';
+export { verifyStagedBytes, stagingManifestIssues } from './stagingIntegrity.js';
+import { stagingManifestIssues } from './stagingIntegrity.js';
 export { canonicalJson, canonicalJsonText, inputFingerprint, sha256Hex, CanonicalJsonError, MANIFEST_IDENTITY_FIELDS } from './canonical.js';
 // Document schemas by the `schema` field value each document carries, so a
 // boundary can dispatch on the wire without knowing the TypeScript name.
 export const DOCUMENT_SCHEMAS = {
+    'heisentick/download-job-manifest': gen.downloadJobManifestV2,
+    'heisentick/cot-job-manifest': gen.cotJobManifestV2,
     'heisentick/bar-binary-layout': gen.barBinaryLayoutV1,
     'heisentick/candle-snapshot-manifest': gen.candleSnapshotManifestV1,
     'heisentick/validation-run-manifest': gen.validationRunManifestV1.or(gen.validationRunManifestV2),
@@ -47,6 +51,8 @@ export function parseDocument(name, value) {
 // generated zod object's rejection of unknown fields.
 export function crossFieldIssues(name, doc) {
     const issues = [];
+    if (name === 'heisentick/download-job-manifest' || name === 'heisentick/cot-job-manifest')
+        return stagingManifestIssues(doc);
     if (name === 'heisentick/validation-run-manifest') {
         const d = doc;
         if (d.version === 2 && d.engine?.stratReleaseArtifact?.release !== d.engine?.expectedLinkedModule?.release) {

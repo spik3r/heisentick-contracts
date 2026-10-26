@@ -8,8 +8,8 @@ export declare const validationRunResultV2: z.ZodObject<{
     manifestKey: z.ZodString;
     execution: z.ZodObject<{
         status: z.ZodEnum<{
-            succeeded: "succeeded";
             failed: "failed";
+            succeeded: "succeeded";
             cancelled: "cancelled";
             timeout: "timeout";
         }>;
@@ -33,8 +33,8 @@ export declare const validationRunResultV2: z.ZodObject<{
                 assemble: "assemble";
             }>;
             status: z.ZodEnum<{
-                succeeded: "succeeded";
                 failed: "failed";
+                succeeded: "succeeded";
                 timeout: "timeout";
                 skipped: "skipped";
             }>;

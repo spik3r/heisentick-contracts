@@ -155,7 +155,132 @@ const CandleSnapshotManifestV1TimeframeA30M CandleSnapshotManifestV1Timeframe = 
 const CandleSnapshotManifestV1TimeframeA4H CandleSnapshotManifestV1Timeframe = "4h"
 const CandleSnapshotManifestV1TimeframeA5M CandleSnapshotManifestV1Timeframe = "5m"
 
+type CotJobManifestV2 struct {
+	// Complete corresponds to the JSON schema field "complete".
+	Complete bool `json:"complete" yaml:"complete" mapstructure:"complete"`
+
+	// ContractCodes corresponds to the JSON schema field "contractCodes".
+	ContractCodes []string `json:"contractCodes" yaml:"contractCodes" mapstructure:"contractCodes"`
+
+	// Count corresponds to the JSON schema field "count".
+	Count int `json:"count" yaml:"count" mapstructure:"count"`
+
+	// DatasetID corresponds to the JSON schema field "datasetId".
+	DatasetID CotJobManifestV2DatasetID `json:"datasetId" yaml:"datasetId" mapstructure:"datasetId"`
+
+	// Error corresponds to the JSON schema field "error".
+	Error interface{} `json:"error" yaml:"error" mapstructure:"error"`
+
+	// Files corresponds to the JSON schema field "files".
+	Files []string `json:"files" yaml:"files" mapstructure:"files"`
+
+	// From corresponds to the JSON schema field "from".
+	From *string `json:"from" yaml:"from" mapstructure:"from"`
+
+	// JobID corresponds to the JSON schema field "jobId".
+	JobID string `json:"jobId" yaml:"jobId" mapstructure:"jobId"`
+
+	// Payload corresponds to the JSON schema field "payload".
+	Payload interface{} `json:"payload" yaml:"payload" mapstructure:"payload"`
+
+	// ProducedAt corresponds to the JSON schema field "producedAt".
+	ProducedAt string `json:"producedAt" yaml:"producedAt" mapstructure:"producedAt"`
+
+	// Requested corresponds to the JSON schema field "requested".
+	Requested CotJobManifestV2Requested `json:"requested" yaml:"requested" mapstructure:"requested"`
+
+	// Schema corresponds to the JSON schema field "schema".
+	Schema interface{} `json:"schema" yaml:"schema" mapstructure:"schema"`
+
+	// To corresponds to the JSON schema field "to".
+	To *string `json:"to" yaml:"to" mapstructure:"to"`
+
+	// Version corresponds to the JSON schema field "version".
+	Version interface{} `json:"version" yaml:"version" mapstructure:"version"`
+}
+
+type CotJobManifestV2DatasetID string
+
+const CotJobManifestV2DatasetIDA72Hh3Qpy CotJobManifestV2DatasetID = "72hh-3qpy"
+const CotJobManifestV2DatasetIDGpe546If CotJobManifestV2DatasetID = "gpe5-46if"
+
+type CotJobManifestV2Requested struct {
+	// From corresponds to the JSON schema field "from".
+	From *string `json:"from" yaml:"from" mapstructure:"from"`
+
+	// To corresponds to the JSON schema field "to".
+	To *string `json:"to" yaml:"to" mapstructure:"to"`
+}
+
 type Direction interface{}
+
+type DownloadJobManifestV2 struct {
+	// Complete corresponds to the JSON schema field "complete".
+	Complete bool `json:"complete" yaml:"complete" mapstructure:"complete"`
+
+	// Count corresponds to the JSON schema field "count".
+	Count int `json:"count" yaml:"count" mapstructure:"count"`
+
+	// Error corresponds to the JSON schema field "error".
+	Error *string `json:"error" yaml:"error" mapstructure:"error"`
+
+	// Files corresponds to the JSON schema field "files".
+	Files []string `json:"files" yaml:"files" mapstructure:"files"`
+
+	// From corresponds to the JSON schema field "from".
+	From *string `json:"from" yaml:"from" mapstructure:"from"`
+
+	// JobID corresponds to the JSON schema field "jobId".
+	JobID string `json:"jobId" yaml:"jobId" mapstructure:"jobId"`
+
+	// Payload corresponds to the JSON schema field "payload".
+	Payload interface{} `json:"payload" yaml:"payload" mapstructure:"payload"`
+
+	// ProducedAt corresponds to the JSON schema field "producedAt".
+	ProducedAt string `json:"producedAt" yaml:"producedAt" mapstructure:"producedAt"`
+
+	// Requested corresponds to the JSON schema field "requested".
+	Requested DownloadJobManifestV2Requested `json:"requested" yaml:"requested" mapstructure:"requested"`
+
+	// ResumeFrom corresponds to the JSON schema field "resumeFrom".
+	ResumeFrom *string `json:"resumeFrom" yaml:"resumeFrom" mapstructure:"resumeFrom"`
+
+	// Schema corresponds to the JSON schema field "schema".
+	Schema interface{} `json:"schema" yaml:"schema" mapstructure:"schema"`
+
+	// Source corresponds to the JSON schema field "source".
+	Source interface{} `json:"source" yaml:"source" mapstructure:"source"`
+
+	// Symbol corresponds to the JSON schema field "symbol".
+	Symbol string `json:"symbol" yaml:"symbol" mapstructure:"symbol"`
+
+	// Timeframe corresponds to the JSON schema field "timeframe".
+	Timeframe DownloadJobManifestV2Timeframe `json:"timeframe" yaml:"timeframe" mapstructure:"timeframe"`
+
+	// To corresponds to the JSON schema field "to".
+	To *string `json:"to" yaml:"to" mapstructure:"to"`
+
+	// Version corresponds to the JSON schema field "version".
+	Version interface{} `json:"version" yaml:"version" mapstructure:"version"`
+}
+
+type DownloadJobManifestV2Requested struct {
+	// From corresponds to the JSON schema field "from".
+	From string `json:"from" yaml:"from" mapstructure:"from"`
+
+	// To corresponds to the JSON schema field "to".
+	To string `json:"to" yaml:"to" mapstructure:"to"`
+}
+
+type DownloadJobManifestV2Timeframe string
+
+const DownloadJobManifestV2TimeframeA15M DownloadJobManifestV2Timeframe = "15m"
+const DownloadJobManifestV2TimeframeA1D DownloadJobManifestV2Timeframe = "1d"
+const DownloadJobManifestV2TimeframeA1H DownloadJobManifestV2Timeframe = "1h"
+const DownloadJobManifestV2TimeframeA1M DownloadJobManifestV2Timeframe = "1m"
+const DownloadJobManifestV2TimeframeA30M DownloadJobManifestV2Timeframe = "30m"
+const DownloadJobManifestV2TimeframeA4H DownloadJobManifestV2Timeframe = "4h"
+const DownloadJobManifestV2TimeframeA5M DownloadJobManifestV2Timeframe = "5m"
 
 type SessionFeatureRow struct {
 	// Summary and volume-profile levels of the Asia window bars, all strictly before

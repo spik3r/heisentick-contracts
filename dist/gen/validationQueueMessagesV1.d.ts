@@ -16,8 +16,8 @@ export declare const validationQueueMessagesV1ValidationResultMessage: z.ZodObje
     runId: z.ZodString;
     attempt: z.ZodNumber;
     status: z.ZodEnum<{
-        succeeded: "succeeded";
         failed: "failed";
+        succeeded: "succeeded";
         cancelled: "cancelled";
         timeout: "timeout";
     }>;
@@ -42,8 +42,8 @@ export declare const validationQueueMessagesV1: z.ZodUnion<readonly [z.ZodObject
     runId: z.ZodString;
     attempt: z.ZodNumber;
     status: z.ZodEnum<{
-        succeeded: "succeeded";
         failed: "failed";
+        succeeded: "succeeded";
         cancelled: "cancelled";
         timeout: "timeout";
     }>;

@@ -72,14 +72,14 @@ export declare const sessionFeatureRowsV1: z.ZodObject<{
                 nearMid: "nearMid";
             }>]>;
             asiaCloseVsPoc: z.ZodUnion<readonly [z.ZodNull, z.ZodEnum<{
+                at: "at";
                 above: "above";
                 below: "below";
-                at: "at";
             }>]>;
             londonOpenVsAsiaPoc: z.ZodUnion<readonly [z.ZodNull, z.ZodEnum<{
+                at: "at";
                 above: "above";
                 below: "below";
-                at: "at";
             }>]>;
             londonOpenVsAsiaValue: z.ZodUnion<readonly [z.ZodNull, z.ZodEnum<{
                 aboveVA: "aboveVA";
@@ -87,9 +87,9 @@ export declare const sessionFeatureRowsV1: z.ZodObject<{
                 insideVA: "insideVA";
             }>]>;
             asiaDeltaSign: z.ZodUnion<readonly [z.ZodNull, z.ZodEnum<{
+                flat: "flat";
                 positive: "positive";
                 negative: "negative";
-                flat: "flat";
             }>]>;
             asiaDirection: z.ZodUnion<readonly [z.ZodNull, z.ZodEnum<{
                 flat: "flat";
@@ -107,14 +107,14 @@ export declare const sessionFeatureRowsV1: z.ZodObject<{
                 top: "top";
             }>]>;
             priorDayCloseVsPoc: z.ZodUnion<readonly [z.ZodNull, z.ZodEnum<{
+                at: "at";
                 above: "above";
                 below: "below";
-                at: "at";
             }>]>;
             londonOpenVsPriorDayPoc: z.ZodUnion<readonly [z.ZodNull, z.ZodEnum<{
+                at: "at";
                 above: "above";
                 below: "below";
-                at: "at";
             }>]>;
             londonOpenVsPriorDayValue: z.ZodUnion<readonly [z.ZodNull, z.ZodEnum<{
                 aboveVA: "aboveVA";
@@ -122,9 +122,9 @@ export declare const sessionFeatureRowsV1: z.ZodObject<{
                 insideVA: "insideVA";
             }>]>;
             asiaPocVsPriorDayPoc: z.ZodUnion<readonly [z.ZodNull, z.ZodEnum<{
+                at: "at";
                 above: "above";
                 below: "below";
-                at: "at";
             }>]>;
         }, z.core.$strict>;
     }, z.core.$strict>>;

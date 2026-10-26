@@ -115,3 +115,40 @@ pnpm run check             # generate:check, tsc, node:test, build, go test
 
 Compatibility rules, canonical JSON and the fingerprint are in `agents.md`
 and `docs/canonical-json.md`.
+
+## Staging manifests v2
+
+`heisentick/download-job-manifest` and `heisentick/cot-job-manifest` version 2
+bind the job/request identity and route to one exact payload key, uploaded byte
+length, lowercase SHA-256, row count and actual date bounds. Candle partial
+results carry a resume point; COT incomplete results are terminal and carry no
+payload. Every terminal failure has an empty files list, null descriptor, zero
+rows and null bounds. The committed candle snapshot contract remains separate.
+
+Producers serialize once, hash the exact uploaded UTF-8 bytes, upload the
+payload first and publish the manifest last. Consumers first bind the manifest
+to their own job/request/route and allowed exact key. They enforce transport
+limits while reading, verify byte length and digest before parsing, then
+compare actual rows/count/bounds before committing. The application proposal
+uses 256 KiB manifests and 64 MiB payloads. These are consumer limits, not proof
+that a provider response is correct or authentic.
+
+The production Node `verifyStagedBytes` and Go `VerifyStagedBytes` helpers
+verify already-bounded bytes. Go `VerifyStagingManifestBytes` additionally
+validates the registered v2 document and compares a caller-derived expected
+key; it reuses the existing exact-byte verifier. Neither helper replaces
+bounded transport reading, caller request binding or actual row validation.
+The pre-existing Node A0 oracle remains test-only.
+
+The package registers v2 staging manifests only and rejects other versions.
+Historical v1 staging documents predate these registered schemas. During
+migration, the app handles v1 through its explicit bounded legacy branch:
+existing request/key/row checks remain, without claiming digest provenance.
+A v1 document carrying the v2 descriptor is rejected. COT raw envelopes retain
+version 1 even when their job manifest is v2.
+
+Review contracts first, adopt consumers that read old/new, then authorize
+producer v2 emission. Old consumers must not receive new producers. Keep
+legacy reads until the coordinator approves retirement. These source changes
+do not authorize a release, pin, merge or deployment. Invented byte and
+manifest fixtures cover Node/Go behavior; no provider or bucket data is used.

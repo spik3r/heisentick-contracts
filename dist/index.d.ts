@@ -1,7 +1,60 @@
 export * from './gen/index.js';
+export { verifyStagedBytes, stagingManifestIssues } from './stagingIntegrity.js';
+export type { StagedPayload } from './stagingIntegrity.js';
 export { canonicalJson, canonicalJsonText, inputFingerprint, sha256Hex, CanonicalJsonError, MANIFEST_IDENTITY_FIELDS } from './canonical.js';
 export type { JsonValue } from './canonical.js';
 export declare const DOCUMENT_SCHEMAS: {
+    readonly 'heisentick/download-job-manifest': import("zod").ZodObject<{
+        schema: import("zod").ZodLiteral<"heisentick/download-job-manifest">;
+        version: import("zod").ZodLiteral<2>;
+        jobId: import("zod").ZodString;
+        symbol: import("zod").ZodString;
+        timeframe: import("zod").ZodEnum<{
+            "1m": "1m";
+            "5m": "5m";
+            "15m": "15m";
+            "30m": "30m";
+            "1h": "1h";
+            "4h": "4h";
+            "1d": "1d";
+        }>;
+        source: import("zod").ZodLiteral<"dukascopy">;
+        requested: import("zod").ZodObject<{
+            from: import("zod").ZodString;
+            to: import("zod").ZodString;
+        }, import("zod/v4/core").$strict>;
+        from: import("zod").ZodUnion<readonly [import("zod").ZodString, import("zod").ZodNull]>;
+        to: import("zod").ZodUnion<readonly [import("zod").ZodString, import("zod").ZodNull]>;
+        count: import("zod").ZodNumber;
+        complete: import("zod").ZodBoolean;
+        resumeFrom: import("zod").ZodUnion<readonly [import("zod").ZodString, import("zod").ZodNull]>;
+        error: import("zod").ZodUnion<readonly [import("zod").ZodString, import("zod").ZodNull]>;
+        files: import("zod").ZodArray<import("zod").ZodString>;
+        payload: import("zod").ZodAny;
+        producedAt: import("zod").ZodString;
+    }, import("zod/v4/core").$strict>;
+    readonly 'heisentick/cot-job-manifest': import("zod").ZodObject<{
+        schema: import("zod").ZodLiteral<"heisentick/cot-job-manifest">;
+        version: import("zod").ZodLiteral<2>;
+        jobId: import("zod").ZodString;
+        datasetId: import("zod").ZodEnum<{
+            "gpe5-46if": "gpe5-46if";
+            "72hh-3qpy": "72hh-3qpy";
+        }>;
+        contractCodes: import("zod").ZodArray<import("zod").ZodString>;
+        requested: import("zod").ZodObject<{
+            from: import("zod").ZodUnion<readonly [import("zod").ZodString, import("zod").ZodNull]>;
+            to: import("zod").ZodUnion<readonly [import("zod").ZodString, import("zod").ZodNull]>;
+        }, import("zod/v4/core").$strict>;
+        from: import("zod").ZodUnion<readonly [import("zod").ZodString, import("zod").ZodNull]>;
+        to: import("zod").ZodUnion<readonly [import("zod").ZodString, import("zod").ZodNull]>;
+        count: import("zod").ZodNumber;
+        complete: import("zod").ZodBoolean;
+        error: import("zod").ZodAny;
+        files: import("zod").ZodArray<import("zod").ZodString>;
+        payload: import("zod").ZodAny;
+        producedAt: import("zod").ZodString;
+    }, import("zod/v4/core").$strict>;
     readonly 'heisentick/bar-binary-layout': import("zod").ZodObject<{
         schema: import("zod").ZodLiteral<"heisentick/bar-binary-layout">;
         version: import("zod").ZodLiteral<1>;
@@ -455,8 +508,8 @@ export declare const DOCUMENT_SCHEMAS: {
         manifestKey: import("zod").ZodString;
         execution: import("zod").ZodObject<{
             status: import("zod").ZodEnum<{
-                succeeded: "succeeded";
                 failed: "failed";
+                succeeded: "succeeded";
                 cancelled: "cancelled";
                 timeout: "timeout";
             }>;
@@ -480,8 +533,8 @@ export declare const DOCUMENT_SCHEMAS: {
                     assemble: "assemble";
                 }>;
                 status: import("zod").ZodEnum<{
-                    succeeded: "succeeded";
                     failed: "failed";
+                    succeeded: "succeeded";
                     timeout: "timeout";
                     skipped: "skipped";
                 }>;
@@ -615,8 +668,8 @@ export declare const DOCUMENT_SCHEMAS: {
         manifestKey: import("zod").ZodString;
         execution: import("zod").ZodObject<{
             status: import("zod").ZodEnum<{
-                succeeded: "succeeded";
                 failed: "failed";
+                succeeded: "succeeded";
                 cancelled: "cancelled";
                 timeout: "timeout";
             }>;
@@ -640,8 +693,8 @@ export declare const DOCUMENT_SCHEMAS: {
                     assemble: "assemble";
                 }>;
                 status: import("zod").ZodEnum<{
-                    succeeded: "succeeded";
                     failed: "failed";
+                    succeeded: "succeeded";
                     timeout: "timeout";
                     skipped: "skipped";
                 }>;
@@ -785,8 +838,8 @@ export declare const DOCUMENT_SCHEMAS: {
         runId: import("zod").ZodString;
         attempt: import("zod").ZodNumber;
         status: import("zod").ZodEnum<{
-            succeeded: "succeeded";
             failed: "failed";
+            succeeded: "succeeded";
             cancelled: "cancelled";
             timeout: "timeout";
         }>;
@@ -868,14 +921,14 @@ export declare const DOCUMENT_SCHEMAS: {
                     nearMid: "nearMid";
                 }>]>;
                 asiaCloseVsPoc: import("zod").ZodUnion<readonly [import("zod").ZodNull, import("zod").ZodEnum<{
+                    at: "at";
                     above: "above";
                     below: "below";
-                    at: "at";
                 }>]>;
                 londonOpenVsAsiaPoc: import("zod").ZodUnion<readonly [import("zod").ZodNull, import("zod").ZodEnum<{
+                    at: "at";
                     above: "above";
                     below: "below";
-                    at: "at";
                 }>]>;
                 londonOpenVsAsiaValue: import("zod").ZodUnion<readonly [import("zod").ZodNull, import("zod").ZodEnum<{
                     aboveVA: "aboveVA";
@@ -883,9 +936,9 @@ export declare const DOCUMENT_SCHEMAS: {
                     insideVA: "insideVA";
                 }>]>;
                 asiaDeltaSign: import("zod").ZodUnion<readonly [import("zod").ZodNull, import("zod").ZodEnum<{
+                    flat: "flat";
                     positive: "positive";
                     negative: "negative";
-                    flat: "flat";
                 }>]>;
                 asiaDirection: import("zod").ZodUnion<readonly [import("zod").ZodNull, import("zod").ZodEnum<{
                     flat: "flat";
@@ -903,14 +956,14 @@ export declare const DOCUMENT_SCHEMAS: {
                     top: "top";
                 }>]>;
                 priorDayCloseVsPoc: import("zod").ZodUnion<readonly [import("zod").ZodNull, import("zod").ZodEnum<{
+                    at: "at";
                     above: "above";
                     below: "below";
-                    at: "at";
                 }>]>;
                 londonOpenVsPriorDayPoc: import("zod").ZodUnion<readonly [import("zod").ZodNull, import("zod").ZodEnum<{
+                    at: "at";
                     above: "above";
                     below: "below";
-                    at: "at";
                 }>]>;
                 londonOpenVsPriorDayValue: import("zod").ZodUnion<readonly [import("zod").ZodNull, import("zod").ZodEnum<{
                     aboveVA: "aboveVA";
@@ -918,9 +971,9 @@ export declare const DOCUMENT_SCHEMAS: {
                     insideVA: "insideVA";
                 }>]>;
                 asiaPocVsPriorDayPoc: import("zod").ZodUnion<readonly [import("zod").ZodNull, import("zod").ZodEnum<{
+                    at: "at";
                     above: "above";
                     below: "below";
-                    at: "at";
                 }>]>;
             }, import("zod/v4/core").$strict>;
         }, import("zod/v4/core").$strict>>;
@@ -989,10 +1042,10 @@ export declare const DOCUMENT_SCHEMAS: {
             rNetGross: import("zod").ZodUnion<readonly [import("zod").ZodNumber, import("zod").ZodNull]>;
             rNetAfterCosts: import("zod").ZodUnion<readonly [import("zod").ZodNumber, import("zod").ZodNull]>;
             exitReason: import("zod").ZodEnum<{
+                time: "time";
                 rule: "rule";
                 sl: "sl";
                 tp: "tp";
-                time: "time";
                 partial: "partial";
                 "end-of-test": "end-of-test";
             }>;
