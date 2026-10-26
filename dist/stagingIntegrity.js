@@ -32,7 +32,7 @@ export function stagingManifestIssues(value) {
         return fail('payload key must equal the exact job route key');
     if (d.count === 0 ? (d.from !== null || d.to !== null) : (d.from === null || d.to === null || d.from > d.to))
         return fail('count and actual bounds disagree');
-    if (d.complete && (d.error !== null || d.resumeFrom))
+    if (d.complete && (d.error !== null || (d.schema === 'heisentick/download-job-manifest' && d.resumeFrom !== null)))
         return fail('complete staging manifest cannot carry error or resume state');
     if (!d.complete && (d.schema === 'heisentick/cot-job-manifest' || !d.resumeFrom))
         return fail('incomplete staging payload requires candle resume state');

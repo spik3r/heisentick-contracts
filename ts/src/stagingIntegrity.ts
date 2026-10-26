@@ -48,7 +48,7 @@ export function stagingManifestIssues(value: unknown): string[] {
     : `staging/${d.jobId}/cot/${d.datasetId}.json`;
   if (d.files[0] !== key || d.payload?.key !== key) return fail('payload key must equal the exact job route key');
   if (d.count === 0 ? (d.from !== null || d.to !== null) : (d.from === null || d.to === null || d.from > d.to)) return fail('count and actual bounds disagree');
-  if (d.complete && (d.error !== null || d.resumeFrom)) return fail('complete staging manifest cannot carry error or resume state');
+  if (d.complete && (d.error !== null || (d.schema === 'heisentick/download-job-manifest' && d.resumeFrom !== null))) return fail('complete staging manifest cannot carry error or resume state');
   if (!d.complete && (d.schema === 'heisentick/cot-job-manifest' || !d.resumeFrom)) return fail('incomplete staging payload requires candle resume state');
   if (!d.complete && d.resumeFrom) {
     const resume = stagingTime(d.resumeFrom);

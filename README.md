@@ -122,7 +122,10 @@ and `docs/canonical-json.md`.
 bind the job/request identity and route to one exact payload key, uploaded byte
 length, lowercase SHA-256, row count and actual date bounds. Candle partial
 results carry a resume point; its range checks accept calendar dates or
-canonical UTC millisecond timestamps in both languages. COT incomplete results are terminal and carry no
+canonical UTC millisecond timestamps in both languages (uppercase `T`/`Z`,
+exactly three fractional digits). Complete v2 candle manifests require
+`error: null` and `resumeFrom: null`; empty strings are rejected. Legacy v1
+consumers retain their documented historical interpretation. COT incomplete results are terminal and carry no
 payload. Every terminal failure has an empty files list, null descriptor, zero
 rows and null bounds. The committed candle snapshot contract remains separate.
 

@@ -61,7 +61,7 @@ func stagingManifestIssues(value any) []string {
 	if (d.Count == 0 && (d.From != nil || d.To != nil)) || (d.Count > 0 && (d.From == nil || d.To == nil || *d.From > *d.To)) {
 		return []string{"count and actual bounds disagree"}
 	}
-	if d.Complete && (hasError || resume) {
+	if d.Complete && (string(d.Error) != "null" || d.ResumeFrom != nil) {
 		return []string{"complete staging manifest cannot carry error or resume state"}
 	}
 	if !d.Complete && (d.Schema == "heisentick/cot-job-manifest" || !resume) {
