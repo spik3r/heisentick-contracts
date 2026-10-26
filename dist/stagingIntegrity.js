@@ -37,11 +37,18 @@ export function stagingManifestIssues(value) {
     if (!d.complete && (d.schema === 'heisentick/cot-job-manifest' || !d.resumeFrom))
         return fail('incomplete staging payload requires candle resume state');
     if (!d.complete && d.resumeFrom) {
-        const resume = Date.parse(d.resumeFrom);
-        const from = Date.parse(d.requested.from ?? '');
-        const to = Date.parse(d.requested.to ?? '');
+        const resume = stagingTime(d.resumeFrom);
+        const from = stagingTime(d.requested.from ?? '');
+        const to = stagingTime(d.requested.to ?? '');
         if (![resume, from, to].every(Number.isFinite) || resume < from || resume > to)
             return fail('resume point must remain within requested bounds');
     }
     return [];
+}
+function stagingTime(value) {
+    const canonical = /^\d{4}-\d{2}-\d{2}$/.test(value) ? `${value}T00:00:00.000Z` : value;
+    if (!/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d{3}Z$/.test(canonical))
+        return NaN;
+    const ms = Date.parse(canonical);
+    return Number.isFinite(ms) && new Date(ms).toISOString() === canonical ? ms : NaN;
 }

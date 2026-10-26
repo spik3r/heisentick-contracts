@@ -79,10 +79,15 @@ func stagingManifestIssues(value any) []string {
 }
 
 func stagingTime(value string) (time.Time, error) {
+	layout := "2006-01-02T15:04:05.000Z"
 	if len(value) == 10 {
-		return time.Parse("2006-01-02", value)
+		layout = "2006-01-02"
 	}
-	return time.Parse(time.RFC3339Nano, value)
+	parsed, err := time.Parse(layout, value)
+	if err != nil || parsed.Format(layout) != value {
+		return time.Time{}, fmt.Errorf("noncanonical staging time")
+	}
+	return parsed, nil
 }
 
 // VerifyStagingManifestBytes validates a v2 manifest and its exact supplied

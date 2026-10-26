@@ -1245,7 +1245,7 @@
         "symbol": "XAUUSD",
         "timeframe": "5m",
         "source": "dukascopy",
-        "resumeFrom": "2024-12-31T00:00:00Z"
+        "resumeFrom": "2024-12-31T00:00:00.000Z"
       }
     },
     {
@@ -1275,7 +1275,7 @@
         "symbol": "XAUUSD",
         "timeframe": "5m",
         "source": "dukascopy",
-        "resumeFrom": "2025-01-03T00:00:00Z"
+        "resumeFrom": "2025-01-03T00:00:00.000Z"
       }
     },
     {
@@ -1306,6 +1306,96 @@
         "timeframe": "5m",
         "source": "dukascopy",
         "resumeFrom": "invalid"
+      }
+    },
+    {
+      "name": "english-date",
+      "manifest": {
+        "schema": "heisentick/download-job-manifest",
+        "version": 2,
+        "jobId": "invented-job",
+        "requested": {
+          "from": "2025-01-01",
+          "to": "2025-01-02"
+        },
+        "from": "2025-01-01",
+        "to": "2025-01-01",
+        "count": 1,
+        "complete": false,
+        "error": null,
+        "files": [
+          "staging/invented-job/XAUUSD/5m.json"
+        ],
+        "payload": {
+          "key": "staging/invented-job/XAUUSD/5m.json",
+          "byteLength": 36,
+          "sha256": "ad2fcf00fb796725bdcf3bd4fdee986ef9b1f2819ce795f938763db60ad948d3"
+        },
+        "producedAt": "2025-01-03T00:00:00Z",
+        "symbol": "XAUUSD",
+        "timeframe": "5m",
+        "source": "dukascopy",
+        "resumeFrom": "January 1, 2025"
+      }
+    },
+    {
+      "name": "invalid-calendar",
+      "manifest": {
+        "schema": "heisentick/download-job-manifest",
+        "version": 2,
+        "jobId": "invented-job",
+        "requested": {
+          "from": "2025-01-01",
+          "to": "2025-01-02"
+        },
+        "from": "2025-01-01",
+        "to": "2025-01-01",
+        "count": 1,
+        "complete": false,
+        "error": null,
+        "files": [
+          "staging/invented-job/XAUUSD/5m.json"
+        ],
+        "payload": {
+          "key": "staging/invented-job/XAUUSD/5m.json",
+          "byteLength": 36,
+          "sha256": "ad2fcf00fb796725bdcf3bd4fdee986ef9b1f2819ce795f938763db60ad948d3"
+        },
+        "producedAt": "2025-01-03T00:00:00Z",
+        "symbol": "XAUUSD",
+        "timeframe": "5m",
+        "source": "dukascopy",
+        "resumeFrom": "2025-02-30T00:00:00.000Z"
+      }
+    },
+    {
+      "name": "noncanonical-time",
+      "manifest": {
+        "schema": "heisentick/download-job-manifest",
+        "version": 2,
+        "jobId": "invented-job",
+        "requested": {
+          "from": "2025-01-01",
+          "to": "2025-01-02"
+        },
+        "from": "2025-01-01",
+        "to": "2025-01-01",
+        "count": 1,
+        "complete": false,
+        "error": null,
+        "files": [
+          "staging/invented-job/XAUUSD/5m.json"
+        ],
+        "payload": {
+          "key": "staging/invented-job/XAUUSD/5m.json",
+          "byteLength": 36,
+          "sha256": "ad2fcf00fb796725bdcf3bd4fdee986ef9b1f2819ce795f938763db60ad948d3"
+        },
+        "producedAt": "2025-01-03T00:00:00Z",
+        "symbol": "XAUUSD",
+        "timeframe": "5m",
+        "source": "dukascopy",
+        "resumeFrom": "2025-01-01T12:00:00Z"
       }
     }
   ],

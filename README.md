@@ -121,7 +121,8 @@ and `docs/canonical-json.md`.
 `heisentick/download-job-manifest` and `heisentick/cot-job-manifest` version 2
 bind the job/request identity and route to one exact payload key, uploaded byte
 length, lowercase SHA-256, row count and actual date bounds. Candle partial
-results carry a resume point; COT incomplete results are terminal and carry no
+results carry a resume point; its range checks accept calendar dates or
+canonical UTC millisecond timestamps in both languages. COT incomplete results are terminal and carry no
 payload. Every terminal failure has an empty files list, null descriptor, zero
 rows and null bounds. The committed candle snapshot contract remains separate.
 
