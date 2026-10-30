@@ -8,7 +8,12 @@ are tested against; add a case there before changing either implementation.
 
 1. Objects: keys sorted by UTF-16 code unit order (what `Array.prototype.sort`
    does with default comparison in JavaScript). No whitespace anywhere.
-2. Arrays: elements in order.
+2. Arrays: elements in order. Decoded JavaScript arrays must have an own
+   element at every index: sparse holes and explicit `undefined` elements
+   are errors with the offending index path, not omitted values. An inherited
+   numeric property does not fill a hole. Use an explicit `null` when that is
+   the intended JSON value. Raw JSON cannot express holes; ordinary dense
+   arrays and the Go representation keep their existing canonical bytes.
 3. Strings: `JSON.stringify` escaping. `"` → `\"`, `\` → `\\`, U+0008 `\b`,
    U+000C `\f`, U+000A `\n`, U+000D `\r`, U+0009 `\t`, other code points
    below U+0020 as `\u00xx` with lower-case hex. Nothing else is escaped:
