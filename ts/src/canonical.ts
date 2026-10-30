@@ -44,10 +44,12 @@ function write(value: unknown, path: string, out: string[]): void {
   }
   if (Array.isArray(value)) {
     out.push('[');
-    value.forEach((item, index) => {
+    const length = value.length;
+    for (let index = 0; index < length; index += 1) {
       if (index) out.push(',');
-      write(item, `${path}[${index}]`, out);
-    });
+      // Missing elements are undefined, not omitted or supplied by a prototype.
+      write(Object.hasOwn(value, index) ? value[index] : undefined, `${path}[${index}]`, out);
+    }
     out.push(']');
     return;
   }
